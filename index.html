@@ -185,8 +185,12 @@ sb.auth.onAuthStateChange(async(event,session)=>{
 });
 
 async function loadProfile(){
-  const{data}=await sb.from('profiles').select('*').eq('id',currentUser.id).single();
-  userProfile=data||{full_name:currentUser.user_metadata?.full_name||'',rate_30:6.875,rate_15:6.125};
+  try{
+    const{data}=await sb.from('profiles').select('*').eq('id',currentUser.id).single();
+    userProfile=data||{full_name:currentUser.user_metadata?.full_name||'',rate_30:6.875,rate_15:6.125};
+  }catch(e){
+    userProfile={full_name:currentUser.user_metadata?.full_name||'',rate_30:6.875,rate_15:6.125};
+  }
 }
 
 async function saveProfile(){
@@ -271,7 +275,7 @@ function loadTradingView(){
 let fredLoaded=false;
 async function loadFredChart(){
   if(fredLoaded)return;fredLoaded=true;
-  const apiKey=userProfile?.fred_api_key||'';const ctx=document.getElementById('fredChart').getContext('2d');
+  const apiKey=userProfile?.fred_api_key||'';const fredEl=document.getElementById('fredChart');if(!fredEl)return;const ctx=fredEl.getContext('2d');
   const end=new Date(),start=new Date();start.setDate(start.getDate()-45);const fmt=d=>d.toISOString().slice(0,10);
   let labels=[],values=[];
   if(apiKey){try{const url=`https://api.stlouisfed.org/fred/series/observations?series_id=DGS10&api_key=${apiKey}&file_type=json&observation_start=${fmt(start)}&observation_end=${fmt(end)}&sort_order=asc`;const r=await fetch(url);const d=await r.json();const obs=(d.observations||[]).filter(o=>o.value!=='.');labels=obs.map(o=>{const x=new Date(o.date+'T12:00:00');return(x.getMonth()+1)+'/'+x.getDate()});values=obs.map(o=>parseFloat(o.value));}catch(e){}}
