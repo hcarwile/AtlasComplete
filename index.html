@@ -170,6 +170,13 @@ async function handleAuth(){
       errEl.textContent='Check your email to confirm your account, then sign in.';errEl.style.display='block';errEl.style.color='var(--accent)';
       btn.disabled=false;btn.textContent='Create account';toggleAuthMode();return;
     }
+    // Directly handle successful sign-in without waiting for onAuthStateChange
+    if(result.data?.session?.user){
+      currentUser=result.data.session.user;
+      await loadProfile();
+      showApp();
+      return;
+    }
   }catch(e){
     errEl.textContent=e.message||'Authentication failed.';errEl.style.display='block';errEl.style.color='var(--red)';
     btn.disabled=false;btn.textContent=authMode==='signin'?'Sign in':'Create account';
@@ -303,3 +310,4 @@ document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].include
 </script>
 </body>
 </html>
+ 
