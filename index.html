@@ -125,7 +125,7 @@
 <script>
 const SUPA_URL='https://ddimalkvoezwziyghuph.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkaW1hbGt2b2V6d3ppeWdodXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjAyNzQsImV4cCI6MjA5MDE5NjI3NH0.be30CaTC2XM699HVDL-mf4LSpRC5UPDPOX5mMSsqmyo';
-const sb=supabase.createClient(SUPA_URL,SUPA_KEY,{auth:{storage:window.localStorage,storageKey:'atlas-auth',flowType:'implicit',autoRefreshToken:true,persistSession:true,detectSessionInUrl:false}});
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 let currentUser=null,userProfile=null;
 
 let authMode='signin';
@@ -157,20 +157,10 @@ async function handleAuth(){
       result=await sb.auth.signInWithPassword({email,password});
     }
     if(result.error)throw result.error;
-    // Directly show app on successful sign-in (don't wait for onAuthStateChange)
-    if(result.data?.session?.user){
-      currentUser=result.data.session.user;
-      await loadProfile();
-      showApp();
-      return;
-    }
     if(authMode==='signup'&&result.data?.user&&!result.data.session){
       errEl.textContent='Check your email to confirm your account, then sign in.';errEl.style.display='block';errEl.style.color='var(--accent)';
       btn.disabled=false;btn.textContent='Create account';toggleAuthMode();return;
     }
-    // Fallback: re-enable button if no session returned
-    btn.disabled=false;btn.textContent=authMode==='signin'?'Sign in':'Create account';
-    errEl.textContent='Sign in failed. Please try again.';errEl.style.display='block';errEl.style.color='var(--red)';
   }catch(e){
     errEl.textContent=e.message||'Authentication failed.';errEl.style.display='block';errEl.style.color='var(--red)';
     btn.disabled=false;btn.textContent=authMode==='signin'?'Sign in':'Create account';
@@ -185,12 +175,8 @@ sb.auth.onAuthStateChange(async(event,session)=>{
 });
 
 async function loadProfile(){
-  try{
-    const{data}=await sb.from('profiles').select('*').eq('id',currentUser.id).single();
-    userProfile=data||{full_name:currentUser.user_metadata?.full_name||'',rate_30:6.875,rate_15:6.125};
-  }catch(e){
-    userProfile={full_name:currentUser.user_metadata?.full_name||'',rate_30:6.875,rate_15:6.125};
-  }
+  const{data}=await sb.from('profiles').select('*').eq('id',currentUser.id).single();
+  userProfile=data||{full_name:currentUser.user_metadata?.full_name||'',rate_30:6.875,rate_15:6.125};
 }
 
 async function saveProfile(){
@@ -265,17 +251,19 @@ function switchLE(t){document.querySelectorAll('.le-btn').forEach(b=>b.classList
 let tvLoaded=false;
 function loadTradingView(){
   if(tvLoaded)return;tvLoaded=true;
-  const c=document.getElementById('tvWidget'),w=document.createElement('div');w.className='tradingview-widget-container';w.style.cssText='height:100%;width:100%';
-  const inner=document.createElement('div');inner.className='tradingview-widget-container__widget';inner.style.cssText='height:100%;width:100%';w.appendChild(inner);
-  const s=document.createElement('script');s.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';s.async=true;
-  s.textContent=JSON.stringify({autosize:true,symbol:"TVC:US10Y",interval:"15",timezone:"America/New_York",theme:"light",style:"2",locale:"en",backgroundColor:"rgba(255,255,255,1)",gridColor:"rgba(226,222,214,0.4)",hide_top_toolbar:false,hide_legend:false,allow_symbol_change:false,save_image:false,calendar:false});
+  const c=document.getElementById('tvWidget');
+  const config={"lineWidth":2,"lineType":0,"chartType":"area","fontColor":"rgb(106,109,120)","gridLineColor":"rgba(46,46,46,0.06)","backgroundColor":"#ffffff","widgetFontColor":"#0F0F0F","upColor":"#22ab94","downColor":"#f7525f","borderUpColor":"#22ab94","borderDownColor":"#f7525f","wickUpColor":"#22ab94","wickDownColor":"#f7525f","colorTheme":"light","isTransparent":false,"locale":"en","chartOnly":false,"scalePosition":"right","scaleMode":"Normal","fontFamily":"-apple-system,BlinkMacSystemFont,Trebuchet MS,Roboto,Ubuntu,sans-serif","valuesTracking":"1","changeMode":"price-and-percent","symbols":[["TVC:US10Y|1D"]],"dateRanges":["1d|1","1m|30","3m|60","12m|1D","60m|1W","all|1M"],"fontSize":"10","headerFontSize":"medium","autosize":true,"width":"100%","height":"100%","noTimeScale":false,"hideDateRanges":false,"hideMarketStatus":false,"hideSymbolLogo":false};
+  const w=document.createElement('div');w.className='tradingview-widget-container';w.style.cssText='height:100%;width:100%';
+  const inner=document.createElement('div');inner.className='tradingview-widget-container__widget';w.appendChild(inner);
+  const copy=document.createElement('div');copy.className='tradingview-widget-copyright';copy.innerHTML='<a href="https://www.tradingview.com/symbols/TVC-US10Y/" rel="noopener nofollow" target="_blank"><span class="blue-text">US10Y bonds</span></a> by TradingView';w.appendChild(copy);
+  const s=document.createElement('script');s.type='text/javascript';s.src='https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';s.async=true;s.textContent=JSON.stringify(config);
   w.appendChild(s);c.appendChild(w);
 }
 
 let fredLoaded=false;
 async function loadFredChart(){
   if(fredLoaded)return;fredLoaded=true;
-  const apiKey=userProfile?.fred_api_key||'';const fredEl=document.getElementById('fredChart');if(!fredEl)return;const ctx=fredEl.getContext('2d');
+  const apiKey=userProfile?.fred_api_key||'';const ctx=document.getElementById('fredChart').getContext('2d');
   const end=new Date(),start=new Date();start.setDate(start.getDate()-45);const fmt=d=>d.toISOString().slice(0,10);
   let labels=[],values=[];
   if(apiKey){try{const url=`https://api.stlouisfed.org/fred/series/observations?series_id=DGS10&api_key=${apiKey}&file_type=json&observation_start=${fmt(start)}&observation_end=${fmt(end)}&sort_order=asc`;const r=await fetch(url);const d=await r.json();const obs=(d.observations||[]).filter(o=>o.value!=='.');labels=obs.map(o=>{const x=new Date(o.date+'T12:00:00');return(x.getMonth()+1)+'/'+x.getDate()});values=obs.map(o=>parseFloat(o.value));}catch(e){}}
