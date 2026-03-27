@@ -125,7 +125,7 @@
 <script>
 const SUPA_URL='https://ddimalkvoezwziyghuph.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkaW1hbGt2b2V6d3ppeWdodXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjAyNzQsImV4cCI6MjA5MDE5NjI3NH0.be30CaTC2XM699HVDL-mf4LSpRC5UPDPOX5mMSsqmyo';
-const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY,{auth:{storage:window.localStorage,storageKey:'atlas-auth',flowType:'implicit',autoRefreshToken:true,persistSession:true,detectSessionInUrl:false}});
 let currentUser=null,userProfile=null;
 
 let authMode='signin';
@@ -157,10 +157,20 @@ async function handleAuth(){
       result=await sb.auth.signInWithPassword({email,password});
     }
     if(result.error)throw result.error;
+    // Directly show app on successful sign-in (don't wait for onAuthStateChange)
+    if(result.data?.session?.user){
+      currentUser=result.data.session.user;
+      await loadProfile();
+      showApp();
+      return;
+    }
     if(authMode==='signup'&&result.data?.user&&!result.data.session){
       errEl.textContent='Check your email to confirm your account, then sign in.';errEl.style.display='block';errEl.style.color='var(--accent)';
       btn.disabled=false;btn.textContent='Create account';toggleAuthMode();return;
     }
+    // Fallback: re-enable button if no session returned
+    btn.disabled=false;btn.textContent=authMode==='signin'?'Sign in':'Create account';
+    errEl.textContent='Sign in failed. Please try again.';errEl.style.display='block';errEl.style.color='var(--red)';
   }catch(e){
     errEl.textContent=e.message||'Authentication failed.';errEl.style.display='block';errEl.style.color='var(--red)';
     btn.disabled=false;btn.textContent=authMode==='signin'?'Sign in':'Create account';
