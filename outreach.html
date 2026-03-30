@@ -473,6 +473,7 @@ let apiKey='', r30=0.06875, r15=0.06125;
 let CLIENTS=[], scored=[], selected=null, generated={};
 let tab='active';
 let _generatingSet=new Set(); // tracks which gi indices are currently generating AI copy
+let groupCollapsed={};
 // Persistent
 let leadStatus={}, followupDate={}, followupNote={}, closedLog=[];
 // Daily (keyed by today's date string)
@@ -1177,15 +1178,16 @@ function renderList(){
     const groupComp = clients.reduce((s,c)=>s+c.estimatedComp,0);
     const icon = clients[0]?.triggers[0]?.icon || '📋';
     const groupId = `grp-${key.replace(/\s+/g,'-')}`;
+    const isCollapsed = !!groupCollapsed[groupId];
     html += `
       <div class="section-divider" style="cursor:pointer;user-select:none" onclick="toggleGroup('${groupId}')">
         <span class="section-divider-label">${icon} ${key} <span style="font-weight:500;opacity:0.7">(${clients.length})</span></span>
         <span style="display:flex;align-items:center;gap:8px">
           <span class="section-divider-comp">${fmtComp(groupComp)}</span>
-          <span id="${groupId}-chevron" style="font-size:10px;color:var(--text-3)">▲</span>
+          <span id="${groupId}-chevron" style="font-size:10px;color:var(--text-3)">${isCollapsed ? '▼' : '▲'}</span>
         </span>
       </div>
-      <div id="${groupId}">
+      <div id="${groupId}" style="display:${isCollapsed ? 'none' : ''}">
         ${clients.map(c=>clientRowHtml(c)).join('')}
       </div>`;
   });
@@ -1230,9 +1232,22 @@ function toggleGroup(groupId){
   const el = document.getElementById(groupId);
   const chevron = document.getElementById(groupId+'-chevron');
   if(!el) return;
-  const collapsed = el.style.display==='none';
-  el.style.display = collapsed ? '' : 'none';
-  if(chevron) chevron.textContent = collapsed ? '▲' : '▼';
+  const willExpand = el.style.display==='none';
+  el.style.display = willExpand ? '' : 'none';
+  groupCollapsed[groupId] = !willExpand;
+  if(chevron) chevron.textContent = willExpand ? '▲' : '▼';
+}
+
+function rerenderListPreserveSidebar(){
+  const sidebar = document.querySelector('.sidebar');
+  const prevScrollTop = sidebar ? sidebar.scrollTop : 0;
+  renderList();
+  if(!sidebar) return;
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      sidebar.scrollTop = Math.max(0, Math.min(prevScrollTop, sidebar.scrollHeight - sidebar.clientHeight));
+    });
+  });
 }
 
 // ── TOAST SYSTEM ─────────────────────────────────────────────────────────
@@ -1264,7 +1279,7 @@ function toggleDone(e,gi){
   updateStats();
   updateStreak();
   renderSummaryBanner();
-  renderList();
+  rerenderListPreserveSidebar();
   if(selected===gi){
     const btn=document.getElementById(`doneBtn-${gi}`);
     if(btn){const d=dailyDone.has(c.name);btn.textContent=d?'✓ Completed':'Mark Complete';btn.classList.toggle('is-done',d);}
@@ -1273,7 +1288,7 @@ function toggleDone(e,gi){
     const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
     showToast(`${fn} marked complete`, ()=>{
       dailyDone.delete(c.name);
-      lsSave(); updateStats(); updateStreak(); renderSummaryBanner(); renderList();
+      lsSave(); updateStats(); updateStreak(); renderSummaryBanner(); rerenderListPreserveSidebar();
       if(selected===gi){const btn=document.getElementById(`doneBtn-${gi}`);if(btn){btn.textContent='Mark Complete';btn.classList.remove('is-done');}}
     }, '✓');
   }
@@ -1285,7 +1300,7 @@ function setLeadStatus(name,status,gi){
   lsSave();
   scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score);
   updateStats();
-  renderList();
+  rerenderListPreserveSidebar();
   ['none','future','warm'].forEach(s=>{
     const btn=document.getElementById(`lead-${s}-${gi}`);
     if(btn) btn.className=`lead-status-btn${s===status?' active-'+s:''}`;
@@ -1295,7 +1310,7 @@ function setLeadStatus(name,status,gi){
 }
 
 function updateFollowupDate(name,gi,val){
-  followupDate[name]=val; lsSave(); updateStats(); renderList();
+  followupDate[name]=val; lsSave(); updateStats(); rerenderListPreserveSidebar();
   const btn=document.getElementById(`ics-btn-${gi}`); if(btn) btn.disabled=!val;
   const pill=document.getElementById(`due-pill-${gi}`);
   if(pill){const fus=followupStatus(name);if(fus){pill.textContent=fus.label;pill.className=fus.cls;pill.style.display='';}else pill.style.display='none';}
@@ -1308,7 +1323,7 @@ function markClosed(gi){
   const c=scored[gi];
   if(isClosedOut(c.name)){
     closedLog=closedLog.filter(l=>l.name!==c.name);
-    lsSave(); updateStats(); renderSummaryBanner(); renderList();
+    lsSave(); updateStats(); renderSummaryBanner(); rerenderListPreserveSidebar();
     const btn=document.getElementById(`closedBtn-${gi}`);
     if(btn){btn.textContent='Mark Closed';btn.classList.remove('is-closed');}
     showToast(`${c.name.split(',')[1]?.trim()||c.name.split(' ')[0]} removed from closed`, null, '↩');
