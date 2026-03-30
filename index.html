@@ -27,7 +27,7 @@
 .nav-right{display:flex;align-items:center;gap:14px}.nav-user{font-size:12px;color:var(--text3);font-weight:500}
 .nav-btn{height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text3);display:flex;align-items:center;gap:5px;transition:all 0.15s}.nav-btn:hover{border-color:var(--accent);color:var(--accent)}
 .view-container{flex:1;overflow:hidden;position:relative}.view{position:absolute;inset:0;display:none;overflow-y:auto}.view.active{display:block}.view iframe{width:100%;height:100%;border:none;display:block}
-.dash{display:grid;grid-template-columns:1fr 360px;height:100%}.dash-main{padding:24px 28px;overflow-y:auto}.dash-side{border-left:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:20px}
+.dash{display:grid;grid-template-columns:minmax(0,1fr) 360px;height:100%;transition:grid-template-columns .22s ease}.dash.sidebar-collapsed{grid-template-columns:minmax(0,1fr) 0px}.dash-main{padding:24px 28px;overflow-y:auto;min-width:0}.dash-side{position:relative;border-left:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:20px;min-width:0;transition:opacity .18s ease,padding .22s ease,border-color .22s ease}.dash.sidebar-collapsed .dash-side{opacity:0;padding-left:0;padding-right:0;border-left-color:transparent;pointer-events:none}.sidebar-toggle{position:absolute;top:12px;left:-14px;width:28px;height:28px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text3);font:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);z-index:5}.sidebar-toggle:hover{color:var(--accent);border-color:var(--accent)}
 .greeting{font-size:20px;font-weight:600;color:var(--text);margin-bottom:3px;letter-spacing:-0.01em}.greeting-date{font-size:13px;color:var(--text3);margin-bottom:20px}
 .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}.kpi-label{font-size:11px;font-weight:600;letter-spacing:0.04em;color:var(--text3);margin-bottom:6px;text-transform:uppercase}.kpi-val{font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1;margin-bottom:3px}.kpi-sub{font-size:11px;color:var(--text4)}.kpi-val.green{color:var(--accent)}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px}.card-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.card-title{font-size:14px;font-weight:600}.card-sub{font-size:11px;color:var(--text4)}
@@ -97,6 +97,14 @@
             <div class="bars" id="prodChart"></div>
           </div>
 
+          <div class="card">
+            <div class="card-hd">
+              <div class="card-title">Production comparison</div>
+              <div class="card-sub">Same 6 fiscal months vs prior years</div>
+            </div>
+            <div class="comp-chart-container"><canvas id="prodCompareChart"></canvas></div>
+          </div>
+
           <!-- Compensation history -->
           <div class="card">
             <div class="card-hd">
@@ -108,6 +116,14 @@
               <div style="font-size:11px;color:var(--text3)">This month: <span id="compThisMonth" style="font-weight:600;color:var(--accent)">—</span></div>
               <div style="font-size:11px;color:var(--text3)">YTD total: <span id="compYTD" style="font-weight:600;color:var(--text)">—</span></div>
             </div>
+          </div>
+
+          <div class="card">
+            <div class="card-hd">
+              <div class="card-title">Compensation comparison</div>
+              <div class="card-sub">Same 6 fiscal months vs prior years</div>
+            </div>
+            <div class="comp-chart-container"><canvas id="compCompareChart"></canvas></div>
           </div>
 
           <!-- Lead source breakdown -->
@@ -123,7 +139,8 @@
           <div class="card"><div class="card-hd"><div class="card-title">10YR yield — 30-day history</div><div class="card-sub">Daily close via FRED</div></div><div class="fred-chart-container"><canvas id="fredChart"></canvas></div></div>
         </div>
 
-        <div class="dash-side">
+        <div class="dash-side" id="dashSide">
+          <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Collapse sidebar" title="Collapse sidebar" onclick="toggleSidebar()">→</button>
           <div class="side-hd">Today's outreach</div>
           <div class="side-sub" id="outreachSummary">Open the Outreach tab to load your book</div>
           <div id="outreachPreview"><div class="contact-card must"><div class="contact-top"><span class="contact-name">Get started</span><span class="contact-badge badge-must">Action</span></div><div class="contact-trigger">Upload your loan book in the Outreach tab to see prioritized contacts here each morning.</div></div></div>
@@ -251,6 +268,29 @@ function lastNFiscalMonths(n) {
 
 // ── Main KPI + chart loader ───────────────────────────────────────────────────
 let compChartInstance = null;
+let prodCompareChartInstance = null;
+let compCompareChartInstance = null;
+
+function shiftFiscalKey(key, yearOffset = 0) {
+  const [y, m] = key.split('-').map(Number);
+  return `${y + yearOffset}-${String(m).padStart(2, '0')}`;
+}
+
+function getComparisonKeys(baseMonths, yearOffset) {
+  return baseMonths.map(m => ({ key: shiftFiscalKey(m.key, yearOffset), label: m.label }));
+}
+
+function sumSeriesByKeys(rows, keys, valueField, today) {
+  const map = new Map(keys.map((k, i) => [k.key, i]));
+  const totals = keys.map(() => 0);
+  rows.forEach(r => {
+    if (r['Funding Date'] > today) return;
+    const idx = map.get(fiscalMonthKey(r['Funding Date']));
+    if (idx !== undefined) totals[idx] += parseFloat(r[valueField]) || 0;
+  });
+  return totals;
+}
+
 
 function loadOutreachKPIs() {
   const rows = parseOutreachCSV();
@@ -360,6 +400,100 @@ function loadOutreachKPIs() {
       }
     }
   });
+
+  const baseMonths = fiscalMonths6;
+  const prevYearMonths = getComparisonKeys(baseMonths, -1);
+  const twoYearsAgoMonths = getComparisonKeys(baseMonths, -2);
+
+  const prodCurrent = sumSeriesByKeys(rows, baseMonths, 'Loan Amount', today);
+  const prodPrev1 = sumSeriesByKeys(rows, prevYearMonths, 'Loan Amount', today);
+  const prodPrev2 = sumSeriesByKeys(rows, twoYearsAgoMonths, 'Loan Amount', today);
+
+  const compCurrentSeries = sumSeriesByKeys(rows, baseMonths, 'Compensation', today);
+  const compPrev1Series = sumSeriesByKeys(rows, prevYearMonths, 'Compensation', today);
+  const compPrev2Series = sumSeriesByKeys(rows, twoYearsAgoMonths, 'Compensation', today);
+
+  const commonLineOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: { boxWidth: 12, usePointStyle: true }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { font: { size: 10 }, color: '#8a8680' }
+      },
+      y: {
+        grid: { color: 'rgba(226,222,214,0.5)' },
+        ticks: { color: '#8a8680' }
+      }
+    }
+  };
+
+  const prodCompareCtx = document.getElementById('prodCompareChart')?.getContext('2d');
+  if (prodCompareCtx) {
+    if (prodCompareChartInstance) prodCompareChartInstance.destroy();
+    prodCompareChartInstance = new Chart(prodCompareCtx, {
+      type: 'line',
+      data: {
+        labels: baseMonths.map(m => m.label),
+        datasets: [
+          { label: 'This year', data: prodCurrent, borderColor: '#2d6a4f', backgroundColor: 'rgba(45,106,79,0.08)', borderWidth: 2, tension: 0.28, pointRadius: 3, fill: false },
+          { label: 'Last year', data: prodPrev1, borderColor: '#2563a8', backgroundColor: 'transparent', borderWidth: 2, tension: 0.28, pointRadius: 3, fill: false },
+          { label: '2 years ago', data: prodPrev2, borderColor: '#a16207', backgroundColor: 'transparent', borderWidth: 2, tension: 0.28, pointRadius: 3, fill: false }
+        ]
+      },
+      options: {
+        ...commonLineOptions,
+        plugins: {
+          ...commonLineOptions.plugins,
+          tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtMoney(ctx.parsed.y)}` } }
+        },
+        scales: {
+          ...commonLineOptions.scales,
+          y: {
+            ...commonLineOptions.scales.y,
+            ticks: { color: '#8a8680', callback: v => fmtMoney(v) }
+          }
+        }
+      }
+    });
+  }
+
+  const compCompareCtx = document.getElementById('compCompareChart')?.getContext('2d');
+  if (compCompareCtx) {
+    if (compCompareChartInstance) compCompareChartInstance.destroy();
+    compCompareChartInstance = new Chart(compCompareCtx, {
+      type: 'line',
+      data: {
+        labels: baseMonths.map(m => m.label),
+        datasets: [
+          { label: 'This year', data: compCurrentSeries, borderColor: '#2d6a4f', backgroundColor: 'rgba(45,106,79,0.08)', borderWidth: 2, tension: 0.28, pointRadius: 3, fill: false },
+          { label: 'Last year', data: compPrev1Series, borderColor: '#2563a8', backgroundColor: 'transparent', borderWidth: 2, tension: 0.28, pointRadius: 3, fill: false },
+          { label: '2 years ago', data: compPrev2Series, borderColor: '#a16207', backgroundColor: 'transparent', borderWidth: 2, tension: 0.28, pointRadius: 3, fill: false }
+        ]
+      },
+      options: {
+        ...commonLineOptions,
+        plugins: {
+          ...commonLineOptions.plugins,
+          tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtComp(ctx.parsed.y)}` } }
+        },
+        scales: {
+          ...commonLineOptions.scales,
+          y: {
+            ...commonLineOptions.scales.y,
+            ticks: { color: '#8a8680', callback: v => fmtComp(v) }
+          }
+        }
+      }
+    });
+  }
 
   // ── Lead source breakdown (fiscal YTD) ──
   const norm = s => {
@@ -494,6 +628,30 @@ async function saveProfile() {
   await sb.from('profiles').upsert({ id: currentUser.id, rate_30: r30, rate_15: r15, updated_at: new Date().toISOString() });
 }
 
+function toggleSidebar() {
+  const dash = document.querySelector('.dash');
+  const btn = document.getElementById('sidebarToggle');
+  const collapsed = dash.classList.toggle('sidebar-collapsed');
+  if (btn) {
+    btn.textContent = collapsed ? '←' : '→';
+    btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+    btn.title = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+  }
+  localStorage.setItem('atlas_home_sidebar_collapsed', collapsed ? '1' : '0');
+}
+
+function applySavedSidebarState() {
+  const dash = document.querySelector('.dash');
+  const btn = document.getElementById('sidebarToggle');
+  const collapsed = localStorage.getItem('atlas_home_sidebar_collapsed') === '1';
+  dash.classList.toggle('sidebar-collapsed', collapsed);
+  if (btn) {
+    btn.textContent = collapsed ? '←' : '→';
+    btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+    btn.title = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+  }
+}
+
 function showApp() {
   document.getElementById('authScreen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
@@ -503,6 +661,7 @@ function showApp() {
   document.getElementById('greeting').textContent = g + ', ' + (fn || 'there');
   document.getElementById('greetingDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
   if (userProfile) { document.getElementById('rate30').value = (userProfile.rate_30 || 6.875) + '%'; document.getElementById('rate15').value = (userProfile.rate_15 || 6.125) + '%'; }
+  applySavedSidebarState();
   loadOutreachKPIs();
   loadOutreachPanel();
   loadTradingView();
@@ -515,7 +674,7 @@ function switchView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
   const f = document.getElementById('frame-' + v);
   if (f && f.dataset.src && !f.src.includes(f.dataset.src)) f.src = f.dataset.src;
-  if (v === 'home') { loadOutreachKPIs(); loadOutreachPanel(); }
+  if (v === 'home') { loadOutreachKPIs(); loadOutreachPanel(); loadTradingView(); }
 }
 
 const leMap = { refi: 'le-refi.html', purchase: 'le-purchase.html', second: 'le-second.html' };
@@ -523,15 +682,62 @@ function switchLE(t) { document.querySelectorAll('.le-btn').forEach(b => b.class
 
 let tvLoaded = false;
 function loadTradingView() {
-  if (tvLoaded) return; tvLoaded = true;
+  if (tvLoaded) return;
+  tvLoaded = true;
+
   const c = document.getElementById('tvWidget');
-  const config = {"lineWidth":2,"lineType":0,"chartType":"area","fontColor":"rgb(106,109,120)","gridLineColor":"rgba(46,46,46,0.06)","backgroundColor":"#ffffff","widgetFontColor":"#0F0F0F","upColor":"#22ab94","downColor":"#f7525f","borderUpColor":"#22ab94","borderDownColor":"#f7525f","wickUpColor":"#22ab94","wickDownColor":"#f7525f","colorTheme":"light","isTransparent":false,"locale":"en","chartOnly":false,"scalePosition":"right","scaleMode":"Normal","fontFamily":"-apple-system,BlinkMacSystemFont,Trebuchet MS,Roboto,Ubuntu,sans-serif","valuesTracking":"1","changeMode":"price-and-percent","symbols":[["TVC:US10Y|1D"]],"dateRanges":["1d|1","1m|30","3m|60","12m|1D","60m|1W","all|1M"],"fontSize":"10","headerFontSize":"medium","autosize":true,"width":"100%","height":"100%","noTimeScale":false,"hideDateRanges":false,"hideMarketStatus":false,"hideSymbolLogo":false};
-  const w = document.createElement('div'); w.className = 'tradingview-widget-container'; w.style.cssText = 'height:100%;width:100%';
-  const inner = document.createElement('div'); inner.className = 'tradingview-widget-container__widget'; w.appendChild(inner);
-  const copy = document.createElement('div'); copy.className = 'tradingview-widget-copyright'; copy.innerHTML = '<a href="https://www.tradingview.com/symbols/TVC-US10Y/" rel="noopener nofollow" target="_blank"><span class="blue-text">US10Y bonds</span></a> by TradingView'; w.appendChild(copy);
-  const s = document.createElement('script'); s.type = 'text/javascript'; s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js'; s.async = true; s.textContent = JSON.stringify(config);
-  w.appendChild(s); c.appendChild(w);
+  c.innerHTML = '';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'tradingview-widget-container';
+  wrap.style.height = '100%';
+  wrap.style.width = '100%';
+
+  const inner = document.createElement('div');
+  inner.className = 'tradingview-widget-container__widget';
+  inner.style.height = 'calc(100% - 32px)';
+  inner.style.width = '100%';
+
+  const copy = document.createElement('div');
+  copy.className = 'tradingview-widget-copyright';
+  copy.innerHTML = '<a href="https://www.tradingview.com/symbols/AMEX-TBX/" rel="noopener nofollow" target="_blank"><span class="blue-text">TBX chart</span></a><span class="trademark"> by TradingView</span>';
+
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  script.async = true;
+  script.textContent = JSON.stringify({
+    allow_symbol_change: false,
+    calendar: false,
+    details: false,
+    hide_side_toolbar: true,
+    hide_top_toolbar: true,
+    hide_legend: false,
+    hide_volume: true,
+    hotlist: false,
+    interval: '3',
+    locale: 'en',
+    save_image: false,
+    style: '2',
+    symbol: 'AMEX:TBX',
+    theme: 'light',
+    timezone: 'America/New_York',
+    backgroundColor: '#ffffff',
+    gridColor: 'rgba(0, 0, 0, 0.06)',
+    watchlist: [],
+    withdateranges: false,
+    range: '1D',
+    compareSymbols: [],
+    studies: [],
+    autosize: true
+  });
+
+  wrap.appendChild(inner);
+  wrap.appendChild(copy);
+  wrap.appendChild(script);
+  c.appendChild(wrap);
 }
+
 
 let fredLoaded = false;
 async function loadFredChart() {
