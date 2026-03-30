@@ -81,15 +81,16 @@
           <div class="greeting" id="greeting"></div>
           <div class="greeting-date" id="greetingDate"></div>
           <div class="kpi-row">
-            <div class="kpi"><div class="kpi-label">Pipeline Volume</div><div class="kpi-val" id="kpiPipeline">$0</div><div class="kpi-sub" id="kpiPipelineSub">0 active loans</div></div>
+            <div class="kpi"><div class="kpi-label">Pipeline Volume</div><div class="kpi-val" id="kpiPipeline">$0</div><div class="kpi-sub" id="kpiPipelineSub">0 loans closing soon</div></div>
             <div class="kpi"><div class="kpi-label">Closed This Month</div><div class="kpi-val green" id="kpiMonth">$0</div><div class="kpi-sub" id="kpiMonthSub">0 loans</div></div>
             <div class="kpi"><div class="kpi-label">Closed YTD</div><div class="kpi-val" id="kpiYTD">$0</div><div class="kpi-sub" id="kpiYTDSub">0 loans</div></div>
           </div>
           <div class="card"><div class="card-hd"><div class="card-title">Monthly production</div><div class="card-sub">Last 6 months</div></div><div class="bars" id="prodChart"></div></div>
           <div class="card"><div class="card-hd"><div class="card-title">Lead source breakdown</div><div class="card-sub">Year to date</div></div>
-            <div class="source-row"><div class="source-top"><span class="source-name">Marketing leads</span><span class="source-val" id="srcMktVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcMktBar" style="width:0%;background:var(--blue)"></div></div></div>
-            <div class="source-row"><div class="source-top"><span class="source-name">Past client outreach</span><span class="source-val" id="srcPastVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcPastBar" style="width:0%;background:var(--accent)"></div></div></div>
+            <div class="source-row"><div class="source-top"><span class="source-name">Marketing</span><span class="source-val" id="srcMktVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcMktBar" style="width:0%;background:var(--blue)"></div></div></div>
+            <div class="source-row"><div class="source-top"><span class="source-name">Past client</span><span class="source-val" id="srcPastVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcPastBar" style="width:0%;background:var(--accent)"></div></div></div>
             <div class="source-row"><div class="source-top"><span class="source-name">Referral</span><span class="source-val" id="srcRefVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcRefBar" style="width:0%;background:var(--amber)"></div></div></div>
+            <div class="source-row"><div class="source-top"><span class="source-name">Self generated</span><span class="source-val" id="srcSelfVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcSelfBar" style="width:0%;background:var(--text3)"></div></div></div>
           </div>
           <div class="card"><div class="card-hd"><div class="card-title">10-year Treasury yield</div><div class="card-sub">Live via TradingView</div></div><div class="tv-widget" id="tvWidget" style="height:320px"></div></div>
           <div class="card"><div class="card-hd"><div class="card-title">10YR yield — 30-day history</div><div class="card-sub">Daily close via FRED</div></div><div class="fred-chart-container"><canvas id="fredChart"></canvas></div></div>
@@ -101,12 +102,8 @@
           <div class="streak-section">
             <div class="side-hd">Streak</div>
             <div class="streak-row" id="streakRow">
-              <div class="streak-dot empty"></div>
-              <div class="streak-dot empty"></div>
-              <div class="streak-dot empty"></div>
-              <div class="streak-dot empty"></div>
-              <div class="streak-dot empty"></div>
-              <div class="streak-dot empty"></div>
+              <div class="streak-dot empty"></div><div class="streak-dot empty"></div><div class="streak-dot empty"></div>
+              <div class="streak-dot empty"></div><div class="streak-dot empty"></div><div class="streak-dot empty"></div>
               <div class="streak-dot empty"></div>
               <span class="streak-count" id="streakCount">0 days</span>
             </div>
@@ -141,6 +138,154 @@ const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 let currentUser=null,userProfile=null;
 
+// ── CSV parser ────────────────────────────────────────────────────────────────
+function parseOutreachCSV(){
+  const csv=localStorage.getItem('outreach_v6_source_csv_text')||'';
+  if(!csv)return[];
+  const lines=csv.trim().split('\n');
+  const headers=lines[0].split(',').map(h=>h.replace(/"/g,'').trim());
+  return lines.slice(1).map(line=>{
+    const vals=[];let inQ=false,cur='';
+    for(const c of line){if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){vals.push(cur.trim());cur='';}else cur+=c;}
+    vals.push(cur.trim());
+    const row={};headers.forEach((h,j)=>row[h]=(vals[j]||''));
+    return row;
+  }).filter(r=>r['Funding Date']);
+}
+
+function fmtMoney(v){
+  if(v>=1e6)return'$'+(v/1e6).toFixed(2)+'M';
+  if(v>=1e3)return'$'+Math.round(v/1e3)+'K';
+  return'$'+Math.round(v);
+}
+
+// ── Load KPIs + charts from outreach CSV ─────────────────────────────────────
+function loadOutreachKPIs(){
+  const rows=parseOutreachCSV();
+  if(!rows.length)return;
+
+  const now=new Date();
+  const today=now.toISOString().slice(0,10);
+  const thisYear=now.getFullYear();
+  const thisMonth=now.getMonth();
+
+  // Pipeline: funding date in the future
+  const pipeline=rows.filter(r=>r['Funding Date']>today);
+  const pipelineVol=pipeline.reduce((s,r)=>s+(parseFloat(r['Loan Amount'])||0),0);
+
+  // Closed this month (funded on or before today)
+  const mtd=rows.filter(r=>{
+    const d=new Date(r['Funding Date']);
+    return d.getFullYear()===thisYear&&d.getMonth()===thisMonth&&r['Funding Date']<=today;
+  });
+  const mtdVol=mtd.reduce((s,r)=>s+(parseFloat(r['Loan Amount'])||0),0);
+
+  // Closed YTD
+  const ytd=rows.filter(r=>{
+    return new Date(r['Funding Date']).getFullYear()===thisYear&&r['Funding Date']<=today;
+  });
+  const ytdVol=ytd.reduce((s,r)=>s+(parseFloat(r['Loan Amount'])||0),0);
+
+  // ── KPI tiles ──
+  document.getElementById('kpiPipeline').textContent=fmtMoney(pipelineVol);
+  document.getElementById('kpiPipelineSub').textContent=pipeline.length+' loan'+(pipeline.length!==1?'s':'')+' closing soon';
+  document.getElementById('kpiMonth').textContent=fmtMoney(mtdVol);
+  document.getElementById('kpiMonthSub').textContent=mtd.length+' loan'+(mtd.length!==1?'s':'');
+  document.getElementById('kpiYTD').textContent=fmtMoney(ytdVol);
+  document.getElementById('kpiYTDSub').textContent=ytd.length+' loan'+(ytd.length!==1?'s':'');
+
+  // ── Monthly production bars (last 6 months, funded only) ──
+  const months=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(thisYear,thisMonth-i,1);
+    months.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleString('en-US',{month:'short'})});
+  }
+  const vals=months.map(()=>0);
+  rows.forEach(r=>{
+    if(r['Funding Date']>today)return;
+    const mk=r['Funding Date'].slice(0,7);
+    const i=months.findIndex(m=>m.key===mk);
+    if(i>=0)vals[i]+=(parseFloat(r['Loan Amount'])||0);
+  });
+  const max=Math.max(...vals,1);
+  document.getElementById('prodChart').innerHTML=months.map((m,i)=>{
+    const h=Math.round((vals[i]/max)*90)+10;
+    const tip=vals[i]>0?fmtMoney(vals[i]):'—';
+    return`<div class="bar-col" title="${m.label}: ${tip}"><div class="${i===months.length-1?'bar current':'bar'}" style="height:${h}px"></div><span class="bar-label">${m.label}</span></div>`;
+  }).join('');
+
+  // ── Lead source breakdown (YTD closed) ──
+  // Normalize CSV source strings to 4 buckets
+  const norm=s=>{
+    const v=(s||'').toLowerCase().trim();
+    if(v==='marketing')return'mkt';
+    if(v==='past client')return'past';
+    if(v==='referral'||v==='realtor referral')return'ref';
+    if(v==='self generated')return'self';
+    return'other';
+  };
+  const counts={mkt:0,past:0,ref:0,self:0};
+  ytd.forEach(r=>{const k=norm(r['Lead Source']);if(counts[k]!==undefined)counts[k]++;});
+  const total=ytd.length||1;
+  const setPct=(valId,barId,n)=>{
+    const pc=Math.round(n/total*100);
+    document.getElementById(valId).textContent=n+' loan'+(n!==1?'s':'')+' · '+pc+'%';
+    document.getElementById(barId).style.width=pc+'%';
+  };
+  setPct('srcMktVal','srcMktBar',counts.mkt);
+  setPct('srcPastVal','srcPastBar',counts.past);
+  setPct('srcRefVal','srcRefBar',counts.ref);
+  setPct('srcSelfVal','srcSelfBar',counts.self);
+}
+
+// ── Outreach side panel ───────────────────────────────────────────────────────
+function loadOutreachPanel(){
+  const streak=parseInt(localStorage.getItem('outreach_v6_streak')||'0');
+  const mustLeft=parseInt(localStorage.getItem('outreach_v6_lastMustDoCount')||'0');
+  const fileName=localStorage.getItem('outreach_v6_source_file_name');
+  const fileDate=localStorage.getItem('outreach_v6_source_file_date');
+  const carryover=JSON.parse(localStorage.getItem('outreach_v6_carryover')||'[]');
+  const today=new Date().toISOString().slice(0,10);
+  let doneTodayNames=[];
+  try{const dd=JSON.parse(localStorage.getItem('outreach_v6_dailyDone')||'{}');doneTodayNames=dd[today]||[];}catch(e){}
+
+  const streakCount=document.getElementById('streakCount');
+  if(streakCount)streakCount.textContent=streak+' day'+(streak!==1?'s':'');
+  const streakRow=document.getElementById('streakRow');
+  if(streakRow){
+    streakRow.querySelectorAll('.streak-dot').forEach((dot,i)=>{
+      dot.classList.toggle('filled',i<Math.min(streak,7));
+      dot.classList.toggle('empty',i>=Math.min(streak,7));
+    });
+  }
+
+  const summary=document.getElementById('outreachSummary');
+  if(!fileName){summary.textContent='Open the Outreach tab to load your book';return;}
+  const totalDone=doneTodayNames.length,carryCount=carryover.length;
+  if(mustLeft>0)summary.textContent=mustLeft+' must-do contact'+(mustLeft!==1?'s':'')+' remaining today';
+  else if(totalDone>0)summary.textContent=totalDone+' contacted today · '+carryCount+' carrying over';
+  else summary.textContent='Book loaded: '+fileName+(fileDate?' · '+fileDate:'');
+
+  const preview=document.getElementById('outreachPreview');
+  if(carryCount===0&&totalDone===0){
+    preview.innerHTML=`<div class="contact-card must"><div class="contact-top"><span class="contact-name">Book loaded</span><span class="contact-badge badge-must">Ready</span></div><div class="contact-trigger">Loaded ${fileDate||''} · Switch to Outreach to see today's contacts.</div></div>`;
+    return;
+  }
+  let html='';
+  carryover.slice(0,3).forEach(name=>{
+    html+=`<div class="contact-card must"><div class="contact-top"><span class="contact-name">${name}</span><span class="contact-badge badge-must">Carryover</span></div><div class="contact-trigger">Carried over from previous day</div></div>`;
+  });
+  const doneSlots=Math.max(0,4-Math.min(carryover.length,3));
+  doneTodayNames.slice(0,doneSlots).forEach(name=>{
+    html+=`<div class="contact-card" style="opacity:0.5"><div class="contact-top"><span class="contact-name">${name}</span><span class="contact-badge" style="background:var(--accent-soft);color:var(--accent)">Done</span></div><div class="contact-trigger">Contacted today</div></div>`;
+  });
+  const shown=Math.min(carryover.length,3)+Math.min(totalDone,doneSlots);
+  const remaining=(carryCount+totalDone)-shown;
+  if(remaining>0)html+=`<div style="font-size:11px;color:var(--text4);text-align:center;padding:6px 0">+${remaining} more — open Outreach tab</div>`;
+  preview.innerHTML=html;
+}
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
 let authMode='signin';
 function toggleAuthMode(){
   authMode=authMode==='signin'?'signup':'signin';
@@ -199,140 +344,6 @@ async function saveProfile(){
   await sb.from('profiles').upsert({id:currentUser.id,rate_30:r30,rate_15:r15,updated_at:new Date().toISOString()});
 }
 
-async function loadKPIs(){
-  if(!currentUser)return;
-  const now=new Date();const mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  const{data:md}=await sb.from('kpi_snapshots').select('*').eq('user_id',currentUser.id).eq('month',mk).single();
-  if(md){
-    document.getElementById('kpiPipeline').textContent='$'+Math.round(md.pipeline_volume/1000)+'K';
-    document.getElementById('kpiPipelineSub').textContent=md.pipeline_count+' active loans';
-    document.getElementById('kpiMonth').textContent='$'+Math.round(md.closed_volume/1000)+'K';
-    document.getElementById('kpiMonthSub').textContent=md.closed_count+' loans';
-  }
-  const{data:yd}=await sb.from('kpi_snapshots').select('closed_volume,closed_count,comp_earned').eq('user_id',currentUser.id).gte('month',now.getFullYear()+'-01');
-  if(yd&&yd.length){
-    const tv=yd.reduce((s,r)=>s+(r.closed_volume||0),0),tc=yd.reduce((s,r)=>s+(r.closed_count||0),0);
-    document.getElementById('kpiYTD').textContent='$'+(tv>=1e6?(tv/1e6).toFixed(1)+'M':Math.round(tv/1000)+'K');
-    document.getElementById('kpiYTDSub').textContent=tc+' loans';
-  }
-  const{data:deals}=await sb.from('closed_deals').select('source').eq('user_id',currentUser.id).gte('closed_date',now.getFullYear()+'-01-01');
-  if(deals&&deals.length){
-    const t=deals.length,m=deals.filter(d=>d.source==='marketing').length,p=deals.filter(d=>d.source==='past_client').length,r=deals.filter(d=>d.source==='referral').length;
-    const pc=v=>t>0?Math.round(v/t*100):0;
-    document.getElementById('srcMktVal').textContent=m+' loans · '+pc(m)+'%';document.getElementById('srcMktBar').style.width=pc(m)+'%';
-    document.getElementById('srcPastVal').textContent=p+' loans · '+pc(p)+'%';document.getElementById('srcPastBar').style.width=pc(p)+'%';
-    document.getElementById('srcRefVal').textContent=r+' loans · '+pc(r)+'%';document.getElementById('srcRefBar').style.width=pc(r)+'%';
-  }
-}
-
-async function loadProdChart(){
-  const months=[];const now=new Date();
-  for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleString('en-US',{month:'short'})});}
-  let vals=months.map(()=>0);
-  if(currentUser){
-    const{data}=await sb.from('kpi_snapshots').select('month,closed_volume').eq('user_id',currentUser.id).in('month',months.map(m=>m.key));
-    if(data)data.forEach(r=>{const i=months.findIndex(m=>m.key===r.month);if(i>=0)vals[i]=r.closed_volume||0;});
-  }
-  const max=Math.max(...vals,1);
-  document.getElementById('prodChart').innerHTML=months.map((m,i)=>{
-    const h=max>0?Math.round((vals[i]/max)*90)+10:10;
-    return `<div class="bar-col"><div class="${i===months.length-1?'bar current':'bar'}" style="height:${h}px"></div><span class="bar-label">${m.label}</span></div>`;
-  }).join('');
-}
-
-// ── Outreach panel ────────────────────────────────────────────────────────────
-function loadOutreachPanel(){
-  const streak    = parseInt(localStorage.getItem('outreach_v6_streak') || '0');
-  const mustLeft  = parseInt(localStorage.getItem('outreach_v6_lastMustDoCount') || '0');
-  const fileName  = localStorage.getItem('outreach_v6_source_file_name');
-  const fileDate  = localStorage.getItem('outreach_v6_source_file_date');
-  const carryover = JSON.parse(localStorage.getItem('outreach_v6_carryover') || '[]');
-
-  // Parse contacts completed today
-  const today = new Date().toISOString().slice(0,10);
-  let doneTodayNames = [];
-  try {
-    const dd = JSON.parse(localStorage.getItem('outreach_v6_dailyDone') || '{}');
-    doneTodayNames = dd[today] || [];
-  } catch(e) {}
-
-  // --- Streak dots & count ---
-  const streakCount = document.getElementById('streakCount');
-  if(streakCount) streakCount.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
-  const streakRow = document.getElementById('streakRow');
-  if(streakRow){
-    streakRow.querySelectorAll('.streak-dot').forEach((dot,i) => {
-      dot.classList.toggle('filled', i < Math.min(streak, 7));
-      dot.classList.toggle('empty',  i >= Math.min(streak, 7));
-    });
-  }
-
-  // --- Summary line ---
-  const summary = document.getElementById('outreachSummary');
-  if(!fileName){
-    summary.textContent = 'Open the Outreach tab to load your book';
-    return;
-  }
-  const totalDone  = doneTodayNames.length;
-  const carryCount = carryover.length;
-  if(mustLeft > 0){
-    summary.textContent = mustLeft + ' must-do contact' + (mustLeft !== 1 ? 's' : '') + ' remaining today';
-  } else if(totalDone > 0){
-    summary.textContent = totalDone + ' contacted today · ' + carryCount + ' carrying over';
-  } else {
-    summary.textContent = 'Book loaded: ' + fileName + (fileDate ? ' · ' + fileDate : '');
-  }
-
-  // --- Contact cards ---
-  const preview = document.getElementById('outreachPreview');
-
-  if(carryCount === 0 && totalDone === 0){
-    preview.innerHTML = `<div class="contact-card must">
-      <div class="contact-top">
-        <span class="contact-name">Book loaded</span>
-        <span class="contact-badge badge-must">Ready</span>
-      </div>
-      <div class="contact-trigger">Loaded ${fileDate || ''} · Switch to Outreach to see today's contacts.</div>
-    </div>`;
-    return;
-  }
-
-  let html = '';
-
-  // Carryover contacts — shown as must-do (up to 3)
-  carryover.slice(0, 3).forEach(name => {
-    html += `<div class="contact-card must">
-      <div class="contact-top">
-        <span class="contact-name">${name}</span>
-        <span class="contact-badge badge-must">Carryover</span>
-      </div>
-      <div class="contact-trigger">Carried over from previous day</div>
-    </div>`;
-  });
-
-  // Today's completed contacts — shown muted (fill remaining slots up to 4 total)
-  const doneSlots = Math.max(0, 4 - Math.min(carryover.length, 3));
-  doneTodayNames.slice(0, doneSlots).forEach(name => {
-    html += `<div class="contact-card" style="opacity:0.5">
-      <div class="contact-top">
-        <span class="contact-name">${name}</span>
-        <span class="contact-badge" style="background:var(--accent-soft);color:var(--accent)">Done</span>
-      </div>
-      <div class="contact-trigger">Contacted today</div>
-    </div>`;
-  });
-
-  // Footer tally if there are more
-  const shown = Math.min(carryover.length, 3) + Math.min(totalDone, doneSlots);
-  const remaining = (carryCount + totalDone) - shown;
-  if(remaining > 0){
-    html += `<div style="font-size:11px;color:var(--text4);text-align:center;padding:6px 0">+${remaining} more — open Outreach tab</div>`;
-  }
-
-  preview.innerHTML = html;
-}
-// ─────────────────────────────────────────────────────────────────────────────
-
 function showApp(){
   document.getElementById('authScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');
   const fn=(userProfile?.full_name||currentUser.email||'').split(/[\s@]/)[0];
@@ -341,7 +352,10 @@ function showApp(){
   document.getElementById('greeting').textContent=g+', '+(fn||'there');
   document.getElementById('greetingDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   if(userProfile){document.getElementById('rate30').value=(userProfile.rate_30||6.875)+'%';document.getElementById('rate15').value=(userProfile.rate_15||6.125)+'%';}
-  loadKPIs();loadProdChart();loadTradingView();loadFredChart();loadOutreachPanel();
+  loadOutreachKPIs();
+  loadOutreachPanel();
+  loadTradingView();
+  loadFredChart();
 }
 
 document.querySelectorAll('.nav-tab').forEach(tab=>{tab.addEventListener('click',()=>switchView(tab.dataset.view));});
@@ -349,8 +363,7 @@ function switchView(v){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+v));
   const f=document.getElementById('frame-'+v);if(f&&f.dataset.src&&!f.src.includes(f.dataset.src))f.src=f.dataset.src;
-  // Refresh outreach panel whenever user returns to Home
-  if(v==='home') loadOutreachPanel();
+  if(v==='home'){loadOutreachKPIs();loadOutreachPanel();}
 }
 
 const leMap={refi:'le-refi.html',purchase:'le-purchase.html',second:'le-second.html'};
