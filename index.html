@@ -35,6 +35,7 @@
 .source-row{margin-bottom:12px}.source-row:last-child{margin-bottom:0}.source-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}.source-name{color:var(--text2)}.source-val{font-weight:600}.source-bar{height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}.source-fill{height:100%;border-radius:3px}
 .market-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.market-cell{background:var(--surface2);border-radius:8px;padding:10px 12px}.market-lbl{font-size:10px;color:var(--text4);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px}.market-rate-input{background:transparent;border:none;outline:none;font-family:var(--sans);font-size:17px;font-weight:700;color:var(--text);width:80px}
 .tv-widget{border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px}.fred-chart-container{height:160px;position:relative}
+.comp-chart-container{height:130px;position:relative}
 .side-hd{font-size:14px;font-weight:600;margin-bottom:3px}.side-sub{font-size:12px;color:var(--text3);margin-bottom:14px}
 .contact-card{border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:8px;cursor:pointer;transition:all 0.12s}.contact-card:hover{background:var(--surface2)}.contact-card.must{border-left:3px solid var(--red);border-radius:0 8px 8px 0}.contact-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:3px}.contact-name{font-size:13px;font-weight:600}.contact-badge{font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:2px 7px;border-radius:4px}.badge-must{background:var(--red-soft);color:var(--red)}
 .contact-trigger{font-size:11px;color:var(--text2);margin-bottom:3px;line-height:1.4}
@@ -80,21 +81,48 @@
         <div class="dash-main">
           <div class="greeting" id="greeting"></div>
           <div class="greeting-date" id="greetingDate"></div>
+
           <div class="kpi-row">
             <div class="kpi"><div class="kpi-label">Pipeline Volume</div><div class="kpi-val" id="kpiPipeline">$0</div><div class="kpi-sub" id="kpiPipelineSub">0 loans closing soon</div></div>
             <div class="kpi"><div class="kpi-label">Closed This Month</div><div class="kpi-val green" id="kpiMonth">$0</div><div class="kpi-sub" id="kpiMonthSub">0 loans</div></div>
             <div class="kpi"><div class="kpi-label">Closed YTD</div><div class="kpi-val" id="kpiYTD">$0</div><div class="kpi-sub" id="kpiYTDSub">0 loans</div></div>
           </div>
-          <div class="card"><div class="card-hd"><div class="card-title">Monthly production</div><div class="card-sub">Last 6 months</div></div><div class="bars" id="prodChart"></div></div>
-          <div class="card"><div class="card-hd"><div class="card-title">Lead source breakdown</div><div class="card-sub">Year to date</div></div>
+
+          <!-- Monthly production volume -->
+          <div class="card">
+            <div class="card-hd">
+              <div class="card-title">Monthly production</div>
+              <div class="card-sub" id="prodChartSub">Last 6 fiscal months</div>
+            </div>
+            <div class="bars" id="prodChart"></div>
+          </div>
+
+          <!-- Compensation history -->
+          <div class="card">
+            <div class="card-hd">
+              <div class="card-title">Compensation history</div>
+              <div class="card-sub" id="compChartSub">Last 6 fiscal months</div>
+            </div>
+            <div class="comp-chart-container"><canvas id="compChart"></canvas></div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px">
+              <div style="font-size:11px;color:var(--text3)">This month: <span id="compThisMonth" style="font-weight:600;color:var(--accent)">—</span></div>
+              <div style="font-size:11px;color:var(--text3)">YTD total: <span id="compYTD" style="font-weight:600;color:var(--text)">—</span></div>
+            </div>
+          </div>
+
+          <!-- Lead source breakdown -->
+          <div class="card">
+            <div class="card-hd"><div class="card-title">Lead source breakdown</div><div class="card-sub">Fiscal year to date</div></div>
             <div class="source-row"><div class="source-top"><span class="source-name">Marketing</span><span class="source-val" id="srcMktVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcMktBar" style="width:0%;background:var(--blue)"></div></div></div>
             <div class="source-row"><div class="source-top"><span class="source-name">Past client</span><span class="source-val" id="srcPastVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcPastBar" style="width:0%;background:var(--accent)"></div></div></div>
             <div class="source-row"><div class="source-top"><span class="source-name">Referral</span><span class="source-val" id="srcRefVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcRefBar" style="width:0%;background:var(--amber)"></div></div></div>
             <div class="source-row"><div class="source-top"><span class="source-name">Self generated</span><span class="source-val" id="srcSelfVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcSelfBar" style="width:0%;background:var(--text3)"></div></div></div>
           </div>
+
           <div class="card"><div class="card-hd"><div class="card-title">10-year Treasury yield</div><div class="card-sub">Live via TradingView</div></div><div class="tv-widget" id="tvWidget" style="height:320px"></div></div>
           <div class="card"><div class="card-hd"><div class="card-title">10YR yield — 30-day history</div><div class="card-sub">Daily close via FRED</div></div><div class="fred-chart-container"><canvas id="fredChart"></canvas></div></div>
         </div>
+
         <div class="dash-side">
           <div class="side-hd">Today's outreach</div>
           <div class="side-sub" id="outreachSummary">Open the Outreach tab to load your book</div>
@@ -109,7 +137,13 @@
             </div>
             <div class="streak-label">Clear all must-do contacts daily to build your streak</div>
           </div>
-          <div class="streak-section" style="border-top:1px solid var(--border);padding-top:16px"><div class="side-hd" style="margin-bottom:10px">Market rates</div><div class="market-grid"><div class="market-cell"><div class="market-lbl">30yr fixed</div><input class="market-rate-input" id="rate30" value="6.875%" onchange="saveProfile()"></div><div class="market-cell"><div class="market-lbl">15yr fixed</div><input class="market-rate-input" id="rate15" value="6.125%" onchange="saveProfile()"></div></div></div>
+          <div class="streak-section" style="border-top:1px solid var(--border);padding-top:16px">
+            <div class="side-hd" style="margin-bottom:10px">Market rates</div>
+            <div class="market-grid">
+              <div class="market-cell"><div class="market-lbl">30yr fixed</div><input class="market-rate-input" id="rate30" value="6.875%" onchange="saveProfile()"></div>
+              <div class="market-cell"><div class="market-lbl">15yr fixed</div><input class="market-rate-input" id="rate15" value="6.125%" onchange="saveProfile()"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -119,6 +153,7 @@
     <div class="view" id="view-outreach"><iframe id="frame-outreach" data-src="outreach.html"></iframe></div>
   </div>
 </div>
+
 <div id="settingsModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:500" onclick="if(event.target===this)closeSettings()">
   <div style="background:var(--surface);border-radius:16px;padding:28px 32px;max-width:460px;width:90%">
     <div style="font-size:16px;font-weight:600;margin-bottom:16px">Settings</div>
@@ -130,6 +165,7 @@
     <div style="display:flex;gap:8px;justify-content:flex-end"><button onclick="closeSettings()" class="nav-btn">Cancel</button><button onclick="saveSettingsModal()" style="padding:8px 18px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer">Save</button></div>
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
@@ -138,282 +174,398 @@ const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 let currentUser=null,userProfile=null;
 
+// ── Fiscal month helpers ──────────────────────────────────────────────────────
+// Fiscal month rule: day 1–20 → belongs to that calendar month
+//                    day 21–31 → belongs to the NEXT calendar month
+// e.g. Feb 21–Mar 20 all count as "March"
+function fiscalMonthKey(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  let year = d.getFullYear(), month = d.getMonth(); // 0-indexed
+  if (d.getDate() >= 21) {
+    month += 1;
+    if (month > 11) { month = 0; year++; }
+  }
+  return year + '-' + String(month + 1).padStart(2, '0');
+}
+
+// Fiscal month label: "Mar '26"
+function fiscalMonthLabel(key) {
+  const [y, m] = key.split('-').map(Number);
+  return new Date(y, m - 1, 1).toLocaleString('en-US', { month: 'short', year: '2-digit' });
+}
+
+// Current fiscal month key for today
+function currentFiscalKey() {
+  return fiscalMonthKey(new Date().toISOString().slice(0, 10));
+}
+
+// Fiscal YTD: from Jan fiscal month (Jan 1 of this year) through today's fiscal month
+// We include all months where the fiscal label year matches current year
+function isFiscalYTD(dateStr, today) {
+  if (dateStr > today) return false;
+  const fKey = fiscalMonthKey(dateStr);
+  return fKey.startsWith(String(new Date().getFullYear()));
+}
+
 // ── CSV parser ────────────────────────────────────────────────────────────────
-function parseOutreachCSV(){
-  const csv=localStorage.getItem('outreach_v6_source_csv_text')||'';
-  if(!csv)return[];
-  const lines=csv.trim().split('\n');
-  const headers=lines[0].split(',').map(h=>h.replace(/"/g,'').trim());
-  return lines.slice(1).map(line=>{
-    const vals=[];let inQ=false,cur='';
-    for(const c of line){if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){vals.push(cur.trim());cur='';}else cur+=c;}
+function parseOutreachCSV() {
+  const csv = localStorage.getItem('outreach_v6_source_csv_text') || '';
+  if (!csv) return [];
+  const lines = csv.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
+  return lines.slice(1).map(line => {
+    const vals = []; let inQ = false, cur = '';
+    for (const c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+      else cur += c;
+    }
     vals.push(cur.trim());
-    const row={};headers.forEach((h,j)=>row[h]=(vals[j]||''));
+    const row = {}; headers.forEach((h,j) => row[h] = vals[j] || '');
     return row;
-  }).filter(r=>r['Funding Date']);
+  }).filter(r => r['Funding Date']);
 }
 
-function fmtMoney(v){
-  if(v>=1e6)return'$'+(v/1e6).toFixed(2)+'M';
-  if(v>=1e3)return'$'+Math.round(v/1e3)+'K';
-  return'$'+Math.round(v);
+function fmtMoney(v) {
+  if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+  if (v >= 1e3) return '$' + Math.round(v / 1e3) + 'K';
+  return '$' + Math.round(v);
 }
 
-// ── Load KPIs + charts from outreach CSV ─────────────────────────────────────
-function loadOutreachKPIs(){
-  const rows=parseOutreachCSV();
-  if(!rows.length)return;
+function fmtComp(v) {
+  if (v >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K';
+  return '$' + Math.round(v);
+}
 
-  const now=new Date();
-  const today=now.toISOString().slice(0,10);
-  const thisYear=now.getFullYear();
-  const thisMonth=now.getMonth();
+// ── Last N fiscal month keys in order ─────────────────────────────────────────
+function lastNFiscalMonths(n) {
+  const now = new Date();
+  const months = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    months.push({ key, label: fiscalMonthLabel(key) });
+  }
+  return months;
+}
 
-  // Pipeline: funding date in the future
-  const pipeline=rows.filter(r=>r['Funding Date']>today);
-  const pipelineVol=pipeline.reduce((s,r)=>s+(parseFloat(r['Loan Amount'])||0),0);
+// ── Main KPI + chart loader ───────────────────────────────────────────────────
+let compChartInstance = null;
 
-  // Closed this month (funded on or before today)
-  const mtd=rows.filter(r=>{
-    const d=new Date(r['Funding Date']);
-    return d.getFullYear()===thisYear&&d.getMonth()===thisMonth&&r['Funding Date']<=today;
-  });
-  const mtdVol=mtd.reduce((s,r)=>s+(parseFloat(r['Loan Amount'])||0),0);
+function loadOutreachKPIs() {
+  const rows = parseOutreachCSV();
+  if (!rows.length) return;
 
-  // Closed YTD
-  const ytd=rows.filter(r=>{
-    return new Date(r['Funding Date']).getFullYear()===thisYear&&r['Funding Date']<=today;
-  });
-  const ytdVol=ytd.reduce((s,r)=>s+(parseFloat(r['Loan Amount'])||0),0);
+  const today    = new Date().toISOString().slice(0, 10);
+  const curFKey  = currentFiscalKey();
+
+  // Pipeline: future-dated loans (funding date after today)
+  const pipeline    = rows.filter(r => r['Funding Date'] > today);
+  const pipelineVol = pipeline.reduce((s, r) => s + (parseFloat(r['Loan Amount']) || 0), 0);
+
+  // Closed this fiscal month
+  const fiscalMTD    = rows.filter(r => r['Funding Date'] <= today && fiscalMonthKey(r['Funding Date']) === curFKey);
+  const fiscalMTDVol = fiscalMTD.reduce((s, r) => s + (parseFloat(r['Loan Amount']) || 0), 0);
+
+  // Closed fiscal YTD (all fiscal months in this calendar year, through today)
+  const fiscalYTD    = rows.filter(r => isFiscalYTD(r['Funding Date'], today));
+  const fiscalYTDVol = fiscalYTD.reduce((s, r) => s + (parseFloat(r['Loan Amount']) || 0), 0);
+
+  // Compensation totals
+  const compMTD = fiscalMTD.reduce((s, r) => s + (parseFloat(r['Compensation']) || 0), 0);
+  const compYTD = fiscalYTD.reduce((s, r) => s + (parseFloat(r['Compensation']) || 0), 0);
 
   // ── KPI tiles ──
-  document.getElementById('kpiPipeline').textContent=fmtMoney(pipelineVol);
-  document.getElementById('kpiPipelineSub').textContent=pipeline.length+' loan'+(pipeline.length!==1?'s':'')+' closing soon';
-  document.getElementById('kpiMonth').textContent=fmtMoney(mtdVol);
-  document.getElementById('kpiMonthSub').textContent=mtd.length+' loan'+(mtd.length!==1?'s':'');
-  document.getElementById('kpiYTD').textContent=fmtMoney(ytdVol);
-  document.getElementById('kpiYTDSub').textContent=ytd.length+' loan'+(ytd.length!==1?'s':'');
+  document.getElementById('kpiPipeline').textContent    = fmtMoney(pipelineVol);
+  document.getElementById('kpiPipelineSub').textContent = pipeline.length + ' loan' + (pipeline.length !== 1 ? 's' : '') + ' closing soon';
+  document.getElementById('kpiMonth').textContent       = fmtMoney(fiscalMTDVol);
+  document.getElementById('kpiMonthSub').textContent    = fiscalMTD.length + ' loan' + (fiscalMTD.length !== 1 ? 's' : '');
+  document.getElementById('kpiYTD').textContent         = fmtMoney(fiscalYTDVol);
+  document.getElementById('kpiYTDSub').textContent      = fiscalYTD.length + ' loan' + (fiscalYTD.length !== 1 ? 's' : '');
 
-  // ── Monthly production bars (last 6 months, funded only) ──
-  const months=[];
-  for(let i=5;i>=0;i--){
-    const d=new Date(thisYear,thisMonth-i,1);
-    months.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleString('en-US',{month:'short'})});
-  }
-  const vals=months.map(()=>0);
-  rows.forEach(r=>{
-    if(r['Funding Date']>today)return;
-    const mk=r['Funding Date'].slice(0,7);
-    const i=months.findIndex(m=>m.key===mk);
-    if(i>=0)vals[i]+=(parseFloat(r['Loan Amount'])||0);
+  // ── Monthly production bars (last 6 fiscal months) ──
+  const fiscalMonths6 = lastNFiscalMonths(6);
+  const volVals = fiscalMonths6.map(() => 0);
+  rows.forEach(r => {
+    if (r['Funding Date'] > today) return;
+    const fk = fiscalMonthKey(r['Funding Date']);
+    const i  = fiscalMonths6.findIndex(m => m.key === fk);
+    if (i >= 0) volVals[i] += parseFloat(r['Loan Amount']) || 0;
   });
-  const max=Math.max(...vals,1);
-  document.getElementById('prodChart').innerHTML=months.map((m,i)=>{
-    const h=Math.round((vals[i]/max)*90)+10;
-    const tip=vals[i]>0?fmtMoney(vals[i]):'—';
-    return`<div class="bar-col" title="${m.label}: ${tip}"><div class="${i===months.length-1?'bar current':'bar'}" style="height:${h}px"></div><span class="bar-label">${m.label}</span></div>`;
+  const maxVol = Math.max(...volVals, 1);
+  document.getElementById('prodChart').innerHTML = fiscalMonths6.map((m, i) => {
+    const h   = Math.round((volVals[i] / maxVol) * 90) + 10;
+    const tip = volVals[i] > 0 ? fmtMoney(volVals[i]) : '—';
+    const isCur = m.key === curFKey;
+    return `<div class="bar-col" title="${m.label}: ${tip}">
+      <div class="${isCur ? 'bar current' : 'bar'}" style="height:${h}px"></div>
+      <span class="bar-label">${m.label}</span>
+    </div>`;
   }).join('');
 
-  // ── Lead source breakdown (YTD closed) ──
-  // Normalize CSV source strings to 4 buckets
-  const norm=s=>{
-    const v=(s||'').toLowerCase().trim();
-    if(v==='marketing')return'mkt';
-    if(v==='past client')return'past';
-    if(v==='referral'||v==='realtor referral')return'ref';
-    if(v==='self generated')return'self';
-    return'other';
+  // ── Compensation chart (last 6 fiscal months) ──
+  const compVals = fiscalMonths6.map(() => 0);
+  rows.forEach(r => {
+    if (r['Funding Date'] > today) return;
+    const fk = fiscalMonthKey(r['Funding Date']);
+    const i  = fiscalMonths6.findIndex(m => m.key === fk);
+    if (i >= 0) compVals[i] += parseFloat(r['Compensation']) || 0;
+  });
+
+  document.getElementById('compThisMonth').textContent = fmtComp(compMTD);
+  document.getElementById('compYTD').textContent       = fmtComp(compYTD);
+
+  const compCtx = document.getElementById('compChart').getContext('2d');
+  if (compChartInstance) { compChartInstance.destroy(); compChartInstance = null; }
+  compChartInstance = new Chart(compCtx, {
+    type: 'bar',
+    data: {
+      labels: fiscalMonths6.map(m => m.label),
+      datasets: [{
+        data: compVals,
+        backgroundColor: fiscalMonths6.map((m, i) =>
+          m.key === curFKey ? 'rgba(45,106,79,0.85)' : 'rgba(45,106,79,0.2)'
+        ),
+        borderColor: fiscalMonths6.map((m) =>
+          m.key === curFKey ? '#2d6a4f' : 'rgba(45,106,79,0.4)'
+        ),
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' ' + fmtComp(ctx.parsed.y)
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 10 }, color: '#b4b0a8' }
+        },
+        y: {
+          grid: { color: 'rgba(226,222,214,0.5)' },
+          ticks: {
+            font: { size: 10 },
+            color: '#8a8680',
+            callback: v => fmtComp(v)
+          }
+        }
+      }
+    }
+  });
+
+  // ── Lead source breakdown (fiscal YTD) ──
+  const norm = s => {
+    const v = (s || '').toLowerCase().trim();
+    if (v === 'marketing')                        return 'mkt';
+    if (v === 'past client')                      return 'past';
+    if (v === 'referral' || v === 'realtor referral') return 'ref';
+    if (v === 'self generated')                   return 'self';
+    return 'other';
   };
-  const counts={mkt:0,past:0,ref:0,self:0};
-  ytd.forEach(r=>{const k=norm(r['Lead Source']);if(counts[k]!==undefined)counts[k]++;});
-  const total=ytd.length||1;
-  const setPct=(valId,barId,n)=>{
-    const pc=Math.round(n/total*100);
-    document.getElementById(valId).textContent=n+' loan'+(n!==1?'s':'')+' · '+pc+'%';
-    document.getElementById(barId).style.width=pc+'%';
+  const counts = { mkt: 0, past: 0, ref: 0, self: 0 };
+  fiscalYTD.forEach(r => { const k = norm(r['Lead Source']); if (counts[k] !== undefined) counts[k]++; });
+  const total = fiscalYTD.length || 1;
+  const setPct = (valId, barId, n) => {
+    const pc = Math.round(n / total * 100);
+    document.getElementById(valId).textContent = n + ' loan' + (n !== 1 ? 's' : '') + ' · ' + pc + '%';
+    document.getElementById(barId).style.width = pc + '%';
   };
-  setPct('srcMktVal','srcMktBar',counts.mkt);
-  setPct('srcPastVal','srcPastBar',counts.past);
-  setPct('srcRefVal','srcRefBar',counts.ref);
-  setPct('srcSelfVal','srcSelfBar',counts.self);
+  setPct('srcMktVal',  'srcMktBar',  counts.mkt);
+  setPct('srcPastVal', 'srcPastBar', counts.past);
+  setPct('srcRefVal',  'srcRefBar',  counts.ref);
+  setPct('srcSelfVal', 'srcSelfBar', counts.self);
 }
 
 // ── Outreach side panel ───────────────────────────────────────────────────────
-function loadOutreachPanel(){
-  const streak=parseInt(localStorage.getItem('outreach_v6_streak')||'0');
-  const mustLeft=parseInt(localStorage.getItem('outreach_v6_lastMustDoCount')||'0');
-  const fileName=localStorage.getItem('outreach_v6_source_file_name');
-  const fileDate=localStorage.getItem('outreach_v6_source_file_date');
-  const carryover=JSON.parse(localStorage.getItem('outreach_v6_carryover')||'[]');
-  const today=new Date().toISOString().slice(0,10);
-  let doneTodayNames=[];
-  try{const dd=JSON.parse(localStorage.getItem('outreach_v6_dailyDone')||'{}');doneTodayNames=dd[today]||[];}catch(e){}
+function loadOutreachPanel() {
+  const streak    = parseInt(localStorage.getItem('outreach_v6_streak') || '0');
+  const mustLeft  = parseInt(localStorage.getItem('outreach_v6_lastMustDoCount') || '0');
+  const fileName  = localStorage.getItem('outreach_v6_source_file_name');
+  const fileDate  = localStorage.getItem('outreach_v6_source_file_date');
+  const carryover = JSON.parse(localStorage.getItem('outreach_v6_carryover') || '[]');
+  const today     = new Date().toISOString().slice(0, 10);
+  let doneTodayNames = [];
+  try { const dd = JSON.parse(localStorage.getItem('outreach_v6_dailyDone') || '{}'); doneTodayNames = dd[today] || []; } catch(e) {}
 
-  const streakCount=document.getElementById('streakCount');
-  if(streakCount)streakCount.textContent=streak+' day'+(streak!==1?'s':'');
-  const streakRow=document.getElementById('streakRow');
-  if(streakRow){
-    streakRow.querySelectorAll('.streak-dot').forEach((dot,i)=>{
-      dot.classList.toggle('filled',i<Math.min(streak,7));
-      dot.classList.toggle('empty',i>=Math.min(streak,7));
+  const streakCount = document.getElementById('streakCount');
+  if (streakCount) streakCount.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
+  const streakRow = document.getElementById('streakRow');
+  if (streakRow) {
+    streakRow.querySelectorAll('.streak-dot').forEach((dot, i) => {
+      dot.classList.toggle('filled', i < Math.min(streak, 7));
+      dot.classList.toggle('empty',  i >= Math.min(streak, 7));
     });
   }
 
-  const summary=document.getElementById('outreachSummary');
-  if(!fileName){summary.textContent='Open the Outreach tab to load your book';return;}
-  const totalDone=doneTodayNames.length,carryCount=carryover.length;
-  if(mustLeft>0)summary.textContent=mustLeft+' must-do contact'+(mustLeft!==1?'s':'')+' remaining today';
-  else if(totalDone>0)summary.textContent=totalDone+' contacted today · '+carryCount+' carrying over';
-  else summary.textContent='Book loaded: '+fileName+(fileDate?' · '+fileDate:'');
+  const summary = document.getElementById('outreachSummary');
+  if (!fileName) { summary.textContent = 'Open the Outreach tab to load your book'; return; }
+  const totalDone = doneTodayNames.length, carryCount = carryover.length;
+  if (mustLeft > 0)      summary.textContent = mustLeft + ' must-do contact' + (mustLeft !== 1 ? 's' : '') + ' remaining today';
+  else if (totalDone > 0) summary.textContent = totalDone + ' contacted today · ' + carryCount + ' carrying over';
+  else                   summary.textContent = 'Book loaded: ' + fileName + (fileDate ? ' · ' + fileDate : '');
 
-  const preview=document.getElementById('outreachPreview');
-  if(carryCount===0&&totalDone===0){
-    preview.innerHTML=`<div class="contact-card must"><div class="contact-top"><span class="contact-name">Book loaded</span><span class="contact-badge badge-must">Ready</span></div><div class="contact-trigger">Loaded ${fileDate||''} · Switch to Outreach to see today's contacts.</div></div>`;
+  const preview = document.getElementById('outreachPreview');
+  if (carryCount === 0 && totalDone === 0) {
+    preview.innerHTML = `<div class="contact-card must"><div class="contact-top"><span class="contact-name">Book loaded</span><span class="contact-badge badge-must">Ready</span></div><div class="contact-trigger">Loaded ${fileDate || ''} · Switch to Outreach to see today's contacts.</div></div>`;
     return;
   }
-  let html='';
-  carryover.slice(0,3).forEach(name=>{
-    html+=`<div class="contact-card must"><div class="contact-top"><span class="contact-name">${name}</span><span class="contact-badge badge-must">Carryover</span></div><div class="contact-trigger">Carried over from previous day</div></div>`;
+  let html = '';
+  carryover.slice(0, 3).forEach(name => {
+    html += `<div class="contact-card must"><div class="contact-top"><span class="contact-name">${name}</span><span class="contact-badge badge-must">Carryover</span></div><div class="contact-trigger">Carried over from previous day</div></div>`;
   });
-  const doneSlots=Math.max(0,4-Math.min(carryover.length,3));
-  doneTodayNames.slice(0,doneSlots).forEach(name=>{
-    html+=`<div class="contact-card" style="opacity:0.5"><div class="contact-top"><span class="contact-name">${name}</span><span class="contact-badge" style="background:var(--accent-soft);color:var(--accent)">Done</span></div><div class="contact-trigger">Contacted today</div></div>`;
+  const doneSlots = Math.max(0, 4 - Math.min(carryover.length, 3));
+  doneTodayNames.slice(0, doneSlots).forEach(name => {
+    html += `<div class="contact-card" style="opacity:0.5"><div class="contact-top"><span class="contact-name">${name}</span><span class="contact-badge" style="background:var(--accent-soft);color:var(--accent)">Done</span></div><div class="contact-trigger">Contacted today</div></div>`;
   });
-  const shown=Math.min(carryover.length,3)+Math.min(totalDone,doneSlots);
-  const remaining=(carryCount+totalDone)-shown;
-  if(remaining>0)html+=`<div style="font-size:11px;color:var(--text4);text-align:center;padding:6px 0">+${remaining} more — open Outreach tab</div>`;
-  preview.innerHTML=html;
+  const shown = Math.min(carryover.length, 3) + Math.min(totalDone, doneSlots);
+  const remaining = (carryCount + totalDone) - shown;
+  if (remaining > 0) html += `<div style="font-size:11px;color:var(--text4);text-align:center;padding:6px 0">+${remaining} more — open Outreach tab</div>`;
+  preview.innerHTML = html;
 }
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
-let authMode='signin';
-function toggleAuthMode(){
-  authMode=authMode==='signin'?'signup':'signin';
-  document.getElementById('authBtn').textContent=authMode==='signin'?'Sign in':'Create account';
-  document.getElementById('authNameRow').classList.toggle('show',authMode==='signup');
-  document.getElementById('authToggle').innerHTML=authMode==='signin'
-    ?'Don\'t have an account? <a onclick="toggleAuthMode()">Sign up</a>'
-    :'Already have an account? <a onclick="toggleAuthMode()">Sign in</a>';
-  document.getElementById('authError').style.display='none';
+let authMode = 'signin';
+function toggleAuthMode() {
+  authMode = authMode === 'signin' ? 'signup' : 'signin';
+  document.getElementById('authBtn').textContent = authMode === 'signin' ? 'Sign in' : 'Create account';
+  document.getElementById('authNameRow').classList.toggle('show', authMode === 'signup');
+  document.getElementById('authToggle').innerHTML = authMode === 'signin'
+    ? 'Don\'t have an account? <a onclick="toggleAuthMode()">Sign up</a>'
+    : 'Already have an account? <a onclick="toggleAuthMode()">Sign in</a>';
+  document.getElementById('authError').style.display = 'none';
 }
 
-async function handleAuth(){
-  const email=document.getElementById('authEmail').value.trim();
-  const password=document.getElementById('authPassword').value;
-  const btn=document.getElementById('authBtn');
-  const errEl=document.getElementById('authError');
-  errEl.style.display='none';
-  if(!email||!password){errEl.textContent='Please enter email and password.';errEl.style.display='block';return;}
-  if(password.length<6){errEl.textContent='Password must be at least 6 characters.';errEl.style.display='block';return;}
-  btn.disabled=true;btn.textContent=authMode==='signin'?'Signing in...':'Creating account...';
-  try{
+async function handleAuth() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn = document.getElementById('authBtn'), errEl = document.getElementById('authError');
+  errEl.style.display = 'none';
+  if (!email || !password) { errEl.textContent = 'Please enter email and password.'; errEl.style.display = 'block'; return; }
+  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; errEl.style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = authMode === 'signin' ? 'Signing in...' : 'Creating account...';
+  try {
     let result;
-    if(authMode==='signup'){
-      const name=document.getElementById('authName').value.trim();
-      result=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});
-    }else{
-      result=await sb.auth.signInWithPassword({email,password});
+    if (authMode === 'signup') {
+      const name = document.getElementById('authName').value.trim();
+      result = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
+    } else {
+      result = await sb.auth.signInWithPassword({ email, password });
     }
-    if(result.error)throw result.error;
-    if(authMode==='signup'&&result.data?.user&&!result.data.session){
-      errEl.textContent='Check your email to confirm your account, then sign in.';errEl.style.display='block';errEl.style.color='var(--accent)';
-      btn.disabled=false;btn.textContent='Create account';toggleAuthMode();return;
+    if (result.error) throw result.error;
+    if (authMode === 'signup' && result.data?.user && !result.data.session) {
+      errEl.textContent = 'Check your email to confirm your account, then sign in.';
+      errEl.style.display = 'block'; errEl.style.color = 'var(--accent)';
+      btn.disabled = false; btn.textContent = 'Create account'; toggleAuthMode(); return;
     }
-  }catch(e){
-    errEl.textContent=e.message||'Authentication failed.';errEl.style.display='block';errEl.style.color='var(--red)';
-    btn.disabled=false;btn.textContent=authMode==='signin'?'Sign in':'Create account';
+  } catch(e) {
+    errEl.textContent = e.message || 'Authentication failed.'; errEl.style.display = 'block'; errEl.style.color = 'var(--red)';
+    btn.disabled = false; btn.textContent = authMode === 'signin' ? 'Sign in' : 'Create account';
   }
 }
 
-async function handleSignOut(){await sb.auth.signOut();currentUser=null;userProfile=null;document.getElementById('authScreen').classList.remove('hidden');document.getElementById('app').classList.add('hidden');}
+async function handleSignOut() {
+  await sb.auth.signOut(); currentUser = null; userProfile = null;
+  document.getElementById('authScreen').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+}
 
-sb.auth.onAuthStateChange(async(event,session)=>{
-  if(session?.user){currentUser=session.user;await loadProfile();showApp();}
-  else{document.getElementById('authScreen').classList.remove('hidden');document.getElementById('app').classList.add('hidden');}
+sb.auth.onAuthStateChange(async (event, session) => {
+  if (session?.user) { currentUser = session.user; await loadProfile(); showApp(); }
+  else { document.getElementById('authScreen').classList.remove('hidden'); document.getElementById('app').classList.add('hidden'); }
 });
 
-async function loadProfile(){
-  const{data}=await sb.from('profiles').select('*').eq('id',currentUser.id).single();
-  userProfile=data||{full_name:currentUser.user_metadata?.full_name||'',rate_30:6.875,rate_15:6.125};
+async function loadProfile() {
+  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  userProfile = data || { full_name: currentUser.user_metadata?.full_name || '', rate_30: 6.875, rate_15: 6.125 };
 }
 
-async function saveProfile(){
-  if(!currentUser)return;
-  const r30=parseFloat(document.getElementById('rate30').value)||6.875;
-  const r15=parseFloat(document.getElementById('rate15').value)||6.125;
-  await sb.from('profiles').upsert({id:currentUser.id,rate_30:r30,rate_15:r15,updated_at:new Date().toISOString()});
+async function saveProfile() {
+  if (!currentUser) return;
+  const r30 = parseFloat(document.getElementById('rate30').value) || 6.875;
+  const r15 = parseFloat(document.getElementById('rate15').value) || 6.125;
+  await sb.from('profiles').upsert({ id: currentUser.id, rate_30: r30, rate_15: r15, updated_at: new Date().toISOString() });
 }
 
-function showApp(){
-  document.getElementById('authScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');
-  const fn=(userProfile?.full_name||currentUser.email||'').split(/[\s@]/)[0];
-  document.getElementById('navUser').textContent=userProfile?.full_name||currentUser.email;
-  const h=new Date().getHours(),g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
-  document.getElementById('greeting').textContent=g+', '+(fn||'there');
-  document.getElementById('greetingDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-  if(userProfile){document.getElementById('rate30').value=(userProfile.rate_30||6.875)+'%';document.getElementById('rate15').value=(userProfile.rate_15||6.125)+'%';}
+function showApp() {
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  const fn = (userProfile?.full_name || currentUser.email || '').split(/[\s@]/)[0];
+  document.getElementById('navUser').textContent = userProfile?.full_name || currentUser.email;
+  const h = new Date().getHours(), g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('greeting').textContent = g + ', ' + (fn || 'there');
+  document.getElementById('greetingDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  if (userProfile) { document.getElementById('rate30').value = (userProfile.rate_30 || 6.875) + '%'; document.getElementById('rate15').value = (userProfile.rate_15 || 6.125) + '%'; }
   loadOutreachKPIs();
   loadOutreachPanel();
   loadTradingView();
   loadFredChart();
 }
 
-document.querySelectorAll('.nav-tab').forEach(tab=>{tab.addEventListener('click',()=>switchView(tab.dataset.view));});
-function switchView(v){
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
-  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+v));
-  const f=document.getElementById('frame-'+v);if(f&&f.dataset.src&&!f.src.includes(f.dataset.src))f.src=f.dataset.src;
-  if(v==='home'){loadOutreachKPIs();loadOutreachPanel();}
+document.querySelectorAll('.nav-tab').forEach(tab => { tab.addEventListener('click', () => switchView(tab.dataset.view)); });
+function switchView(v) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
+  document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
+  const f = document.getElementById('frame-' + v);
+  if (f && f.dataset.src && !f.src.includes(f.dataset.src)) f.src = f.dataset.src;
+  if (v === 'home') { loadOutreachKPIs(); loadOutreachPanel(); }
 }
 
-const leMap={refi:'le-refi.html',purchase:'le-purchase.html',second:'le-second.html'};
-function switchLE(t){document.querySelectorAll('.le-btn').forEach(b=>b.classList.toggle('active',b.dataset.le===t));document.getElementById('frame-le').src=leMap[t];}
+const leMap = { refi: 'le-refi.html', purchase: 'le-purchase.html', second: 'le-second.html' };
+function switchLE(t) { document.querySelectorAll('.le-btn').forEach(b => b.classList.toggle('active', b.dataset.le === t)); document.getElementById('frame-le').src = leMap[t]; }
 
-let tvLoaded=false;
-function loadTradingView(){
-  if(tvLoaded)return;tvLoaded=true;
-  const c=document.getElementById('tvWidget');
-  const config={"lineWidth":2,"lineType":0,"chartType":"area","fontColor":"rgb(106,109,120)","gridLineColor":"rgba(46,46,46,0.06)","backgroundColor":"#ffffff","widgetFontColor":"#0F0F0F","upColor":"#22ab94","downColor":"#f7525f","borderUpColor":"#22ab94","borderDownColor":"#f7525f","wickUpColor":"#22ab94","wickDownColor":"#f7525f","colorTheme":"light","isTransparent":false,"locale":"en","chartOnly":false,"scalePosition":"right","scaleMode":"Normal","fontFamily":"-apple-system,BlinkMacSystemFont,Trebuchet MS,Roboto,Ubuntu,sans-serif","valuesTracking":"1","changeMode":"price-and-percent","symbols":[["TVC:US10Y|1D"]],"dateRanges":["1d|1","1m|30","3m|60","12m|1D","60m|1W","all|1M"],"fontSize":"10","headerFontSize":"medium","autosize":true,"width":"100%","height":"100%","noTimeScale":false,"hideDateRanges":false,"hideMarketStatus":false,"hideSymbolLogo":false};
-  const w=document.createElement('div');w.className='tradingview-widget-container';w.style.cssText='height:100%;width:100%';
-  const inner=document.createElement('div');inner.className='tradingview-widget-container__widget';w.appendChild(inner);
-  const copy=document.createElement('div');copy.className='tradingview-widget-copyright';copy.innerHTML='<a href="https://www.tradingview.com/symbols/TVC-US10Y/" rel="noopener nofollow" target="_blank"><span class="blue-text">US10Y bonds</span></a> by TradingView';w.appendChild(copy);
-  const s=document.createElement('script');s.type='text/javascript';s.src='https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';s.async=true;s.textContent=JSON.stringify(config);
-  w.appendChild(s);c.appendChild(w);
+let tvLoaded = false;
+function loadTradingView() {
+  if (tvLoaded) return; tvLoaded = true;
+  const c = document.getElementById('tvWidget');
+  const config = {"lineWidth":2,"lineType":0,"chartType":"area","fontColor":"rgb(106,109,120)","gridLineColor":"rgba(46,46,46,0.06)","backgroundColor":"#ffffff","widgetFontColor":"#0F0F0F","upColor":"#22ab94","downColor":"#f7525f","borderUpColor":"#22ab94","borderDownColor":"#f7525f","wickUpColor":"#22ab94","wickDownColor":"#f7525f","colorTheme":"light","isTransparent":false,"locale":"en","chartOnly":false,"scalePosition":"right","scaleMode":"Normal","fontFamily":"-apple-system,BlinkMacSystemFont,Trebuchet MS,Roboto,Ubuntu,sans-serif","valuesTracking":"1","changeMode":"price-and-percent","symbols":[["TVC:US10Y|1D"]],"dateRanges":["1d|1","1m|30","3m|60","12m|1D","60m|1W","all|1M"],"fontSize":"10","headerFontSize":"medium","autosize":true,"width":"100%","height":"100%","noTimeScale":false,"hideDateRanges":false,"hideMarketStatus":false,"hideSymbolLogo":false};
+  const w = document.createElement('div'); w.className = 'tradingview-widget-container'; w.style.cssText = 'height:100%;width:100%';
+  const inner = document.createElement('div'); inner.className = 'tradingview-widget-container__widget'; w.appendChild(inner);
+  const copy = document.createElement('div'); copy.className = 'tradingview-widget-copyright'; copy.innerHTML = '<a href="https://www.tradingview.com/symbols/TVC-US10Y/" rel="noopener nofollow" target="_blank"><span class="blue-text">US10Y bonds</span></a> by TradingView'; w.appendChild(copy);
+  const s = document.createElement('script'); s.type = 'text/javascript'; s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js'; s.async = true; s.textContent = JSON.stringify(config);
+  w.appendChild(s); c.appendChild(w);
 }
 
-let fredLoaded=false;
-async function loadFredChart(){
-  if(fredLoaded)return;fredLoaded=true;
-  const apiKey=userProfile?.fred_api_key||'';const ctx=document.getElementById('fredChart').getContext('2d');
-  const end=new Date(),start=new Date();start.setDate(start.getDate()-45);const fmt=d=>d.toISOString().slice(0,10);
-  let labels=[],values=[];
-  if(apiKey){try{const url=`https://api.stlouisfed.org/fred/series/observations?series_id=DGS10&api_key=${apiKey}&file_type=json&observation_start=${fmt(start)}&observation_end=${fmt(end)}&sort_order=asc`;const r=await fetch(url);const d=await r.json();const obs=(d.observations||[]).filter(o=>o.value!=='.');labels=obs.map(o=>{const x=new Date(o.date+'T12:00:00');return(x.getMonth()+1)+'/'+x.getDate()});values=obs.map(o=>parseFloat(o.value));}catch(e){}}
-  if(!values.length){for(let i=30;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);if(d.getDay()===0||d.getDay()===6)continue;labels.push((d.getMonth()+1)+'/'+d.getDate());values.push(4.2+Math.random()*0.4);}}
-  new Chart(ctx,{type:'line',data:{labels,datasets:[{data:values,borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,0.08)',borderWidth:2,fill:true,tension:0.3,pointRadius:0,pointHitRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toFixed(3)+'%'}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#b4b0a8',maxTicksLimit:8}},y:{grid:{color:'rgba(226,222,214,0.5)'},ticks:{font:{size:10},color:'#8a8680',callback:v=>v.toFixed(2)+'%'}}}}});
-  if(!apiKey){const n=document.createElement('div');n.style.cssText='font-size:10px;color:var(--text4);text-align:center;margin-top:6px';n.textContent='Demo data — add your FRED API key in Settings for live data';document.getElementById('fredChart').parentNode.appendChild(n);}
+let fredLoaded = false;
+async function loadFredChart() {
+  if (fredLoaded) return; fredLoaded = true;
+  const apiKey = userProfile?.fred_api_key || ''; const ctx = document.getElementById('fredChart').getContext('2d');
+  const end = new Date(), start = new Date(); start.setDate(start.getDate() - 45); const fmt = d => d.toISOString().slice(0, 10);
+  let labels = [], values = [];
+  if (apiKey) { try { const url = `https://api.stlouisfed.org/fred/series/observations?series_id=DGS10&api_key=${apiKey}&file_type=json&observation_start=${fmt(start)}&observation_end=${fmt(end)}&sort_order=asc`; const r = await fetch(url); const d = await r.json(); const obs = (d.observations || []).filter(o => o.value !== '.'); labels = obs.map(o => { const x = new Date(o.date + 'T12:00:00'); return (x.getMonth() + 1) + '/' + x.getDate() }); values = obs.map(o => parseFloat(o.value)); } catch(e) {} }
+  if (!values.length) { for (let i = 30; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); if (d.getDay() === 0 || d.getDay() === 6) continue; labels.push((d.getMonth() + 1) + '/' + d.getDate()); values.push(4.2 + Math.random() * 0.4); } }
+  new Chart(ctx, { type: 'line', data: { labels, datasets: [{ data: values, borderColor: '#2d6a4f', backgroundColor: 'rgba(45,106,79,0.08)', borderWidth: 2, fill: true, tension: 0.3, pointRadius: 0, pointHitRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y.toFixed(3) + '%' } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#b4b0a8', maxTicksLimit: 8 } }, y: { grid: { color: 'rgba(226,222,214,0.5)' }, ticks: { font: { size: 10 }, color: '#8a8680', callback: v => v.toFixed(2) + '%' } } } } });
+  if (!apiKey) { const n = document.createElement('div'); n.style.cssText = 'font-size:10px;color:var(--text4);text-align:center;margin-top:6px'; n.textContent = 'Demo data — add your FRED API key in Settings for live data'; document.getElementById('fredChart').parentNode.appendChild(n); }
 }
 
-function openSettings(){
-  document.getElementById('setName').value=userProfile?.full_name||'';document.getElementById('setCompany').value=userProfile?.company||'';
-  document.getElementById('setNmls').value=userProfile?.nmls||'';document.getElementById('setPhone').value=userProfile?.phone||'';
-  document.getElementById('setFred').value=userProfile?.fred_api_key||'';document.getElementById('settingsModal').style.display='flex';
+function openSettings() {
+  document.getElementById('setName').value = userProfile?.full_name || ''; document.getElementById('setCompany').value = userProfile?.company || '';
+  document.getElementById('setNmls').value = userProfile?.nmls || ''; document.getElementById('setPhone').value = userProfile?.phone || '';
+  document.getElementById('setFred').value = userProfile?.fred_api_key || ''; document.getElementById('settingsModal').style.display = 'flex';
 }
-function closeSettings(){document.getElementById('settingsModal').style.display='none';}
+function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
 
-async function saveSettingsModal(){
-  if(!currentUser)return;
-  const u={id:currentUser.id,full_name:document.getElementById('setName').value.trim(),company:document.getElementById('setCompany').value.trim(),nmls:document.getElementById('setNmls').value.trim(),phone:document.getElementById('setPhone').value.trim(),fred_api_key:document.getElementById('setFred').value.trim(),updated_at:new Date().toISOString()};
-  const{error}=await sb.from('profiles').upsert(u);if(error){alert('Save failed: '+error.message);return;}
-  userProfile={...userProfile,...u};document.getElementById('navUser').textContent=u.full_name||currentUser.email;
-  const fn=(u.full_name||'').split(' ')[0]||'there';const h=new Date().getHours();
-  document.getElementById('greeting').textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+', '+fn;
+async function saveSettingsModal() {
+  if (!currentUser) return;
+  const u = { id: currentUser.id, full_name: document.getElementById('setName').value.trim(), company: document.getElementById('setCompany').value.trim(), nmls: document.getElementById('setNmls').value.trim(), phone: document.getElementById('setPhone').value.trim(), fred_api_key: document.getElementById('setFred').value.trim(), updated_at: new Date().toISOString() };
+  const { error } = await sb.from('profiles').upsert(u); if (error) { alert('Save failed: ' + error.message); return; }
+  userProfile = { ...userProfile, ...u }; document.getElementById('navUser').textContent = u.full_name || currentUser.email;
+  const fn = (u.full_name || '').split(' ')[0] || 'there'; const h = new Date().getHours();
+  document.getElementById('greeting').textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ', ' + fn;
   closeSettings();
-  if(u.fred_api_key){fredLoaded=false;document.querySelector('.fred-chart-container').innerHTML='<canvas id="fredChart"></canvas>';loadFredChart();}
+  if (u.fred_api_key) { fredLoaded = false; document.querySelector('.fred-chart-container').innerHTML = '<canvas id="fredChart"></canvas>'; loadFredChart(); }
 }
 
-document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if(e.key==='1')switchView('home');if(e.key==='2')switchView('scenario');if(e.key==='3')switchView('le');if(e.key==='4')switchView('preapproval');if(e.key==='5')switchView('outreach');});
+document.addEventListener('keydown', e => { if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return; if (e.key === '1') switchView('home'); if (e.key === '2') switchView('scenario'); if (e.key === '3') switchView('le'); if (e.key === '4') switchView('preapproval'); if (e.key === '5') switchView('outreach'); });
 
-(async()=>{const{data:{session}}=await sb.auth.getSession();if(!session)document.getElementById('authScreen').classList.remove('hidden');})();
+(async () => { const { data: { session } } = await sb.auth.getSession(); if (!session) document.getElementById('authScreen').classList.remove('hidden'); })();
 </script>
 </body>
 </html>
