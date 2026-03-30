@@ -98,7 +98,20 @@
           <div class="side-hd">Today's outreach</div>
           <div class="side-sub" id="outreachSummary">Open the Outreach tab to load your book</div>
           <div id="outreachPreview"><div class="contact-card must"><div class="contact-top"><span class="contact-name">Get started</span><span class="contact-badge badge-must">Action</span></div><div class="contact-trigger">Upload your loan book in the Outreach tab to see prioritized contacts here each morning.</div></div></div>
-          <div class="streak-section"><div class="side-hd">Streak</div><div class="streak-row" id="streakRow"><div class="streak-dot empty"></div><div class="streak-dot empty"></div><div class="streak-dot empty"></div><div class="streak-dot empty"></div><div class="streak-dot empty"></div><div class="streak-dot empty"></div><div class="streak-dot empty"></div><span class="streak-count">0 days</span></div><div class="streak-label">Clear all must-do contacts daily to build your streak</div></div>
+          <div class="streak-section">
+            <div class="side-hd">Streak</div>
+            <div class="streak-row" id="streakRow">
+              <div class="streak-dot empty"></div>
+              <div class="streak-dot empty"></div>
+              <div class="streak-dot empty"></div>
+              <div class="streak-dot empty"></div>
+              <div class="streak-dot empty"></div>
+              <div class="streak-dot empty"></div>
+              <div class="streak-dot empty"></div>
+              <span class="streak-count" id="streakCount">0 days</span>
+            </div>
+            <div class="streak-label">Clear all must-do contacts daily to build your streak</div>
+          </div>
           <div class="streak-section" style="border-top:1px solid var(--border);padding-top:16px"><div class="side-hd" style="margin-bottom:10px">Market rates</div><div class="market-grid"><div class="market-cell"><div class="market-lbl">30yr fixed</div><input class="market-rate-input" id="rate30" value="6.875%" onchange="saveProfile()"></div><div class="market-cell"><div class="market-lbl">15yr fixed</div><input class="market-rate-input" id="rate15" value="6.125%" onchange="saveProfile()"></div></div></div>
         </div>
       </div>
@@ -227,6 +240,99 @@ async function loadProdChart(){
   }).join('');
 }
 
+// ── Outreach panel ────────────────────────────────────────────────────────────
+function loadOutreachPanel(){
+  const streak    = parseInt(localStorage.getItem('outreach_v6_streak') || '0');
+  const mustLeft  = parseInt(localStorage.getItem('outreach_v6_lastMustDoCount') || '0');
+  const fileName  = localStorage.getItem('outreach_v6_source_file_name');
+  const fileDate  = localStorage.getItem('outreach_v6_source_file_date');
+  const carryover = JSON.parse(localStorage.getItem('outreach_v6_carryover') || '[]');
+
+  // Parse contacts completed today
+  const today = new Date().toISOString().slice(0,10);
+  let doneTodayNames = [];
+  try {
+    const dd = JSON.parse(localStorage.getItem('outreach_v6_dailyDone') || '{}');
+    doneTodayNames = dd[today] || [];
+  } catch(e) {}
+
+  // --- Streak dots & count ---
+  const streakCount = document.getElementById('streakCount');
+  if(streakCount) streakCount.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
+  const streakRow = document.getElementById('streakRow');
+  if(streakRow){
+    streakRow.querySelectorAll('.streak-dot').forEach((dot,i) => {
+      dot.classList.toggle('filled', i < Math.min(streak, 7));
+      dot.classList.toggle('empty',  i >= Math.min(streak, 7));
+    });
+  }
+
+  // --- Summary line ---
+  const summary = document.getElementById('outreachSummary');
+  if(!fileName){
+    summary.textContent = 'Open the Outreach tab to load your book';
+    return;
+  }
+  const totalDone  = doneTodayNames.length;
+  const carryCount = carryover.length;
+  if(mustLeft > 0){
+    summary.textContent = mustLeft + ' must-do contact' + (mustLeft !== 1 ? 's' : '') + ' remaining today';
+  } else if(totalDone > 0){
+    summary.textContent = totalDone + ' contacted today · ' + carryCount + ' carrying over';
+  } else {
+    summary.textContent = 'Book loaded: ' + fileName + (fileDate ? ' · ' + fileDate : '');
+  }
+
+  // --- Contact cards ---
+  const preview = document.getElementById('outreachPreview');
+
+  if(carryCount === 0 && totalDone === 0){
+    preview.innerHTML = `<div class="contact-card must">
+      <div class="contact-top">
+        <span class="contact-name">Book loaded</span>
+        <span class="contact-badge badge-must">Ready</span>
+      </div>
+      <div class="contact-trigger">Loaded ${fileDate || ''} · Switch to Outreach to see today's contacts.</div>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+
+  // Carryover contacts — shown as must-do (up to 3)
+  carryover.slice(0, 3).forEach(name => {
+    html += `<div class="contact-card must">
+      <div class="contact-top">
+        <span class="contact-name">${name}</span>
+        <span class="contact-badge badge-must">Carryover</span>
+      </div>
+      <div class="contact-trigger">Carried over from previous day</div>
+    </div>`;
+  });
+
+  // Today's completed contacts — shown muted (fill remaining slots up to 4 total)
+  const doneSlots = Math.max(0, 4 - Math.min(carryover.length, 3));
+  doneTodayNames.slice(0, doneSlots).forEach(name => {
+    html += `<div class="contact-card" style="opacity:0.5">
+      <div class="contact-top">
+        <span class="contact-name">${name}</span>
+        <span class="contact-badge" style="background:var(--accent-soft);color:var(--accent)">Done</span>
+      </div>
+      <div class="contact-trigger">Contacted today</div>
+    </div>`;
+  });
+
+  // Footer tally if there are more
+  const shown = Math.min(carryover.length, 3) + Math.min(totalDone, doneSlots);
+  const remaining = (carryCount + totalDone) - shown;
+  if(remaining > 0){
+    html += `<div style="font-size:11px;color:var(--text4);text-align:center;padding:6px 0">+${remaining} more — open Outreach tab</div>`;
+  }
+
+  preview.innerHTML = html;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 function showApp(){
   document.getElementById('authScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');
   const fn=(userProfile?.full_name||currentUser.email||'').split(/[\s@]/)[0];
@@ -235,7 +341,7 @@ function showApp(){
   document.getElementById('greeting').textContent=g+', '+(fn||'there');
   document.getElementById('greetingDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   if(userProfile){document.getElementById('rate30').value=(userProfile.rate_30||6.875)+'%';document.getElementById('rate15').value=(userProfile.rate_15||6.125)+'%';}
-  loadKPIs();loadProdChart();loadTradingView();loadFredChart();
+  loadKPIs();loadProdChart();loadTradingView();loadFredChart();loadOutreachPanel();
 }
 
 document.querySelectorAll('.nav-tab').forEach(tab=>{tab.addEventListener('click',()=>switchView(tab.dataset.view));});
@@ -243,6 +349,8 @@ function switchView(v){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+v));
   const f=document.getElementById('frame-'+v);if(f&&f.dataset.src&&!f.src.includes(f.dataset.src))f.src=f.dataset.src;
+  // Refresh outreach panel whenever user returns to Home
+  if(v==='home') loadOutreachPanel();
 }
 
 const leMap={refi:'le-refi.html',purchase:'le-purchase.html',second:'le-second.html'};
