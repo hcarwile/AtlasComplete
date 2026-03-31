@@ -4,51 +4,56 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@800&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Warm, calm palette (Claude x Monarch vibe) */
-  --page:#f5f3ef;
+  /* Atlas — warm fintech palette */
+  --page:#f5f2ed;
   --card:#ffffff;
-  --card2:#fbfaf7;
-  --bg2:#f3f2ee;
-  --bdr:rgba(17,24,39,.08);
-  --bdr2:rgba(17,24,39,.06);
-  --tx:#111827;
-  --tx2:#374151;
-  --tx3:#6b7280;
-  --ib:rgba(17,24,39,.12);
-  --foc:#4c6ef5;
-  --fb:rgba(76,110,245,.10);
+  --card2:#faf8f4;
+  --bg2:#f0ede7;
+  --bdr:rgba(42,32,18,.09);
+  --bdr2:rgba(42,32,18,.06);
+  --tx:#1c1612;
+  --tx2:#3d3328;
+  --tx3:#7a6e62;
+  --ib:rgba(42,32,18,.13);
+  --foc:#b8732a;
+  --fb:rgba(184,115,42,.10);
 
-  --grn:#2f7a4d;
-  --gb:#2f7a4d;
-  --gbg:#e7f3ea;
+  --grn:#2d6a4f;
+  --gb:#2d6a4f;
+  --gbg:#e8f4ee;
 
   --red:#b42318;
   --rbg:#fff1f2;
 
-  /* Product header tints */
+  /* Product header tints — warmer */
   --c1:#1d4ed8; --c1b:#f4f7ff; --c1d:#dbe7ff;
   --c2:#6d28d9; --c2b:#f6f3ff; --c2d:#e0d7ff;
   --c3:#9a3412; --c3b:#fff7ed; --c3d:#fed7aa;
-  --c4:#047857; --c4b:#ecfdf5; --c4d:#bff0df;
+  --c4:#2d6a4f; --c4b:#edf7f1; --c4d:#b8e6cc;
 
-  --star:#f2b705;
+  --star:#c17f24;
+  --amber:#b8732a;
+  --amber-soft:rgba(184,115,42,.08);
 
   --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
-  --r:12px;
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --r:10px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:var(--sans);background:var(--page);color:var(--tx);height:100vh;overflow:hidden;font-size:14px;}
-header{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:44px;background:var(--card);border-bottom:1px solid var(--bdr);}
-.logo{font-weight:800;font-size:16px;letter-spacing:.2px;display:flex;gap:10px;align-items:baseline;}
-.tagline{font-weight:500;font-size:11px;font-style:italic;color:var(--tx3);}.logo b{color:var(--foc);}
+header{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:48px;background:linear-gradient(180deg,#fff 0%,#faf8f4 100%);border-bottom:1px solid var(--bdr);box-shadow:0 1px 3px rgba(42,32,18,.06),0 1px 0 rgba(42,32,18,.04);}
+.logo{font-family:'Noto Sans',var(--sans);font-weight:800;font-size:16px;letter-spacing:.12em;color:var(--tx);text-transform:uppercase;}
+.tagline{font-weight:400;font-size:11px;font-style:italic;color:var(--tx3);font-family:var(--sans);letter-spacing:.01em;}.logo b{color:var(--amber);}
 .hdr-r{display:flex;align-items:center;gap:14px;}
-.tmr{font-size:18px;font-weight:700;color:var(--tx3);font-variant-numeric:tabular-nums;}.tmr.on{color:var(--gb);}
+.tmr{font-size:17px;font-weight:700;color:var(--tx3);font-variant-numeric:tabular-nums;letter-spacing:-.01em;}.tmr.on{color:var(--amber);}
 .upd{font-size:12px;font-weight:700;color:var(--tx3);font-variant-numeric:tabular-nums;}
 .toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:rgba(17,24,39,.92);color:#fff;padding:10px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.01em;opacity:0;pointer-events:none;transition:opacity .16s ease, transform .16s ease;z-index:9999;max-width:80vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(-2px);}
-.btn{padding:5px 16px;border:1.5px solid var(--bdr);background:#fff;color:var(--tx2);border-radius:10px;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--sans);}.btn:hover{border-color:rgba(76,110,245,.55);color:var(--foc);box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.btn{padding:5px 18px;border:1.5px solid var(--bdr);background:#fff;color:var(--tx2);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--sans);letter-spacing:.01em;transition:all .15s;}.btn:hover{border-color:var(--amber);color:var(--amber);box-shadow:0 1px 4px rgba(184,115,42,.12);}
 
 .status{
   margin-left:14px;
@@ -68,15 +73,17 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
   text-overflow:ellipsis;
 }
 .status .pill{padding:2px 8px;border-radius:999px;border:1px solid var(--bdr2);background:#fff;font-size:11px;font-weight:700;color:var(--tx3);}
-.status .good{color:var(--grn);} .status .bad{color:var(--red);} 
+.status .good{color:var(--grn);font-weight:700;} .status .bad{color:var(--red);font-weight:700;} 
 
-.main{display:grid;grid-template-columns:1fr 400px;height:calc(100vh - 44px);}
-.sheet{overflow-y:auto;padding:18px 20px;}.sheet::-webkit-scrollbar{width:5px;}.sheet::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:3px;}
+.main{display:grid;grid-template-columns:1fr 400px;height:calc(100vh - 48px);transition:grid-template-columns .22s cubic-bezier(.4,0,.2,1);}
+.main.panel-closed{grid-template-columns:1fr 36px;}
+.sheet{overflow-y:auto;padding:18px 20px;}.sheet::-webkit-scrollbar{width:4px;}.sheet::-webkit-scrollbar-thumb{background:rgba(184,115,42,.2);border-radius:4px;}.sheet::-webkit-scrollbar-thumb:hover{background:rgba(184,115,42,.35);}
 
 /* Inputs */
 .ibar{display:flex;gap:12px;margin-bottom:16px;align-items:stretch;}
-.ibar>.ig{align-self:stretch;}
-.ig{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 14px;flex:1;box-shadow:0 1px 2px rgba(0,0,0,.035);}.ig-w{flex:1.4;}
+.ibar>.ig{align-self:stretch;display:flex;flex-direction:column;}
+.ig{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;flex:1;box-shadow:0 1px 3px rgba(42,32,18,.05),0 1px 2px rgba(42,32,18,.03);transition:box-shadow .15s;}.ig-w{flex:1.4;}.ig-pm{flex:1.05;}
+.ig:focus-within{box-shadow:0 0 0 2px rgba(184,115,42,.15),0 2px 8px rgba(42,32,18,.07);}
 .cashcard{display:flex;flex-direction:column;}
 /* Subtraction-style comparison in Cash & Debt */
 .cashcard .paycmp{margin-top:auto;padding-top:18px;max-width:260px;}
@@ -86,10 +93,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
 .cashcard .cmp-line{border-top:2px solid rgba(17,24,39,.14);margin:6px 0 8px;}
 .cashcard .cmp-change .cmp-v{font-size:19px;}
 .cashcard .ltv-bar{margin-top:auto;}
-.igt{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--tx3);margin-bottom:12px;}
-.row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}.row:last-child{margin-bottom:0;}
+.igt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--tx3);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bdr2);}
+.row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}.row:last-child{margin-bottom:0;}
 .lbl{font-size:12px;font-weight:600;color:var(--tx2);min-width:102px;white-space:nowrap;flex-shrink:0;}
-.inp{flex:1;background:#fffdf8;border:1px solid var(--ib);border-radius:10px;padding:8px 12px;color:var(--tx);font-family:var(--sans);font-size:13px;font-weight:500;outline:0;min-width:0;}.inp:focus{border-color:rgba(76,110,245,.75);box-shadow:0 0 0 3px rgba(76,110,245,.14);}.inp::placeholder{color:#9ca3af;font-weight:400;}
+.inp{flex:1;background:#fffef9;border:1px solid var(--ib);border-radius:8px;padding:7px 11px;color:var(--tx);font-family:var(--sans);font-size:13px;font-weight:500;outline:0;min-width:0;transition:border-color .12s,box-shadow .12s;}.inp:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(184,115,42,.12);}.inp::placeholder{color:#b5a898;font-weight:400;}
 .inp-n{font-weight:650;text-align:right;width:112px;flex:none;font-variant-numeric:tabular-nums;}
 .inp-dis{background:#f3f4f6;color:var(--tx3);cursor:default;}
 select.inp{cursor:pointer;appearance:auto;}
@@ -101,7 +108,7 @@ select.inp{cursor:pointer;appearance:auto;}
 
 /* Products */
 .products{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-.prod{background:var(--card);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 10px rgba(0,0,0,.06);transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;} .prod:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,.09);}
+.prod{background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(42,32,18,.06),0 1px 2px rgba(42,32,18,.04);transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;} .prod:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(42,32,18,.1);}
 .prod-h{padding:8px 10px;font-size:10.5px;font-weight:800;letter-spacing:.08em;border-bottom:1px solid;display:flex;align-items:center;gap:8px;min-height:36px;text-transform:uppercase;}
 .ph1{background:var(--c1b);color:var(--c1);border-color:var(--c1d);}
 .ph2{background:var(--c2b);color:var(--c2);border-color:var(--c2d);}
@@ -113,17 +120,17 @@ select.inp{cursor:pointer;appearance:auto;}
 .prod-b{padding:8px 10px;flex:1;}
 .pr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:4px;}.pr:last-child{margin-bottom:0;}
 .pr-l{font-size:10px;font-weight:500;color:var(--tx3);line-height:1.3;flex:1;}.pr-v{font-weight:700;font-size:12.5px;color:var(--tx);white-space:nowrap;}
-.pri{font-weight:700;font-size:13px;text-align:right;width:60px;padding:3px 5px;border:1.5px solid var(--ib);border-radius:4px;outline:0;color:var(--tx);background:#fff;font-family:var(--sans);}.pri:focus{border-color:var(--foc);}.pri[readonly]{background:#f3f4f6;color:var(--tx3);cursor:default;border-color:var(--bdr);}
-.prod-f{padding:10px 10px;background:var(--bg2);border-top:1px solid var(--bdr2);}
-.pft{display:flex;align-items:baseline;justify-content:space-between;gap:4px;}.pft-l{font-size:9.5px;font-weight:700;color:var(--tx2);line-height:1.2;}.pft-v{font-weight:800;font-size:18px;white-space:nowrap;font-variant-numeric:tabular-nums;}
-.pfs{display:flex;align-items:baseline;justify-content:space-between;margin-top:3px;}.pfs-l{font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;}.pfs-v{font-weight:700;font-size:13px;}
+.pri{font-weight:700;font-size:13px;text-align:right;width:60px;padding:3px 5px;border:1.5px solid var(--ib);border-radius:5px;outline:0;color:var(--tx);background:#fffef9;font-family:var(--sans);font-variant-numeric:tabular-nums;transition:border-color .12s;}.pri:focus{border-color:var(--amber);box-shadow:0 0 0 2px rgba(184,115,42,.12);}.pri[readonly]{background:var(--bg2);color:var(--tx3);cursor:default;border-color:var(--bdr);}
+.prod-f{padding:11px 12px;background:var(--card2);border-top:1px solid var(--bdr);}
+.pft{display:flex;align-items:baseline;justify-content:space-between;gap:4px;}.pft-l{font-size:9px;font-weight:700;color:var(--tx3);line-height:1.2;text-transform:uppercase;letter-spacing:.05em;}.pft-v{font-weight:800;font-size:20px;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+.pfs{display:flex;align-items:baseline;justify-content:space-between;margin-top:5px;padding-top:5px;border-top:1px solid rgba(42,32,18,.06);}.pfs-l{font-size:9.5px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;}.pfs-v{font-weight:800;font-size:15px;letter-spacing:-.01em;}
 .sv-p{color:var(--grn);}.sv-n{color:var(--red);}
-.prod.best-calc{border-color:rgba(47,122,77,.45);background:linear-gradient(0deg, rgba(231,243,234,.55), rgba(231,243,234,.55));box-shadow:0 10px 24px rgba(0,0,0,.08);} .prod.best-calc .prod-f{background:rgba(231,243,234,.70);}
+.prod.best-calc{border-color:rgba(184,115,42,.4);background:linear-gradient(180deg,#fff 0%,rgba(255,248,238,.6) 100%);box-shadow:0 8px 24px rgba(184,115,42,.12);} .prod.best-calc .prod-f{background:rgba(255,244,225,.55);}
 
 /* Bottom */
-.bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-.bc{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 14px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
-.bct{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--tx3);margin-bottom:12px;}
+.bottom{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-bottom:14px;align-items:stretch;}
+.bc{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;box-shadow:0 1px 3px rgba(42,32,18,.05),0 1px 2px rgba(42,32,18,.03);}
+.bct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--tx3);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bdr2);}
 .ccr{display:flex;align-items:center;gap:5px;margin-bottom:5px;font-size:12px;}
 .ccr-l{color:var(--tx2);font-weight:500;min-width:110px;font-size:11px;white-space:nowrap;}
 .ccr-inp{font-weight:600;width:60px;text-align:right;padding:3px 5px;border:1.5px solid var(--ib);border-radius:4px;outline:0;font-size:12px;color:var(--tx);font-family:var(--sans);}.ccr-inp:focus{border-color:var(--foc);}
@@ -149,11 +156,20 @@ select.inp{cursor:pointer;appearance:auto;}
 .d-tots{margin-top:6px;padding-top:5px;border-top:1.5px solid var(--bdr);font-size:11.5px;color:var(--tx2);line-height:1.9;}.d-tots b{font-weight:700;color:var(--tx);}
 
 /* Right */
-.right{border-left:1px solid var(--bdr);display:flex;flex-direction:column;background:var(--card);min-height:0;}
-.tabs{display:flex;border-bottom:1px solid var(--bdr);}.tab{flex:1;padding:10px 0;font-size:12px;font-weight:700;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;text-align:center;}.tab:hover{color:var(--tx2);}.tab.on{color:var(--foc);border-bottom-color:var(--foc);}
+.right{border-left:1px solid var(--bdr);display:flex;flex-direction:column;background:var(--card);min-height:0;transition:width .22s cubic-bezier(.4,0,.2,1),min-width .22s cubic-bezier(.4,0,.2,1);overflow:hidden;}
+.right.collapsed{width:36px!important;min-width:36px!important;}
+.right.collapsed .tabs,.right.collapsed .tc,.right.collapsed .tbar{display:none!important;}
+.panel-toggle{width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;background:transparent;color:var(--tx3);border-radius:6px;transition:color .14s,background .14s;flex-shrink:0;}
+.panel-toggle:hover{color:var(--amber);background:var(--amber-soft);}
+.panel-toggle-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-bottom:1px solid var(--bdr);background:var(--card);flex-shrink:0;}
+.panel-toggle-bar .panel-label{font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;overflow:hidden;transition:opacity .15s;}
+.right.collapsed .panel-toggle-bar{flex-direction:column;justify-content:flex-start;padding:6px 0;border-bottom:none;}
+.right.collapsed .panel-label{opacity:0;width:0;}
+.right.collapsed .panel-toggle-bar{border-bottom:1px solid var(--bdr);}
+.tabs{display:flex;border-bottom:1px solid var(--bdr);background:var(--card);}.tab{flex:1;padding:13px 0;font-size:11.5px;font-weight:700;color:var(--tx3);cursor:pointer;border-bottom:2.5px solid transparent;text-align:center;letter-spacing:.02em;text-transform:uppercase;transition:color .15s;}.tab:hover{color:var(--tx2);background:var(--card2);}.tab.on{color:var(--amber);border-bottom-color:var(--amber);}
 .tc{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
 .tp{display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0;}.tp.on{display:flex;}
-.draft{flex:1;padding:18px 18px;border:0;outline:0;font-family:var(--sans);font-size:13.5px;line-height:1.8;color:var(--tx);resize:none;white-space:pre-wrap;background:var(--card2);overflow-y:auto;min-height:0;;-webkit-overflow-scrolling:touch;}
+.draft{flex:1;padding:20px;border:0;outline:0;font-family:var(--sans);font-size:13px;line-height:1.85;color:var(--tx2);resize:none;white-space:pre-wrap;background:var(--card2);overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch;box-shadow:inset 0 2px 4px rgba(42,32,18,.04);}
 .help{white-space:normal;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;}
 .help .h1{font-size:16px;font-weight:800;margin:0 0 10px 0;}
 .help .h2{font-size:14px;font-weight:800;margin:18px 0 8px 0;}
@@ -188,13 +204,13 @@ select.inp{cursor:pointer;appearance:auto;}
 .draft.help .two-paths{padding:8px 12px;background:rgba(17,24,39,.04);border-radius:10px;}
 .draft.help .quote{padding:10px 12px;border-left:3px solid rgba(47,122,77,.55);background:rgba(47,122,77,.06);border-radius:10px;font-style:italic;}
 .tbar{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--bdr);background:var(--bg2);flex-shrink:0;flex-wrap:wrap;}
-.tb{padding:7px 10px;border:1.5px solid var(--bdr);background:#fff;color:var(--tx);border-radius:var(--r);cursor:pointer;font-size:11px;font-weight:700;font-family:var(--sans);}.tb:hover{border-color:var(--foc);color:var(--foc);}.tb.ok{border-color:var(--gb);color:var(--grn);background:var(--gbg);}
-.tb-a{border-color:var(--foc);color:var(--foc);background:var(--fb);}.tb-a:hover{background:var(--foc);color:#fff;}
+.tb{padding:7px 12px;border:1.5px solid var(--bdr);background:#fff;color:var(--tx2);border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;font-family:var(--sans);letter-spacing:.01em;transition:all .15s;}.tb:hover{border-color:var(--amber);color:var(--amber);}.tb.ok{border-color:var(--gb);color:var(--grn);background:var(--gbg);}
+.tb-a{border-color:var(--amber);color:var(--amber);background:var(--amber-soft);}.tb-a:hover{background:var(--amber);color:#fff;}
 .tb-o{border-color:#7c3aed;color:#7c3aed;background:#f5f3ff;}.tb-o:hover{background:#7c3aed;color:#fff;}
 
 /* Notes card: textarea should fill card height */
 .notescard{display:flex;flex-direction:column;overflow:hidden;}
-.notescard .nta{flex:1;min-height:140px;resize:none;}
+.notescard .nta{flex:1;min-height:80px;resize:none;}
 
 /* Credit score input: left align like a normal field */
 #cCS{text-align:left;padding-left:12px;}
@@ -207,11 +223,12 @@ select.inp{cursor:pointer;appearance:auto;}
 <style>
 .short{width:60px;text-align:center;}
 .input-group{display:flex;align-items:center;gap:4px;}
+
 </style>
 
 </head>
 <body>
-<header><div class="logo">Atlas<span class="tagline">Clarity. Direction. Action.</span></div><div class="hdr-r"><div class="tmr" id="tmr">0:00</div><div class="upd" id="lastUpd" title="Last time inputs changed">Updated: 9:56 AM</div><button class="btn" onclick="newCall()" fdprocessedid="zac828">New Call</button></div></header>
+<header><div class="logo">ATLAS</div><div class="hdr-r"><div class="tmr" id="tmr">0:00</div><div class="upd" id="lastUpd" title="Last time inputs changed">Updated: 9:56 AM</div><button class="btn" onclick="newCall()" fdprocessedid="zac828">New Call</button></div></header>
 <div class="main">
 <div class="sheet">
 
@@ -226,16 +243,31 @@ select.inp{cursor:pointer;appearance:auto;}
 <div class="row"><span class="lbl">Scenario</span><select class="inp" id="cGl" onchange="rc()" fdprocessedid="xc1xxu"><option value="">Select...</option><option>Debt Consolidation</option><option>Cash Out</option><option>Home Improvement</option><option>Rate/Term</option><option>Shopping/Unsure</option><option>Other</option></select></div>
 <div class="row"><span class="lbl">Employment</span><select class="inp" id="cW2" fdprocessedid="fp55fi"><option value="">Select...</option><option>W2</option><option>Self-Employed</option><option>Retired</option><option>Other</option></select></div>
 </div>
-<div class="ig ig-w"><div class="igt">Property &amp; Mortgage</div>
-<div class="row"><span class="lbl">Home Value</span><input class="inp inp-n" id="cHV" placeholder="$500,000" oninput="rc()" fdprocessedid="h6y4j8"></div>
-<div class="row"><span class="lbl">Mortgage Balance</span><input class="inp inp-n" id="cBal" placeholder="$100,000" oninput="rc()" fdprocessedid="cz8xvc"></div>
-<div class="row"><span class="lbl">Mortgage Payment</span><input class="inp inp-n" id="cMP" placeholder="with escrow" oninput="rc()" fdprocessedid="dvi2q"></div>
-<div class="row"><span class="lbl">Monthly Escrow</span><input class="inp inp-n" id="cEsc" placeholder="$200" oninput="rc()" fdprocessedid="l8c63z"></div>
-<div class="row"><span class="lbl">Max Cash @ 80% (after costs)</span><span class="lv" id="mx80">-</span></div>
-<div class="row"><span class="lbl">Max Cash @ 90% (after costs)</span><span class="lv" id="mx90">-</span></div>
-<div class="ltv-bar"><div class="ltv-i"><span class="ltv-l">LTV</span><span class="lv" id="dLTV">-</span></div><div class="ltv-i"><span class="ltv-l">CLTV</span><span class="lv" id="dCLTV">-</span></div></div>
+<div class="ig ig-pm"><div class="igt">Property &amp; Mortgage</div>
+<div class="row"><span class="lbl">Home Value</span><input class="inp inp-n" id="cHV" placeholder="$500,000" oninput="rc()"></div>
+<div class="row"><span class="lbl">Mortgage Balance</span><input class="inp inp-n" id="cBal" placeholder="$100,000" oninput="rc()"></div>
+<div class="row"><span class="lbl">Mortgage Payment</span><input class="inp inp-n" id="cMP" placeholder="with escrow" oninput="rc()"></div>
+<div class="row"><span class="lbl">Monthly Escrow</span><input class="inp inp-n" id="cEsc" placeholder="$200" oninput="rc()"></div>
+<div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--bdr2);display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;">
+  <div class="ltv-i" style="flex-direction:column;gap:1px;align-items:flex-start;">
+    <span class="ltv-l">LTV</span>
+    <span class="lv" id="dLTV" style="font-size:16px;">-</span>
+  </div>
+  <div class="ltv-i" style="flex-direction:column;gap:1px;align-items:flex-start;">
+    <span class="ltv-l">CLTV</span>
+    <span class="lv" id="dCLTV" style="font-size:16px;">-</span>
+  </div>
+  <div class="ltv-i" style="flex-direction:column;gap:1px;align-items:flex-start;">
+    <span class="ltv-l" style="font-size:10px;">Max Cash @ 80%</span>
+    <span class="lv" id="mx80" style="font-size:14px;">-</span>
+  </div>
+  <div class="ltv-i" style="flex-direction:column;gap:1px;align-items:flex-start;">
+    <span class="ltv-l" style="font-size:10px;">Max Cash @ 90%</span>
+    <span class="lv" id="mx90" style="font-size:14px;">-</span>
+  </div>
 </div>
-<div class="ig cashcard"><div class="igt">Cash &amp; Debt</div>
+</div>
+<div class="ig cashcard" style="flex:0.85;"><div class="igt">Cash &amp; Debt</div>
 <div class="row"><span class="lbl" style="min-width:100px;">Cash Out</span><input class="inp inp-n" id="cCO" placeholder="$75,000" oninput="rc()" fdprocessedid="gtc5q5"></div>
 <div class="row"><span class="lbl" style="min-width:100px;" id="dpLbl">Monthly Debt</span><input class="inp inp-n" id="cDP" placeholder="$2,000" oninput="rc()" fdprocessedid="aakhai"></div>
 <div id="dpHint" style="font-size:10px;color:var(--tx3);font-style:italic;display:none;margin-bottom:4px;">Using itemized debts below</div>
@@ -255,7 +287,12 @@ select.inp{cursor:pointer;appearance:auto;}
   </div>
 </div>
 </div>
-<div class="ig notescard"><div class="igt">Internal Notes (not sent to client)</div><textarea class="nta" id="cNt" placeholder="Internal only..."></textarea></div>
+<div class="ig" style="flex:1.6;">
+  <div class="igt">Debts to Be Paid Off</div>
+  <table class="dt"><thead><tr><th>Liability Type</th><th style="width:78px">Balance</th><th style="width:78px">Monthly Pmt</th><th style="width:24px"></th></tr></thead><tbody id="dB"></tbody></table>
+  <button class="d-add" onclick="addD()">+ Add</button>
+  <div class="d-tots" style="margin-top:auto;"><div>Total Payoff: <b id="dTB">$0</b></div><div>Pmt Eliminated: <b id="dTP">$0</b></div></div>
+</div>
 </div>
 
 <!-- PRODUCTS -->
@@ -302,8 +339,8 @@ select.inp{cursor:pointer;appearance:auto;}
 <div class="bc"><div class="bct">Closing Cost Estimates</div>
 <div class="cc-help">The closing cost percentage is based on the cash out (2nd mortgage) or the combined mortgage balance + cash out (refinance)</div>
 <div class="ccr"><span class="ccr-l">Closing Costs</span>
-<input class="ccr-inp" id="ccVal" value="2.5" oninput="rc()" fdprocessedid="av8189"><span class="ccr-tog" id="ccTog" onclick="togCC()">%</span><span class="ccr-val" id="ccOut">$0</span></div>
-<div class="ccr"><span class="ccr-l">Prepaid Escrow (months)</span><input class="ccr-inp" id="ccEscMo" value="3" oninput="rc()" fdprocessedid="by2o8s"><span class="ccr-tog ccr-sp" aria-hidden="true"></span><span class="ccr-val" id="ccEscOut">$0</span></div>
+<input class="ccr-inp" id="ccVal" value="2.5" oninput="rc()"><span class="ccr-tog" id="ccTog" onclick="togCC()">%</span><span class="ccr-val" id="ccOut">$0</span></div>
+<div class="ccr"><span class="ccr-l">Prepaid Escrow (months)</span><input class="ccr-inp" id="ccEscMo" value="3" oninput="rc()"><span class="ccr-tog ccr-sp" aria-hidden="true"></span><span class="ccr-val" id="ccEscOut">$0</span></div>
 <div style="display:none;"><span id="ccT">$0</span></div>
 <div class="va-section">
 <div class="va-row"><input type="checkbox" class="va-chk" id="vaOn" onchange="rc()"><span class="va-lbl">VA Loan (apply VA funding fee)</span></div>
@@ -314,16 +351,25 @@ select.inp{cursor:pointer;appearance:auto;}
 </div></div>
 </div>
 
-<div class="bc"><div class="bct">Debts to Be Paid Off With This Loan</div>
-<table class="dt"><thead><tr><th>Liability Type</th><th style="width:90px">Balance</th><th style="width:90px">Monthly Payment</th><th style="width:24px"></th></tr></thead><tbody id="dB"></tbody></table>
-<button class="d-add" onclick="addD()" fdprocessedid="rx58fp">+ Add</button>
-<div class="d-tots"><div>Total Debt Being Paid Off: <b id="dTB">$0</b></div><div>Total Monthly Payments Eliminated: <b id="dTP">$0</b></div></div></div>
+<div class="bc notescard" style="display:flex;flex-direction:column;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bdr2);">
+    <div class="bct" style="margin-bottom:0;padding-bottom:0;border-bottom:none;">Internal Notes <span style="font-weight:500;font-size:9.5px;letter-spacing:.04em;opacity:.5;">(not sent to client)</span></div>
+    <span id="noteCharCount" style="font-size:10px;color:var(--tx3);font-variant-numeric:tabular-nums;"></span>
+  </div>
+  <textarea class="nta" id="cNt" placeholder="Internal only..." style="flex:1;min-height:80px;"></textarea>
+</div>
 </div>
 
 </div>
 
 <!-- RIGHT PANEL -->
-<div class="right">
+<div class="right" id="rightPanel">
+<div class="panel-toggle-bar">
+  <span class="panel-label">Communication</span>
+  <button class="panel-toggle" id="panelToggleBtn" onclick="togglePanel()" title="Toggle panel">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
 <div class="tabs"><div class="tab on" onclick="stab(&#39;email&#39;,this)">Email</div><div class="tab" onclick="stab(&#39;sms&#39;,this)">SMS</div><div class="tab" onclick="stab(&#39;crm&#39;,this)">CRM</div><div class="tab" onclick="stab(&#39;help&#39;,this)">Help</div></div>
 <div class="tc">
 <div class="tp on" id="p-email"><textarea class="draft" id="dE" placeholder="Email draft..."></textarea></div>
@@ -332,116 +378,64 @@ select.inp{cursor:pointer;appearance:auto;}
 
 <div class="tp" id="p-help">
   <div class="draft help" id="helpText" tabindex="0" role="document" aria-label="Atlas Help">
-    <h2>Why Atlas Exists <span class="sub">(And Why Speed Pays)</span></h2>
+    <h2>How to Use Atlas <span class="sub">A First-Time User Guide</span></h2>
 
-    <p><b>Let’s start with something uncomfortable:</b></p>
-    <p class="callout"><b>Momentum dies fast.</b></p>
+    <p>Atlas is a live scenario tool you run <b>during or right after a client call</b>. Fill in what you know, and the products and payment comparison update instantly. Here's how to move through it.</p>
 
-    <p>The MIT / InsideSales Lead Response Management study found that the odds of contacting a lead drop dramatically when response time slips — roughly <b>100x lower</b> at 30 minutes compared to 5. Qualification odds fall hard too.</p>
+    <h3>Step 1 — Start a New Call</h3>
+    <p>Click <b>New Call</b> in the top-right to clear all fields and reset the timer. Do this at the start of every conversation so you're working with a clean slate.</p>
+    <p>The timer starts automatically when you begin typing — useful for tracking call length.</p>
 
-    <p><b>Translation:</b><br>
-    Time doesn’t “cool things off.”<br>
-    Time quietly kills deals.</p>
+    <h3>Step 2 — Fill In the Client Section</h3>
+    <p>Enter the client's <b>name</b> (used to personalize the email and SMS drafts), <b>email</b>, <b>property address</b>, <b>credit score</b>, <b>scenario</b>, and <b>employment type</b>. You don't need all of these to get useful numbers — start with what you have.</p>
+    <p>The <b>Scenario</b> dropdown (Debt Consolidation, Cash Out, Rate/Term, etc.) frames the situation and drives what the message drafts say on the right panel.</p>
 
-    <p>Borrowers don’t wake up thinking,<br>
-    <i>“I hate my loan officer's solution.”</i></p>
+    <h3>Step 3 — Enter Property &amp; Mortgage Info</h3>
+    <p>Enter the <b>Home Value</b>, <b>Mortgage Balance</b>, <b>Mortgage Payment</b> (with escrow), and <b>Monthly Escrow</b>. As you type, the LTV, CLTV, and max available equity at 80% and 90% calculate automatically at the bottom of that card.</p>
+    <p class="callout"><b>Tip:</b> Dollar fields support quick math — type <code>300+150</code> or <code>=300+150</code> and it calculates inline. No need to pre-add numbers.</p>
 
-    <p>They wake up thinking:</p>
+    <h3>Step 4 — Cash &amp; Debt</h3>
+    <p>If the client wants to pull cash out, enter the amount in <b>Cash Out</b>. For debts to be paid off, use the <b>Debts to Be Paid Off</b> table — click <b>+ Add</b> to add rows with liability type, balance, and monthly payment. Atlas totals the payoffs and eliminated payments and feeds them into each product's loan amount automatically.</p>
+    <p>The <b>Monthly Debt</b> field (or the itemized table) drives the current vs. new payment comparison shown in the Cash &amp; Debt card.</p>
+
+    <h3>Step 5 — Review the Products</h3>
+    <p>The four product cards across the top — <b>Fixed Rate Home Equity Loan</b>, <b>Interest Only HELOC</b>, <b>VA &amp; Conventional Refi</b>, and <b>FHA Refi</b> — update live as you enter data.</p>
     <ul>
-      <li>“I’ll look at it later.”</li>
-      <li>“Maybe we should shop it.”</li>
-      <li>“I forgot what the numbers were.”</li>
+      <li>Use the <b>checkbox</b> on each card header to include or exclude that product.</li>
+      <li>Edit the <b>Rate</b> and <b>Term</b> fields directly on each card to match current pricing.</li>
+      <li>Click the <b>&#9734; star</b> to mark a card as the recommended option — this highlights it and personalizes the message drafts.</li>
+      <li>Each card shows the loan amount (including financed closing costs), monthly payment, total housing cost, and savings vs. the client's current situation.</li>
     </ul>
 
-    <p>And just like that, momentum is gone.</p>
+    <h3>Step 6 — Closing Costs &amp; VA</h3>
+    <p>The <b>Closing Cost Estimates</b> panel (bottom-left) lets you set closing costs as a percentage or flat dollar amount, and adjust prepaid escrow months. These get financed into each product's loan amount automatically.</p>
+    <p>If applicable, check <b>VA Loan</b> to apply a VA funding fee, then select the correct fee type (IRRRL, Cash-Out First Use, etc.) from the dropdown.</p>
 
-    <p><b>Atlas exists to prevent that.</b></p>
-    <p>It turns:</p>
-    <p class="flow"><b>Conversation → Clarity → Decision → Application</b></p>
-    <p>…without the awkward “let me follow up next week.”</p>
+    <h3>Step 7 — Use the Right Panel</h3>
+    <p>The tabs on the right generate ready-to-send communication based on everything you've entered:</p>
+    <ul>
+      <li><b>Email</b> — a full recap email personalized with the client's name, scenario, and the starred product.</li>
+      <li><b>SMS</b> — a short text summary to send right after the call.</li>
+      <li><b>CRM</b> — a structured internal note formatted for pasting into your CRM.</li>
+    </ul>
+    <p>Hit <b>Regenerate</b> to refresh drafts any time you change inputs. Use <b>Copy</b> to copy the current draft, <b>Email to Client</b> to open it in Outlook, or <b>Email to Myself</b> to send a copy to yourself.</p>
 
-    <h3>How Atlas Actually Makes You Money</h3>
-    <p><i>Spoiler: it’s not the math.</i></p>
-    <p>The math is necessary.<br>
-    The <b>speed</b> is profitable.</p>
+    <h3>Internal Notes</h3>
+    <p>The <b>Internal Notes</b> box (bottom-right of the main panel) is a scratchpad for anything you want to track that shouldn't appear in client-facing messages. It's never included in any draft.</p>
 
-    <ol>
-      <li>
-        <b>Instant Clarity Builds Confidence</b>
-        <p>When you run LTV, max cash at 80% / 90%, payment impact — <b>live</b> — something happens.</p>
-        <p>You stop sounding like a loan officer.<br>
-        You start sounding like authority.</p>
-        <p>Confidence is contagious. And confidence creates the turning point — that moment when the borrower shifts from speculative to engaged.</p>
-      </li>
-
-      <li>
-        <b>Structure Eliminates Rambling</b>
-        <p>Atlas forces the call into a clean flow:</p>
-        <p class="two-paths"><b>Keep</b> the mortgage<br><b>or</b><br><b>Replace</b> the mortgage</p>
-        <p>Highlight the winner. Deliver the one‑sentence payoff. Move forward.</p>
-        <p>No wandering. No “let me think about it.” No fuzzy ending. <b>Clarity reduces hesitation.</b></p>
-      </li>
-
-      <li>
-        <b>The Application Is Where the Money Is</b>
-        <p>This is the part people miss.</p>
-        <p>The recap email is not the goal.<br>
-        The soft application is not “paperwork.”<br>
-        <b>It is the conversion moment.</b></p>
-
-        <p>Atlas works best when the borrower completes the quick 5‑minute form:</p>
-        <ul>
-          <li>While the numbers are fresh</li>
-          <li>While the confidence is high</li>
-          <li>While they still feel the relief</li>
-        </ul>
-
-        <p>If you end the call and say,<br>
-        “Just fill that out later,”</p>
-
-        <p class="callout">…you’ve just handed momentum back to time.<br><b>And time is undefeated.</b></p>
-
-        <p>The users who see the biggest lift with Atlas are the ones who move borrowers into the application immediately — on the call or right after.</p>
-        <p><b>Speed to clarity</b> is good.<br>
-        <b>Speed to application</b> is better.</p>
-      </li>
-    </ol>
-
-    <h3>How To Use Atlas Like a Pro</h3>
-    <p><b>Atlas is not a calculator.</b><br>
-    It’s a momentum engine.</p>
-
-    <h4>Phase 1: Run It Live</h4>
-    <p>Enter numbers in real time. Let them see how quickly answers appear.</p>
-    <p><b>Speed builds authority.</b> Authority builds trust. Trust builds action.</p>
-
-    <h4>Phase 2: Present Two Paths</h4>
-    <p>Always simplify the decision:</p>
-    <p class="two-paths"><b>Keep</b> or <b>Replace</b></p>
-    <p>Then clearly choose the winner.</p>
-    <p>People don’t stall because they need more options.<br>
-    They stall because they don’t know which option is right.<br>
-    <b>Remove the ambiguity.</b></p>
-
-    <h4>Phase 3: Move Immediately</h4>
-    <p>Do not end with, “Let me know what you think.”</p>
-    <p>End with direction:</p>
-    <p class="quote">“I’m sending the recap now. At the bottom is a quick 5‑minute form that lets me lock this in accurately. Want to knock it out while I’m here so you’re done?”</p>
-
-    <p>Then guide them: <b>Open → Click → Start.</b></p>
-    <p>Small commitments create big outcomes.</p>
-
-    <h3>The Philosophy</h3>
-    <p><b>Momentum is perishable.</b></p>
-    <p>You don’t need to push harder.<br>
-    You need to move faster.</p>
-    <p>Atlas doesn’t close deals for you.<br>
-    It removes the delay between confidence and commitment.</p>
-
-    <p class="callout"><b>And that gap?</b><br>
-    That’s where most deals die.</p>
-
-    <p class="flow"><b>Close the gap.</b></p>
+    <h3>Keyboard Shortcuts</h3>
+    <p class="callout">
+      <b>Alt + 1</b> — Copy Email draft<br>
+      <b>Alt + 2</b> — Copy SMS draft<br>
+      <b>Alt + 3</b> — Copy CRM note<br>
+      <b>Alt + R</b> — Regenerate drafts<br>
+      <b>Alt + C</b> — Email to Client<br>
+      <b>Alt + M</b> — Email to Myself<br>
+      <b>Alt + N</b> — New Call<br>
+      <b>Alt + Z</b> — Undo<br>
+      <b>Alt + /</b> — Jump to Cash Out field<br>
+      <b>Alt + D</b> — Jump to Debts table
+    </p>
   </div>
 </div>
 <div class="tbar">
@@ -536,13 +530,39 @@ function togStar(el){const p=el.dataset.p;if(bestStar===p){bestStar=null;}else{b
 // Tabs
 function stab(t,el){document.querySelectorAll('.tab').forEach(e=>e.classList.remove('on'));document.querySelectorAll('.tp').forEach(e=>e.classList.remove('on'));el.classList.add('on');$('p-'+t).classList.add('on');aTab=t;}
 
-// New call
-function newCall(){clearInterval(ti);ti=null;ts=0;tS=false;$('tmr').textContent='0:00';$('tmr').classList.remove('on');
+// New call — preserves rates and terms on product cards
+function newCall(){
+  // Save rate/term values before clearing
+  const rateKeys = ['hlnR','hlnT','hloR','hloT','cnvR','cnvT','fhaR','fhaT'];
+  const savedRates = {};
+  rateKeys.forEach(id => { const el = $(id); if(el) savedRates[id] = el.value; });
+
+  clearInterval(ti);ti=null;ts=0;tS=false;$('tmr').textContent='0:00';$('tmr').classList.remove('on');
 const dv={ccVal:'2.5',ccEscMo:'3',hlnT:'30',hloT:'10',cnvT:'30',fhaT:'30'};
 document.querySelectorAll('input:not([type=checkbox]),textarea,select').forEach(e=>{if(e.classList.contains('draft'))e.value='';else if(e.tagName==='SELECT')e.selectedIndex=0;else e.value=dv[e.id]||'';});
 document.querySelectorAll('.pchk').forEach(e=>{e.checked=e.id==='chkCnv';});
 $('vaOn').checked=false;bestStar=null;document.querySelectorAll('.star').forEach(s=>{s.textContent='☆';s.classList.remove('on');});
-$('dB').innerHTML='';dirty={email:false,sms:false,crm:false};rc();}
+$('dB').innerHTML='';dirty={email:false,sms:false,crm:false};
+
+  // Restore rates and terms
+  rateKeys.forEach(id => { const el = $(id); if(el && savedRates[id] !== undefined) el.value = savedRates[id]; });
+
+  rc();
+}
+
+// Panel toggle
+let panelOpen = true;
+function togglePanel(){
+  panelOpen = !panelOpen;
+  const panel = $('rightPanel');
+  const main = document.querySelector('.main');
+  const btn = $('panelToggleBtn');
+  panel.classList.toggle('collapsed', !panelOpen);
+  main.classList.toggle('panel-closed', !panelOpen);
+  // Flip the arrow
+  btn.querySelector('svg path').setAttribute('d', panelOpen ? 'M10 3L5 8L10 13' : 'M6 3L11 8L6 13');
+  btn.title = panelOpen ? 'Collapse panel' : 'Expand panel';
+}
 
 // Save / Load (local, no login)
 function addD(){
@@ -1366,7 +1386,7 @@ rc();
   }
 
   function focusDebts(){
-    const container = document.querySelector('.bc .dt')?.closest('.bc') || document.querySelector('.dt')?.closest('.bc');
+    const container = document.querySelector('.ig .dt')?.closest('.ig');
     if(container){ container.scrollIntoView({behavior:'smooth', block:'center'}); }
     const firstSel = document.querySelector('#dB tr select');
     if(firstSel){ firstSel.focus(); return; }
@@ -1410,4 +1430,66 @@ rc();
 </script>
 
 
+<script>
+(function(){
+  // Auto-focus name on load
+  var nm = document.getElementById('cNm');
+  if(nm) setTimeout(function(){ nm.focus(); }, 80);
+
+  // Notes char counter
+  var ntEl = document.getElementById('cNt');
+  var ccEl = document.getElementById('noteCharCount');
+  if(ntEl && ccEl){
+    function updateCC(){ var n = ntEl.value.length; ccEl.textContent = n > 0 ? n + ' chars' : ''; }
+    ntEl.addEventListener('input', updateCC);
+  }
+
+  // Number inputs: select on focus, format on blur
+  function fmtD(n){ return n === 0 ? '' : '$' + Math.round(n).toLocaleString('en-US'); }
+  function parseV(s){ return parseFloat(String(s).replace(/[^0-9.]/g,'')) || 0; }
+  ['cHV','cBal','cMP','cEsc','cCO','cDP'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('focus', function(){
+      var n = parseV(el.value);
+      if(n > 0) el.value = Math.round(n);
+      setTimeout(function(){ el.select(); }, 0);
+    });
+    el.addEventListener('blur', function(){
+      var n = parseV(el.value);
+      if(n > 0) el.value = fmtD(n);
+      if(typeof rc === 'function') rc();
+    });
+  });
+
+  // Clicking prod-h label area toggles checkbox
+  document.querySelectorAll('.prod-h').forEach(function(h){
+    h.style.cursor = 'pointer';
+    h.addEventListener('click', function(e){
+      if(e.target.classList.contains('pchk') || e.target.classList.contains('star')) return;
+      var chk = h.querySelector('.pchk');
+      if(chk){ chk.checked = !chk.checked; chk.dispatchEvent(new Event('change',{bubbles:true})); }
+    });
+  });
+
+  // Savings flash on value change
+  var prev = {};
+  var _rc = window.rc;
+  if(typeof _rc === 'function'){
+    window.rc = function(){
+      _rc.apply(this, arguments);
+      ['sHln','sHlo','sCnv','sFha','totChg'].forEach(function(id){
+        var el = document.getElementById(id);
+        if(!el) return;
+        var cur = el.textContent;
+        if(cur !== prev[id] && cur && cur !== '-'){
+          if(typeof el.animate === 'function') el.animate([{opacity:.1},{opacity:1}],{duration:300,easing:'ease-out'});
+          prev[id] = cur;
+        }
+      });
+    };
+  }
+})();
+
+</script>
 </div><span id="PING_IFRAME_FORM_DETECTION" style="display: none;"></span></body></html>
