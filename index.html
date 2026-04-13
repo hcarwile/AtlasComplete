@@ -45,8 +45,8 @@
 /* Daily Quote */
 .quote-card{background:var(--text);color:#fff;border-radius:12px;padding:20px 22px;margin-bottom:20px;position:relative;overflow:hidden}
 .quote-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(45,106,79,0.35) 0%,transparent 60%);pointer-events:none}
-.quote-mark{font-family:var(--serif);font-size:52px;line-height:1;color:rgba(255,255,255,0.12);position:absolute;top:10px;left:18px;font-style:italic}
-.quote-text{font-family:var(--serif);font-size:15px;font-style:italic;line-height:1.6;color:rgba(255,255,255,0.92);position:relative;z-index:1;padding-left:4px;margin-bottom:10px}
+.quote-mark{display:none}
+.quote-text{font-family:var(--sans);font-size:13px;font-style:normal;font-weight:400;line-height:1.65;color:rgba(255,255,255,0.88);position:relative;z-index:1;padding-left:4px;margin-bottom:10px}
 .quote-attr{font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:rgba(255,255,255,0.38);position:relative;z-index:1}
 
 .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
@@ -612,15 +612,23 @@ function renderDashboard() {
   const curFKey  = currentFiscalKey();
 
   // ── KPIs ──
-  const pipeline    = LOAN_ROWS.filter(r => r.fundingDate > today);
-  const pipeVol     = pipeline.reduce((s, r) => s + r.loanAmount, 0);
-
-  const fiscalMTD   = LOAN_ROWS.filter(r => r.fundingDate <= today && fiscalMonthKey(r.fundingDate) === curFKey);
+  // Current fiscal month: include future-dated loans still within the window (they're committed)
+  // Pipeline: future-dated loans that fall OUTSIDE the current fiscal month
+  const fiscalMTD   = LOAN_ROWS.filter(r => fiscalMonthKey(r.fundingDate) === curFKey);
   const fiscalMTDVol= fiscalMTD.reduce((s, r) => s + r.loanAmount, 0);
 
-  // YTD: all fiscal months whose key starts with this calendar year
+  const pipeline    = LOAN_ROWS.filter(r => r.fundingDate > today && fiscalMonthKey(r.fundingDate) !== curFKey);
+  const pipeVol     = pipeline.reduce((s, r) => s + r.loanAmount, 0);
+
+  // YTD: all fiscal months whose key starts with this calendar year, past months fully closed only
+  // Current fiscal month already counted via fiscalMTD above, so for prior months use <= today
   const thisYear    = String(new Date().getFullYear());
-  const fiscalYTD   = LOAN_ROWS.filter(r => r.fundingDate <= today && fiscalMonthKey(r.fundingDate).startsWith(thisYear));
+  const fiscalYTD   = LOAN_ROWS.filter(r => {
+    const fk = fiscalMonthKey(r.fundingDate);
+    if (!fk.startsWith(thisYear)) return false;
+    if (fk === curFKey) return true; // include all current-month loans (even future-dated)
+    return r.fundingDate <= today;   // prior months: only funded
+  });
   const fiscalYTDVol= fiscalYTD.reduce((s, r) => s + r.loanAmount, 0);
   const compMTD     = fiscalMTD.reduce((s, r) => s + r.compensation, 0);
   const compYTD     = fiscalYTD.reduce((s, r) => s + r.compensation, 0);
@@ -636,8 +644,9 @@ function renderDashboard() {
   const fiscalMonths6 = lastNFiscalMonths(6);
   const volByMonth = Object.fromEntries(fiscalMonths6.map(m => [m.key, 0]));
   LOAN_ROWS.forEach(r => {
-    if (r.fundingDate > today) return;
     const fk = fiscalMonthKey(r.fundingDate);
+    // Include future-dated loans only if they're in the current fiscal month
+    if (r.fundingDate > today && fk !== curFKey) return;
     if (fk in volByMonth) volByMonth[fk] += r.loanAmount;
   });
   const volVals = fiscalMonths6.map(m => volByMonth[m.key]);
@@ -713,8 +722,8 @@ function renderDashboard() {
   // ── Comp chart ──
   const compByMonth = Object.fromEntries(fiscalMonths6.map(m => [m.key, 0]));
   LOAN_ROWS.forEach(r => {
-    if (r.fundingDate > today) return;
     const fk = fiscalMonthKey(r.fundingDate);
+    if (r.fundingDate > today && fk !== curFKey) return;
     if (fk in compByMonth) compByMonth[fk] += r.compensation;
   });
   const compVals = fiscalMonths6.map(m => compByMonth[m.key]);
