@@ -1127,6 +1127,13 @@ function clearDealForm() {
 }
 
 async function saveDeal() {
+  // Re-fetch session in case currentUser wasn't set yet
+  if (!currentUser) {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) currentUser = session.user;
+  }
+  if (!currentUser) { alert('Not signed in — please refresh and sign in again.'); return; }
+
   const client = document.getElementById('df-client').value.trim();
   const type   = document.getElementById('df-type').value;
   const amount = parseFloat(document.getElementById('df-amount').value.replace(/[$,]/g,'')) || 0;
@@ -1137,18 +1144,18 @@ async function saveDeal() {
   if (!client) { document.getElementById('df-client').focus(); return; }
 
   const deal = {
-    user_id:    currentUser.id,
+    user_id:       currentUser.id,
     client,
-    loan_type:  type,
-    loan_amount:amount,
-    compensation:comp,
+    loan_type:     type,
+    loan_amount:   amount,
+    compensation:  comp,
     submitted_date: date || null,
     lender,
-    created_at: new Date().toISOString()
+    created_at:    new Date().toISOString()
   };
 
   const { data, error } = await sb.from('pipeline_deals').insert([deal]).select().single();
-  if (error) { alert('Save failed: ' + error.message); return; }
+  if (error) { alert('Save failed: ' + error.message); console.error(error); return; }
 
   pipelineDeals.unshift(data);
   renderPipeline();
@@ -1163,6 +1170,10 @@ async function removeDeal(id) {
 }
 
 async function loadPipeline() {
+  if (!currentUser) {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) currentUser = session.user;
+  }
   if (!currentUser) return;
   const { data, error } = await sb.from('pipeline_deals').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
   if (error) { console.error('Pipeline load error:', error); return; }
