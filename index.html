@@ -974,7 +974,12 @@ function loadOutreachPanel() {
 const SUPA_URL='https://ddimalkvoezwziyghuph.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkaW1hbGt2b2V6d3ppeWdodXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjAyNzQsImV4cCI6MjA5MDE5NjI3NH0.be30CaTC2XM699HVDL-mf4LSpRC5UPDPOX5mMSsqmyo';
 const sb = supabase.createClient(SUPA_URL, SUPA_KEY, {
-  auth: { storageKey: 'atlas-main-auth', autoRefreshToken: true, persistSession: true }
+  auth: {
+    storageKey: 'atlas-main-auth',
+    autoRefreshToken: true,
+    persistSession: true,
+    lock: (_name, _acquireTimeout, fn) => fn()
+  }
 });
 let currentUser = null, userProfile = null;
 let authMode = 'signin';
