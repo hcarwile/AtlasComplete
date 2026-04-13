@@ -911,7 +911,7 @@ function clientRowHtml(c){
   const genBadge=isGenerating?`<span class="ai-gen-badge"><span class="mini-spin"></span>AI writing…</span>`:'';
   const fuClass=c.isFollowUp?' followup-row-item':'';
   return `<div class="client-row${isLogged?' done-row':''}${fuClass}" id="row-${gi}" onclick="select(${gi})" tabindex="0" onkeydown="if(event.key==='Enter'){select(${gi});event.preventDefault();}">
-    <div class="row-check${isLogged?' checked':''}" onclick="if(event) event.stopPropagation();">${isLogged?'✓':''}</div>
+    <div class="row-check${isLogged?' checked':''}" onclick="event.stopPropagation();quickLog(${gi})">${isLogged?'✓':''}</div>
     <div class="row-body">
       <div class="row-top"><div class="row-name">${c.name}</div><div class="row-comp">${fmtComp(c.estimatedComp)}</div></div>
       <div class="row-trigger">${c.triggers[0]?.title||''}</div>
@@ -1234,7 +1234,23 @@ function selectPreset(gi, days){
     if(btn){ btn.classList.toggle('active-preset', d===days&&days!==0); btn.classList.toggle('skip-preset', d===0); }
   });
 }
-
+  function quickLog(gi){
+  const c=scored[gi];
+  if(outreachLog.some(l=>l.name===c.name&&l.date===TODAY)&&!hasDueFollowUp(c.name)) return;
+  const logEntry={
+    id:Date.now().toString()+Math.random().toString(36).slice(2),
+    name:c.name, date:TODAY, triggerType:c.triggers[0]?.title||'Unknown',
+    templateUsed:'', grade:'none', note:'', recontactDate:null, recontactDays:null
+  };
+  outreachLog.push(logEntry);
+  lsSave();
+  scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score);
+  updateStats(); renderSummaryBanner(); renderList();
+  if(selected===gi){ selected=null; document.getElementById('detail').innerHTML=`<div class="detail-empty animate-in"><div class="detail-empty-glyph">◎</div><div class="detail-empty-text">Contact logged</div><div class="detail-empty-sub">Select next contact to continue</div></div>`; }
+  const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
+  showToast(`${fn} logged · set re-contact in History`,null,'✓');
+}
+  
 function logOutreach(gi){
   const c=scored[gi];
   const days=_selectedPreset[gi]??null; // null = not set yet (not the same as skip)
