@@ -23,7 +23,7 @@
 .app{display:flex;flex-direction:column;height:100vh}.app.hidden{display:none}
 .nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:100}
 .nav-left{display:flex;align-items:center;gap:28px}.nav-logo{font-size:17px;font-weight:700;color:var(--accent);letter-spacing:-0.02em;display:flex;align-items:center;gap:7px}.nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--amber)}
-.nav-tabs{display:flex;gap:0}.nav-tab{padding:14px 16px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;position:relative;user-select:none}.nav-tab:hover{color:var(--text2)}.nav-tab.active{color:var(--text);border-bottom-color:var(--accent)}.nav-tab .badge{position:absolute;top:8px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+.nav-tabs{display:flex;gap:0}.nav-tab{padding:14px 14px;font-size:12.5px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;position:relative;user-select:none;white-space:nowrap}.nav-tab:hover{color:var(--text2)}.nav-tab.active{color:var(--text);border-bottom-color:var(--accent)}.nav-tab .badge{position:absolute;top:8px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--red)}
 .nav-right{display:flex;align-items:center;gap:14px}.nav-user{font-size:12px;color:var(--text3);font-weight:500}
 .nav-btn{height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text3);display:flex;align-items:center;gap:5px;transition:all 0.15s}.nav-btn:hover{border-color:var(--accent);color:var(--accent)}
 .view-container{flex:1;overflow:hidden;position:relative}.view{position:absolute;inset:0;display:none;overflow-y:auto}.view.active{display:block}.view iframe{width:100%;height:100%;border:none;display:block}
@@ -156,6 +156,16 @@ select.deal-form-input{cursor:pointer}
 .pipeline-total-item{display:flex;flex-direction:column;gap:2px}
 .pipeline-total-label{font-size:10px;font-weight:600;color:var(--text4);text-transform:uppercase;letter-spacing:0.04em}
 .pipeline-total-val{font-size:16px;font-weight:700;color:var(--text)}.pipeline-total-val.green{color:var(--accent)}
+
+/* Pipeline breakdown charts */
+.pipeline-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.breakdown-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.breakdown-title{font-size:10px;font-weight:600;color:var(--text4);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:12px}
+.breakdown-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}.breakdown-row:last-child{margin-bottom:0}
+.breakdown-label{font-size:11px;color:var(--text2);width:90px;flex-shrink:0;font-weight:500}
+.breakdown-bar-wrap{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.breakdown-bar{height:100%;border-radius:3px;transition:width 0.3s ease}
+.breakdown-val{font-size:11px;font-weight:600;color:var(--text3);width:44px;text-align:right;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -451,7 +461,7 @@ select.deal-form-input{cursor:pointer}
                 <th>Est. comp</th>
                 <th>Submitted</th>
                 <th>Lender</th>
-                <th style="text-align:right">Remove</th>
+                <th style="text-align:right"></th>
               </tr>
             </thead>
             <tbody id="dealTableBody"></tbody>
@@ -462,12 +472,25 @@ select.deal-form-input{cursor:pointer}
           No deals in progress — click <strong>+ Add deal</strong> to get started
         </div>
 
-        <!-- Totals -->
+        <!-- Totals row -->
         <div class="pipeline-totals" id="pipelineTotals" style="display:none">
           <div class="pipeline-total-item"><div class="pipeline-total-label">Deals in progress</div><div class="pipeline-total-val" id="ptCount">0</div></div>
           <div class="pipeline-total-item"><div class="pipeline-total-label">Total loan volume</div><div class="pipeline-total-val" id="ptVolume">—</div></div>
           <div class="pipeline-total-item"><div class="pipeline-total-label">Est. total comp</div><div class="pipeline-total-val green" id="ptComp">—</div></div>
         </div>
+
+        <!-- Breakdown charts -->
+        <div class="pipeline-breakdown" id="pipelineBreakdown" style="display:none">
+          <div class="breakdown-card">
+            <div class="breakdown-title">Volume by loan type</div>
+            <div id="typeBreakdown"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="breakdown-title">Volume by lender</div>
+            <div id="lenderBreakdown"></div>
+          </div>
+        </div>
+
       </div>
     </div>
     <div class="view" id="view-le"><div class="le-view"><div class="le-bar"><button class="le-btn active" data-le="refi" onclick="switchLE('refi')">Refinance</button><button class="le-btn" data-le="purchase" onclick="switchLE('purchase')">Purchase</button><button class="le-btn" data-le="second" onclick="switchLE('second')">Second Lien</button></div><div class="le-frame-wrap"><iframe id="frame-le" src="le-refi.html"></iframe></div></div></div>
@@ -1220,23 +1243,29 @@ async function loadPipeline() {
 }
 
 function renderPipeline() {
-  const tbody   = document.getElementById('dealTableBody');
-  const wrap    = document.getElementById('dealTableWrap');
-  const empty   = document.getElementById('pipelineEmpty');
-  const totals  = document.getElementById('pipelineTotals');
-  const summary = document.getElementById('pipelineSummary');
+  const tbody     = document.getElementById('dealTableBody');
+  const wrap      = document.getElementById('dealTableWrap');
+  const empty     = document.getElementById('pipelineEmpty');
+  const totals    = document.getElementById('pipelineTotals');
+  const breakdown = document.getElementById('pipelineBreakdown');
+  const summary   = document.getElementById('pipelineSummary');
 
   if (!pipelineDeals.length) {
-    wrap.style.display   = 'none';
-    totals.style.display = 'none';
-    empty.style.display  = 'block';
-    summary.textContent  = 'No deals in progress';
+    wrap.style.display      = 'none';
+    totals.style.display    = 'none';
+    breakdown.style.display = 'none';
+    empty.style.display     = 'block';
+    summary.textContent     = 'No deals in progress';
+    // Reset home KPI pipeline tile
+    document.getElementById('kpiPipeline').textContent    = '—';
+    document.getElementById('kpiPipelineSub').textContent = 'no active deals';
     return;
   }
 
-  empty.style.display  = 'none';
-  wrap.style.display   = 'block';
-  totals.style.display = 'flex';
+  empty.style.display      = 'none';
+  wrap.style.display       = 'block';
+  totals.style.display     = 'flex';
+  breakdown.style.display  = 'grid';
 
   const totalVol  = pipelineDeals.reduce((s, d) => s + (d.loan_amount || 0), 0);
   const totalComp = pipelineDeals.reduce((s, d) => s + (d.compensation || 0), 0);
@@ -1246,6 +1275,45 @@ function renderPipeline() {
   document.getElementById('ptComp').textContent   = fmtComp(totalComp);
   summary.textContent = pipelineDeals.length + ' deal' + (pipelineDeals.length !== 1 ? 's' : '') + ' · ' + fmtMoney(totalVol) + ' · est. ' + fmtComp(totalComp);
 
+  // ── Sync to Home dashboard pipeline KPI ──
+  document.getElementById('kpiPipeline').textContent    = fmtMoney(totalVol);
+  document.getElementById('kpiPipelineSub').textContent = pipelineDeals.length + ' deal' + (pipelineDeals.length !== 1 ? 's' : '') + ' in progress';
+
+  // ── Type breakdown by volume ──
+  const typeColors = { Purchase:'#2563a8', Refinance:'#2d6a4f', HELOC:'#a16207', HELOAN:'#b45309' };
+  const typeVols = {};
+  pipelineDeals.forEach(d => {
+    const t = d.loan_type || 'Other';
+    typeVols[t] = (typeVols[t] || 0) + (d.loan_amount || 0);
+  });
+  const maxTypeVol = Math.max(...Object.values(typeVols), 1);
+  document.getElementById('typeBreakdown').innerHTML = Object.entries(typeVols)
+    .sort((a,b) => b[1]-a[1])
+    .map(([t, v]) => `
+      <div class="breakdown-row">
+        <div class="breakdown-label">${t}</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:${Math.round(v/maxTypeVol*100)}%;background:${typeColors[t]||'#8a8680'}"></div></div>
+        <div class="breakdown-val">${fmtMoney(v)}</div>
+      </div>`).join('');
+
+  // ── Lender breakdown by volume ──
+  const lenderColors = ['#2d6a4f','#2563a8','#a16207','#6d4c9e','#c1440e','#0e7490','#854d0e','#166534'];
+  const lenderVols = {};
+  pipelineDeals.forEach(d => {
+    const l = d.lender || 'Other';
+    lenderVols[l] = (lenderVols[l] || 0) + (d.loan_amount || 0);
+  });
+  const maxLenderVol = Math.max(...Object.values(lenderVols), 1);
+  document.getElementById('lenderBreakdown').innerHTML = Object.entries(lenderVols)
+    .sort((a,b) => b[1]-a[1])
+    .map(([l, v], i) => `
+      <div class="breakdown-row">
+        <div class="breakdown-label">${l}</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:${Math.round(v/maxLenderVol*100)}%;background:${lenderColors[i%lenderColors.length]}"></div></div>
+        <div class="breakdown-val">${fmtMoney(v)}</div>
+      </div>`).join('');
+
+  // ── Deal table ──
   const typeBadge = t => {
     const cls = { Purchase:'badge-purchase', Refinance:'badge-refinance', HELOC:'badge-heloc', HELOAN:'badge-heloan' }[t] || 'badge-refinance';
     return `<span class="deal-type-badge ${cls}">${t || '—'}</span>`;
