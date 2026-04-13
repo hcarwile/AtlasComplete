@@ -1124,25 +1124,32 @@ function clearDealForm() {
   });
 }
 
-async function sbWithRetry(fn) {
-  try { return await fn(); }
-  catch(e) {
-    if (e && e.message && e.message.includes('Lock')) {
-      await new Promise(r => setTimeout(r, 600));
-      return await fn();
+// ── Pipeline REST helpers (bypass Supabase client lock issues) ────────────────
+// Uses raw fetch against the Supabase REST API so iframe Supabase clients
+// cannot interfere with pipeline operations.
+async function pipelineHeaders() {
+  // Get the access token directly from localStorage — no lock needed
+  let token = null;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('sb-') && key.endsWith('-auth-token')) {
+      try {
+        const val = JSON.parse(localStorage.getItem(key));
+        token = val?.access_token || null;
+      } catch(e) {}
+      break;
     }
-    throw e;
   }
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPA_KEY,
+    'Authorization': 'Bearer ' + (token || SUPA_KEY),
+    'Prefer': 'return=representation'
+  };
 }
 
 async function saveDeal() {
-  if (!currentUser) {
-    try {
-      const { data: { session } } = await sbWithRetry(() => sb.auth.getSession());
-      if (session?.user) currentUser = session.user;
-    } catch(e) {}
-  }
-  if (!currentUser) { alert('Not signed in — please refresh and sign in again.'); return; }
+  if (!currentUser) { alert('Not signed in — please refresh.'); return; }
 
   const client = document.getElementById('df-client').value.trim();
   const type   = document.getElementById('df-type').value;
@@ -1154,22 +1161,25 @@ async function saveDeal() {
   if (!client) { document.getElementById('df-client').focus(); return; }
 
   const deal = {
-    user_id:       currentUser.id,
+    user_id:        currentUser.id,
     client,
-    loan_type:     type,
-    loan_amount:   amount,
-    compensation:  comp,
+    loan_type:      type,
+    loan_amount:    amount,
+    compensation:   comp,
     submitted_date: date || null,
-    lender,
-    created_at:    new Date().toISOString()
+    lender
   };
 
   try {
-    const { data, error } = await sbWithRetry(() =>
-      sb.from('pipeline_deals').insert([deal]).select().single()
-    );
-    if (error) { alert('Save failed: ' + error.message); console.error(error); return; }
-    pipelineDeals.unshift(data);
+    const headers = await pipelineHeaders();
+    const res = await fetch(`${SUPA_URL}/rest/v1/pipeline_deals`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(deal)
+    });
+    if (!res.ok) { const err = await res.text(); alert('Save failed: ' + err); return; }
+    const saved = await res.json();
+    pipelineDeals.unshift(Array.isArray(saved) ? saved[0] : saved);
     renderPipeline();
     toggleDealForm();
   } catch(e) {
@@ -1179,22 +1189,34 @@ async function saveDeal() {
 }
 
 async function removeDeal(id) {
-  const { error } = await sb.from('pipeline_deals').delete().eq('id', id);
-  if (error) { alert('Remove failed: ' + error.message); return; }
-  pipelineDeals = pipelineDeals.filter(d => d.id !== id);
-  renderPipeline();
+  try {
+    const headers = await pipelineHeaders();
+    const res = await fetch(`${SUPA_URL}/rest/v1/pipeline_deals?id=eq.${id}`, {
+      method: 'DELETE',
+      headers
+    });
+    if (!res.ok) { const err = await res.text(); alert('Remove failed: ' + err); return; }
+    pipelineDeals = pipelineDeals.filter(d => d.id !== id);
+    renderPipeline();
+  } catch(e) {
+    alert('Remove failed: ' + e.message);
+  }
 }
 
 async function loadPipeline() {
-  if (!currentUser) {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session?.user) currentUser = session.user;
-  }
   if (!currentUser) return;
-  const { data, error } = await sb.from('pipeline_deals').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
-  if (error) { console.error('Pipeline load error:', error); return; }
-  pipelineDeals = data || [];
-  renderPipeline();
+  try {
+    const headers = await pipelineHeaders();
+    const res = await fetch(
+      `${SUPA_URL}/rest/v1/pipeline_deals?user_id=eq.${currentUser.id}&order=created_at.desc`,
+      { headers }
+    );
+    if (!res.ok) { console.error('Pipeline load failed:', await res.text()); return; }
+    pipelineDeals = await res.json();
+    renderPipeline();
+  } catch(e) {
+    console.error('Pipeline load error:', e);
+  }
 }
 
 function renderPipeline() {
