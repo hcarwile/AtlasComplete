@@ -27,8 +27,20 @@
 .nav-right{display:flex;align-items:center;gap:14px}.nav-user{font-size:12px;color:var(--text3);font-weight:500}
 .nav-btn{height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text3);display:flex;align-items:center;gap:5px;transition:all 0.15s}.nav-btn:hover{border-color:var(--accent);color:var(--accent)}
 .view-container{flex:1;overflow:hidden;position:relative}.view{position:absolute;inset:0;display:none;overflow-y:auto}.view.active{display:block}.view iframe{width:100%;height:100%;border:none;display:block}
-.dash{display:grid;grid-template-columns:minmax(0,1fr) 360px;height:100%;transition:grid-template-columns .22s ease}.dash.sidebar-collapsed{grid-template-columns:minmax(0,1fr) 0px}.dash-main{padding:24px 28px;overflow-y:auto;min-width:0}.dash-side{position:relative;border-left:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:20px;min-width:0;transition:opacity .18s ease,padding .22s ease,border-color .22s ease}.dash.sidebar-collapsed .dash-side{opacity:0;padding-left:0;padding-right:0;border-left-color:transparent;pointer-events:none}.sidebar-toggle{position:absolute;top:12px;left:-14px;width:28px;height:28px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text3);font:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);z-index:5}.sidebar-toggle:hover{color:var(--accent);border-color:var(--accent)}
+.dash{display:grid;grid-template-columns:minmax(0,1fr) 360px;height:100%;transition:grid-template-columns .22s ease}.dash.sidebar-collapsed{grid-template-columns:minmax(0,1fr) 0px}
+.dash-main{padding:24px 28px;overflow-y:auto;min-width:0}
+.dash-side{position:relative;border-left:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:20px;min-width:0;transition:opacity .18s ease,padding .22s ease,border-color .22s ease}.dash.sidebar-collapsed .dash-side{opacity:0;padding-left:0;padding-right:0;border-left-color:transparent;pointer-events:none}
+.sidebar-toggle{position:absolute;top:12px;left:-14px;width:28px;height:28px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text3);font:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);z-index:5}.sidebar-toggle:hover{color:var(--accent);border-color:var(--accent)}
 .greeting{font-size:20px;font-weight:600;color:var(--text);margin-bottom:3px;letter-spacing:-0.01em}.greeting-date{font-size:13px;color:var(--text3);margin-bottom:20px}
+
+/* Upload banner */
+.upload-banner{background:var(--surface);border:1.5px dashed var(--border2);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;transition:all 0.15s}.upload-banner:hover{border-color:var(--accent);background:var(--accent-soft)}
+.upload-banner.has-data{border-style:solid;border-color:var(--border);cursor:default;background:var(--surface2)}.upload-banner.has-data:hover{border-color:var(--border);background:var(--surface2)}
+.upload-info{display:flex;align-items:center;gap:10px}.upload-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.upload-icon svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.upload-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:1px}.upload-sub{font-size:11px;color:var(--text3)}
+.upload-btn{height:30px;padding:0 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text2);white-space:nowrap;transition:all 0.15s;flex-shrink:0}.upload-btn:hover{border-color:var(--accent);color:var(--accent)}
+#fileInput{display:none}
 
 /* Daily Quote */
 .quote-card{background:var(--text);color:#fff;border-radius:12px;padding:20px 22px;margin-bottom:20px;position:relative;overflow:hidden}
@@ -37,44 +49,68 @@
 .quote-text{font-family:var(--serif);font-size:15px;font-style:italic;line-height:1.6;color:rgba(255,255,255,0.92);position:relative;z-index:1;padding-left:4px;margin-bottom:10px}
 .quote-attr{font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:rgba(255,255,255,0.38);position:relative;z-index:1}
 
-.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}.kpi-label{font-size:11px;font-weight:600;letter-spacing:0.04em;color:var(--text3);margin-bottom:6px;text-transform:uppercase}.kpi-val{font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1;margin-bottom:3px}.kpi-sub{font-size:11px;color:var(--text4)}.kpi-val.green{color:var(--accent)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px}.card-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.card-title{font-size:14px;font-weight:600}.card-sub{font-size:11px;color:var(--text4)}
-.bars{display:flex;align-items:flex-end;gap:8px;height:100px}.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}.bar{width:100%;border-radius:4px 4px 0 0;background:var(--bg2);min-height:4px}.bar.current{background:var(--accent)}.bar-label{font-size:10px;color:var(--text4);font-weight:500}
-.source-row{margin-bottom:12px}.source-row:last-child{margin-bottom:0}.source-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}.source-name{color:var(--text2)}.source-val{font-weight:600}.source-bar{height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}.source-fill{height:100%;border-radius:3px}
-.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.market-cell{background:var(--surface2);border-radius:8px;padding:10px 12px}.market-lbl{font-size:10px;color:var(--text4);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px}.market-rate-input{background:transparent;border:none;outline:none;font-family:var(--sans);font-size:17px;font-weight:700;color:var(--text);width:80px}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.kpi-label{font-size:11px;font-weight:600;letter-spacing:0.04em;color:var(--text3);margin-bottom:6px;text-transform:uppercase}
+.kpi-val{font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1;margin-bottom:3px}.kpi-sub{font-size:11px;color:var(--text4)}.kpi-val.green{color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.card-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.card-title{font-size:14px;font-weight:600}.card-sub{font-size:11px;color:var(--text4)}
+.bars{display:flex;align-items:flex-end;gap:8px;height:100px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--bg2);min-height:4px}.bar.current{background:var(--accent)}.bar-label{font-size:10px;color:var(--text4);font-weight:500}
+.source-row{margin-bottom:12px}.source-row:last-child{margin-bottom:0}
+.source-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.source-name{color:var(--text2)}.source-val{font-weight:600}
+.source-bar{height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}.source-fill{height:100%;border-radius:3px}
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.market-cell{background:var(--surface2);border-radius:8px;padding:10px 12px}
+.market-lbl{font-size:10px;color:var(--text4);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px}
+.market-rate-input{background:transparent;border:none;outline:none;font-family:var(--sans);font-size:17px;font-weight:700;color:var(--text);width:80px}
 
-/* Metrics comparison cards */
-.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+/* Metrics */
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0}
+.metric-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px 15px}
 .metric-label{font-size:10px;font-weight:600;letter-spacing:0.04em;color:var(--text3);text-transform:uppercase;margin-bottom:8px}
-.metric-compare{display:flex;gap:12px;align-items:flex-end}
+.metric-compare{display:flex;gap:10px;align-items:flex-end}
 .metric-col{flex:1}
 .metric-period{font-size:9px;color:var(--text4);margin-bottom:2px;font-weight:600;text-transform:uppercase;letter-spacing:0.03em}
-.metric-val{font-size:18px;font-weight:700;letter-spacing:-0.02em;color:var(--text)}
-.metric-val.green{color:var(--accent)}
-.metric-val.amber{color:var(--amber)}
-.metric-divider{width:1px;background:var(--border);align-self:stretch;margin-bottom:2px}
-.metric-delta{font-size:10px;font-weight:600;margin-top:4px}
+.metric-val{font-size:17px;font-weight:700;letter-spacing:-0.02em;color:var(--text)}
+.metric-val.green{color:var(--accent)}.metric-val.amber{color:var(--amber)}
+.metric-divider{width:1px;background:var(--border);align-self:stretch;margin-bottom:2px;flex-shrink:0}
+.metric-delta{font-size:10px;font-weight:600;margin-top:5px}
 .metric-delta.up{color:var(--accent)}.metric-delta.down{color:var(--red)}.metric-delta.flat{color:var(--text4)}
 
 /* Income split */
 .income-split{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:10px 0 8px;gap:2px}
-.income-active{background:var(--accent)}
-.income-passive{background:var(--amber)}
+.income-active{background:var(--accent)}.income-passive{background:var(--amber)}
 .income-legend{display:flex;gap:16px}
 .income-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
 .income-dot{width:8px;height:8px;border-radius:2px}
 
 .comp-chart-container{height:130px;position:relative}
-.le-bar{display:flex;align-items:center;gap:6px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--border)}.le-btn{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.04em}.le-btn:hover{border-color:var(--accent);color:var(--accent)}.le-btn.active{background:var(--text);color:var(--surface);border-color:var(--text)}.le-view{display:flex;flex-direction:column;height:100%}.le-frame-wrap{flex:1;overflow:hidden}.le-frame-wrap iframe{width:100%;height:100%;border:none}
+.le-bar{display:flex;align-items:center;gap:6px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--border)}
+.le-btn{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.04em}
+.le-btn:hover{border-color:var(--accent);color:var(--accent)}.le-btn.active{background:var(--text);color:var(--surface);border-color:var(--text)}
+.le-view{display:flex;flex-direction:column;height:100%}.le-frame-wrap{flex:1;overflow:hidden}.le-frame-wrap iframe{width:100%;height:100%;border:none}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 .compare-toggle{font-size:11px;padding:4px 10px;border-radius:20px;border:0.5px solid rgba(0,0,0,0.15);background:transparent;color:var(--text3);cursor:pointer;font-family:inherit}
 .compare-toggle.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-
-.streak-section{border-top:1px solid var(--border);padding-top:16px;margin-top:16px;margin-bottom:16px}.streak-row{display:flex;align-items:center;gap:8px;margin-top:8px}.streak-dot{width:18px;height:18px;border-radius:4px}.streak-dot.filled{background:var(--accent)}.streak-dot.empty{border:1px solid var(--border)}.streak-count{font-size:13px;font-weight:600;color:var(--accent);margin-left:4px}.streak-label{font-size:10px;color:var(--text4);margin-top:5px}
-.contact-card{border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:8px;cursor:pointer;transition:all 0.12s}.contact-card:hover{background:var(--surface2)}.contact-card.must{border-left:3px solid var(--red);border-radius:0 8px 8px 0}.contact-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:3px}.contact-name{font-size:13px;font-weight:600}.contact-badge{font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:2px 7px;border-radius:4px}.badge-must{background:var(--red-soft);color:var(--red)}
+.streak-section{border-top:1px solid var(--border);padding-top:16px;margin-top:16px;margin-bottom:16px}
+.streak-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.streak-dot{width:18px;height:18px;border-radius:4px}.streak-dot.filled{background:var(--accent)}.streak-dot.empty{border:1px solid var(--border)}
+.streak-count{font-size:13px;font-weight:600;color:var(--accent);margin-left:4px}.streak-label{font-size:10px;color:var(--text4);margin-top:5px}
+.contact-card{border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:8px;cursor:pointer;transition:all 0.12s}
+.contact-card:hover{background:var(--surface2)}.contact-card.must{border-left:3px solid var(--red);border-radius:0 8px 8px 0}
+.contact-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:3px}
+.contact-name{font-size:13px;font-weight:600}
+.contact-badge{font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+.badge-must{background:var(--red-soft);color:var(--red)}
 .contact-trigger{font-size:11px;color:var(--text2);margin-bottom:3px;line-height:1.4}
 .side-hd{font-size:14px;font-weight:600;margin-bottom:3px}.side-sub{font-size:12px;color:var(--text3);margin-bottom:14px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-state-icon{font-size:32px;margin-bottom:10px;opacity:0.3}
+.empty-state-title{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:4px}
+.empty-state-sub{font-size:12px;color:var(--text4);line-height:1.5}
 </style>
 </head>
 <body>
@@ -90,6 +126,7 @@
     <div class="auth-toggle" id="authToggle">Don't have an account? <a onclick="toggleAuthMode()">Sign up</a></div>
   </div>
 </div>
+
 <div class="app hidden" id="app">
   <nav class="nav">
     <div class="nav-left">
@@ -108,12 +145,28 @@
       <button class="nav-btn" onclick="handleSignOut()">Sign out</button>
     </div>
   </nav>
+
   <div class="view-container">
     <div class="view active" id="view-home">
       <div class="dash">
         <div class="dash-main">
           <div class="greeting" id="greeting"></div>
           <div class="greeting-date" id="greetingDate"></div>
+
+          <!-- Upload banner -->
+          <div class="upload-banner" id="uploadBanner" onclick="document.getElementById('fileInput').click()">
+            <div class="upload-info">
+              <div class="upload-icon">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              </div>
+              <div>
+                <div class="upload-title" id="uploadTitle">Upload your loan log</div>
+                <div class="upload-sub" id="uploadSub">Drop your mastersheet Excel file here to power the dashboard</div>
+              </div>
+            </div>
+            <button class="upload-btn" id="uploadBtnEl" onclick="event.stopPropagation();document.getElementById('fileInput').click()">Choose file</button>
+          </div>
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFileUpload(this)">
 
           <!-- Daily Stoic Quote -->
           <div class="quote-card">
@@ -122,202 +175,139 @@
             <div class="quote-attr" id="quoteAttr"></div>
           </div>
 
-          <!-- KPI row -->
+          <!-- KPIs -->
           <div class="kpi-row">
-            <div class="kpi"><div class="kpi-label">Pipeline Volume</div><div class="kpi-val" id="kpiPipeline">$0</div><div class="kpi-sub" id="kpiPipelineSub">0 loans closing soon</div></div>
-            <div class="kpi"><div class="kpi-label">Closed This Month</div><div class="kpi-val green" id="kpiMonth">$0</div><div class="kpi-sub" id="kpiMonthSub">0 loans</div></div>
-            <div class="kpi"><div class="kpi-label">Closed YTD</div><div class="kpi-val" id="kpiYTD">$0</div><div class="kpi-sub" id="kpiYTDSub">0 loans</div></div>
+            <div class="kpi"><div class="kpi-label">Pipeline Volume</div><div class="kpi-val" id="kpiPipeline">—</div><div class="kpi-sub" id="kpiPipelineSub">upload to calculate</div></div>
+            <div class="kpi"><div class="kpi-label">Closed This Month</div><div class="kpi-val green" id="kpiMonth">—</div><div class="kpi-sub" id="kpiMonthSub">fiscal month</div></div>
+            <div class="kpi"><div class="kpi-label">Closed YTD</div><div class="kpi-val" id="kpiYTD">—</div><div class="kpi-sub" id="kpiYTDSub">fiscal year</div></div>
           </div>
 
-          <!-- Monthly production bars -->
-          <div class="card">
-            <div class="card-hd">
-              <div class="card-title">Monthly production</div>
-              <div class="card-sub">Last 6 fiscal months</div>
+          <div id="chartsArea" style="display:none">
+            <!-- Monthly production bars -->
+            <div class="card">
+              <div class="card-hd"><div class="card-title">Monthly production</div><div class="card-sub">Last 6 fiscal months</div></div>
+              <div class="bars" id="prodChart"></div>
             </div>
-            <div class="bars" id="prodChart"></div>
-          </div>
 
-          <!-- Active vs Passive income split -->
-          <div class="card">
-            <div class="card-hd">
-              <div class="card-title">Income composition</div>
-              <div class="card-sub">Active (1st mortgage) vs Passive (HELOC / HELOAN)</div>
+            <!-- Income composition -->
+            <div class="card">
+              <div class="card-hd"><div class="card-title">Income composition</div><div class="card-sub">Active (1st mtg) vs Passive (HELOC / HELOAN)</div></div>
+              <div class="income-split">
+                <div class="income-active" id="incomeSplitActive" style="flex:1"></div>
+                <div class="income-passive" id="incomeSplitPassive" style="flex:0"></div>
+              </div>
+              <div class="income-legend">
+                <div class="income-legend-item"><div class="income-dot" style="background:var(--accent)"></div><span id="incomeActiveLabel">Active</span></div>
+                <div class="income-legend-item"><div class="income-dot" style="background:var(--amber)"></div><span id="incomePassiveLabel">Passive</span></div>
+              </div>
             </div>
-            <div class="income-split">
-              <div class="income-active" id="incomeSplitActive" style="flex:1"></div>
-              <div class="income-passive" id="incomeSplitPassive" style="flex:0"></div>
-            </div>
-            <div class="income-legend">
-              <div class="income-legend-item"><div class="income-dot" style="background:var(--accent)"></div><span id="incomeActiveLabel">Active —</span></div>
-              <div class="income-legend-item"><div class="income-dot" style="background:var(--amber)"></div><span id="incomePassiveLabel">Passive —</span></div>
-            </div>
-          </div>
 
-          <!-- 6 metrics: 6mo avg vs 48mo avg -->
-          <div class="card">
-            <div class="card-hd">
-              <div class="card-title">Performance benchmarks</div>
-              <div class="card-sub">6-month avg vs 48-month avg</div>
-            </div>
-            <div class="metrics-grid">
-
-              <!-- Lead source: dominant source -->
-              <div class="metric-card">
-                <div class="metric-label">Top lead source</div>
-                <div class="metric-compare">
-                  <div class="metric-col">
-                    <div class="metric-period">6 mo</div>
-                    <div class="metric-val green" id="lsrc6" style="font-size:13px;font-weight:700">—</div>
-                  </div>
-                  <div class="metric-divider"></div>
-                  <div class="metric-col">
-                    <div class="metric-period">48 mo</div>
-                    <div class="metric-val" id="lsrc48" style="font-size:13px;font-weight:700">—</div>
+            <!-- Performance benchmarks -->
+            <div class="card">
+              <div class="card-hd"><div class="card-title">Performance benchmarks</div><div class="card-sub">6-month avg vs 48-month avg</div></div>
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <div class="metric-label">Top lead source</div>
+                  <div class="metric-compare">
+                    <div class="metric-col"><div class="metric-period">6 mo</div><div class="metric-val green" id="lsrc6" style="font-size:12px">—</div></div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-col"><div class="metric-period">48 mo</div><div class="metric-val" id="lsrc48" style="font-size:12px">—</div></div>
                   </div>
                 </div>
-              </div>
-
-              <!-- Avg loan amount -->
-              <div class="metric-card">
-                <div class="metric-label">Avg loan amount</div>
-                <div class="metric-compare">
-                  <div class="metric-col">
-                    <div class="metric-period">6 mo</div>
-                    <div class="metric-val green" id="avgLoan6">—</div>
+                <div class="metric-card">
+                  <div class="metric-label">Avg loan amount</div>
+                  <div class="metric-compare">
+                    <div class="metric-col"><div class="metric-period">6 mo</div><div class="metric-val green" id="avgLoan6">—</div></div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-col"><div class="metric-period">48 mo</div><div class="metric-val" id="avgLoan48">—</div></div>
                   </div>
-                  <div class="metric-divider"></div>
-                  <div class="metric-col">
-                    <div class="metric-period">48 mo</div>
-                    <div class="metric-val" id="avgLoan48">—</div>
-                  </div>
+                  <div class="metric-delta flat" id="avgLoanDelta"></div>
                 </div>
-                <div class="metric-delta flat" id="avgLoanDelta"></div>
-              </div>
-
-              <!-- Avg 1st mortgage units / mo -->
-              <div class="metric-card">
-                <div class="metric-label">Units / mo — 1st mtg</div>
-                <div class="metric-compare">
-                  <div class="metric-col">
-                    <div class="metric-period">6 mo</div>
-                    <div class="metric-val green" id="units1st6">—</div>
+                <div class="metric-card">
+                  <div class="metric-label">Units / mo — 1st mtg</div>
+                  <div class="metric-compare">
+                    <div class="metric-col"><div class="metric-period">6 mo</div><div class="metric-val green" id="units1st6">—</div></div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-col"><div class="metric-period">48 mo</div><div class="metric-val" id="units1st48">—</div></div>
                   </div>
-                  <div class="metric-divider"></div>
-                  <div class="metric-col">
-                    <div class="metric-period">48 mo</div>
-                    <div class="metric-val" id="units1st48">—</div>
-                  </div>
+                  <div class="metric-delta flat" id="units1stDelta"></div>
                 </div>
-                <div class="metric-delta flat" id="units1stDelta"></div>
-              </div>
-
-              <!-- Avg 2nd mortgage units / mo -->
-              <div class="metric-card">
-                <div class="metric-label">Units / mo — 2nd mtg</div>
-                <div class="metric-compare">
-                  <div class="metric-col">
-                    <div class="metric-period">6 mo</div>
-                    <div class="metric-val amber" id="units2nd6">—</div>
+                <div class="metric-card">
+                  <div class="metric-label">Units / mo — 2nd mtg</div>
+                  <div class="metric-compare">
+                    <div class="metric-col"><div class="metric-period">6 mo</div><div class="metric-val amber" id="units2nd6">—</div></div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-col"><div class="metric-period">48 mo</div><div class="metric-val" id="units2nd48">—</div></div>
                   </div>
-                  <div class="metric-divider"></div>
-                  <div class="metric-col">
-                    <div class="metric-period">48 mo</div>
-                    <div class="metric-val" id="units2nd48">—</div>
-                  </div>
+                  <div class="metric-delta flat" id="units2ndDelta"></div>
                 </div>
-                <div class="metric-delta flat" id="units2ndDelta"></div>
-              </div>
-
-              <!-- Avg comp per unit -->
-              <div class="metric-card">
-                <div class="metric-label">Avg comp / unit</div>
-                <div class="metric-compare">
-                  <div class="metric-col">
-                    <div class="metric-period">6 mo</div>
-                    <div class="metric-val green" id="compUnit6">—</div>
+                <div class="metric-card">
+                  <div class="metric-label">Avg comp / unit</div>
+                  <div class="metric-compare">
+                    <div class="metric-col"><div class="metric-period">6 mo</div><div class="metric-val green" id="compUnit6">—</div></div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-col"><div class="metric-period">48 mo</div><div class="metric-val" id="compUnit48">—</div></div>
                   </div>
-                  <div class="metric-divider"></div>
-                  <div class="metric-col">
-                    <div class="metric-period">48 mo</div>
-                    <div class="metric-val" id="compUnit48">—</div>
-                  </div>
+                  <div class="metric-delta flat" id="compUnitDelta"></div>
                 </div>
-                <div class="metric-delta flat" id="compUnitDelta"></div>
-              </div>
-
-              <!-- Repeat clients -->
-              <div class="metric-card">
-                <div class="metric-label">Repeat clients / mo</div>
-                <div class="metric-compare">
-                  <div class="metric-col">
-                    <div class="metric-period">6 mo</div>
-                    <div class="metric-val green" id="repeat6">—</div>
+                <div class="metric-card">
+                  <div class="metric-label">Repeat clients / mo</div>
+                  <div class="metric-compare">
+                    <div class="metric-col"><div class="metric-period">6 mo</div><div class="metric-val green" id="repeat6">—</div></div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-col"><div class="metric-period">48 mo</div><div class="metric-val" id="repeat48">—</div></div>
                   </div>
-                  <div class="metric-divider"></div>
-                  <div class="metric-col">
-                    <div class="metric-period">48 mo</div>
-                    <div class="metric-val" id="repeat48">—</div>
-                  </div>
+                  <div class="metric-delta flat" id="repeatDelta"></div>
                 </div>
-                <div class="metric-delta flat" id="repeatDelta"></div>
               </div>
-
             </div>
-          </div>
 
-          <!-- Compensation history -->
-          <div class="card">
-            <div class="card-hd">
-              <div class="card-title">Compensation history</div>
-              <div class="card-sub">Last 6 fiscal months</div>
+            <!-- Comp history -->
+            <div class="card">
+              <div class="card-hd"><div class="card-title">Compensation history</div><div class="card-sub">Last 6 fiscal months</div></div>
+              <div class="comp-chart-container"><canvas id="compChart"></canvas></div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px">
+                <div style="font-size:11px;color:var(--text3)">This month: <span id="compThisMonth" style="font-weight:600;color:var(--accent)">—</span></div>
+                <div style="font-size:11px;color:var(--text3)">YTD total: <span id="compYTD" style="font-weight:600;color:var(--text)">—</span></div>
+              </div>
             </div>
-            <div class="comp-chart-container"><canvas id="compChart"></canvas></div>
-            <div style="display:flex;justify-content:space-between;margin-top:10px">
-              <div style="font-size:11px;color:var(--text3)">This month: <span id="compThisMonth" style="font-weight:600;color:var(--accent)">—</span></div>
-              <div style="font-size:11px;color:var(--text3)">YTD total: <span id="compYTD" style="font-weight:600;color:var(--text)">—</span></div>
-            </div>
-          </div>
 
-          <!-- Production comparison -->
-          <div class="card">
-            <div class="card-hd">
-              <div class="card-title">Production comparison</div>
-              <div class="card-sub">Same 6 fiscal months vs prior years</div>
+            <!-- Production comparison -->
+            <div class="card">
+              <div class="card-hd"><div class="card-title">Production comparison</div><div class="card-sub">Same 6 fiscal months vs prior years</div></div>
+              <div class="comp-chart-container"><canvas id="prodCompareChart"></canvas></div>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <button class="compare-toggle active" id="pdBtn1" onclick="buildProdDeltaChart(prodDelta1);document.getElementById('pdBtn1').classList.add('active');document.getElementById('pdBtn2').classList.remove('active')">vs last year</button>
+                <button class="compare-toggle" id="pdBtn2" onclick="buildProdDeltaChart(prodDelta2);document.getElementById('pdBtn2').classList.add('active');document.getElementById('pdBtn1').classList.remove('active')">vs 2 yrs ago</button>
+              </div>
             </div>
-            <div class="comp-chart-container"><canvas id="prodCompareChart"></canvas></div>
-            <div style="display:flex;gap:8px;margin-top:6px;">
-              <button class="compare-toggle active" id="pdBtn1" onclick="buildProdDeltaChart(prodDelta1);document.getElementById('pdBtn1').classList.add('active');document.getElementById('pdBtn2').classList.remove('active')">vs last year</button>
-              <button class="compare-toggle" id="pdBtn2" onclick="buildProdDeltaChart(prodDelta2);document.getElementById('pdBtn2').classList.add('active');document.getElementById('pdBtn1').classList.remove('active')">vs 2 yrs ago</button>
+
+            <!-- Comp comparison -->
+            <div class="card">
+              <div class="card-hd"><div class="card-title">Compensation comparison</div><div class="card-sub">Same 6 fiscal months vs prior year</div></div>
+              <div class="comp-chart-container"><canvas id="compCompareChart"></canvas></div>
             </div>
-          </div>
 
-          <!-- Compensation comparison -->
-          <div class="card">
-            <div class="card-hd">
-              <div class="card-title">Compensation comparison</div>
-              <div class="card-sub">Same 6 fiscal months vs prior year</div>
+            <!-- Lead source breakdown -->
+            <div class="card">
+              <div class="card-hd"><div class="card-title">Lead source breakdown</div><div class="card-sub">Fiscal year to date</div></div>
+              <div class="source-row"><div class="source-top"><span class="source-name">Marketing</span><span class="source-val" id="srcMktVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcMktBar" style="width:0%;background:var(--blue)"></div></div></div>
+              <div class="source-row"><div class="source-top"><span class="source-name">Past client</span><span class="source-val" id="srcPastVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcPastBar" style="width:0%;background:var(--accent)"></div></div></div>
+              <div class="source-row"><div class="source-top"><span class="source-name">Referral</span><span class="source-val" id="srcRefVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcRefBar" style="width:0%;background:var(--amber)"></div></div></div>
+              <div class="source-row"><div class="source-top"><span class="source-name">Self generated</span><span class="source-val" id="srcSelfVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcSelfBar" style="width:0%;background:var(--text3)"></div></div></div>
             </div>
-            <div class="comp-chart-container"><canvas id="compCompareChart"></canvas></div>
-          </div>
+          </div><!-- /chartsArea -->
 
-          <!-- Lead source breakdown -->
-          <div class="card">
-            <div class="card-hd"><div class="card-title">Lead source breakdown</div><div class="card-sub">Fiscal year to date</div></div>
-            <div class="source-row"><div class="source-top"><span class="source-name">Marketing</span><span class="source-val" id="srcMktVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcMktBar" style="width:0%;background:var(--blue)"></div></div></div>
-            <div class="source-row"><div class="source-top"><span class="source-name">Past client</span><span class="source-val" id="srcPastVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcPastBar" style="width:0%;background:var(--accent)"></div></div></div>
-            <div class="source-row"><div class="source-top"><span class="source-name">Referral</span><span class="source-val" id="srcRefVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcRefBar" style="width:0%;background:var(--amber)"></div></div></div>
-            <div class="source-row"><div class="source-top"><span class="source-name">Self generated</span><span class="source-val" id="srcSelfVal">—</span></div><div class="source-bar"><div class="source-fill" id="srcSelfBar" style="width:0%;background:var(--text3)"></div></div></div>
-          </div>
-
-        </div>
+        </div><!-- /dash-main -->
 
         <!-- Sidebar -->
         <div class="dash-side" id="dashSide">
           <button class="sidebar-toggle" id="sidebarToggle" type="button" onclick="toggleSidebar()">→</button>
           <div class="side-hd">Today's outreach</div>
           <div class="side-sub" id="outreachSummary">Open the Outreach tab to load your book</div>
-          <div id="outreachPreview"><div class="contact-card must"><div class="contact-top"><span class="contact-name">Get started</span><span class="contact-badge badge-must">Action</span></div><div class="contact-trigger">Upload your loan book in the Outreach tab to see prioritized contacts here each morning.</div></div></div>
+          <div id="outreachPreview">
+            <div class="contact-card must"><div class="contact-top"><span class="contact-name">Get started</span><span class="contact-badge badge-must">Action</span></div><div class="contact-trigger">Upload your loan book in the Outreach tab to see prioritized contacts here.</div></div>
+          </div>
           <div class="streak-section">
             <div class="side-hd">Streak</div>
             <div class="streak-row" id="streakRow">
@@ -358,79 +348,147 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const STOIC_QUOTES = [{"q":"The chief task in life is simply this: to identify and separate matters so that I can say clearly to myself which are externals not under my control, and which have to do with the choices I actually control. Where then do I look for good and evil? Not to uncontrollable externals, but within myself to the choices that are my own . . .","a":"EPICTETUS, DISCOURSES, 2.5.4–5"},{"q":"What is the fruit of these teachings? Only the most beautiful and proper harvest of the truly educated—tranquility, fearlessness, and freedom. We should not trust the masses who say only the free can be educated, but rather the lovers of wisdom who say that only the educated are free.","a":"EPICTETUS, DISCOURSES, 2.1.21–23a"},{"q":"How many have laid waste to your life when you weren’t aware of what you were losing, how much was wasted in pointless grief, foolish joy, greedy desire, and social amusements—how little of your own was left to you. You will realize you are dying before your time!","a":"SENECA, ON THE BREVITY OF LIFE, 3.3b"},{"q":"All you need are these: certainty of judgment in the present moment; action for the common good in the present moment; and an attitude of gratitude in the present moment for anything that comes your way.","a":"MARCUS AURELIUS, MEDITATIONS, 9.6"},{"q":"Let all your efforts be directed to something, let it keep that end in view. It’s not activity that disturbs people, but false conceptions of things that drive them mad.","a":"SENECA, ON TRANQUILITY OF MIND, 12.5"},{"q":"The proper work of the mind is the exercise of choice, refusal, yearning, repulsion, preparation, purpose, and assent. What then can pollute and clog the mind’s proper functioning? Nothing but its own corrupt decisions.","a":"EPICTETUS, DISCOURSES, 4.11.6–7"},{"q":"Keep this thought at the ready at daybreak, and through the day and night—there is only one path to happiness, and that is in giving up all outside of your sphere of choice, regarding nothing else as your possession, surrendering all else to God and Fortune.","a":"EPICTETUS, DISCOURSES, 4.4.39"},{"q":"We control our reasoned choice and all acts that depend on that moral will. What’s not under our control are the body and any of its parts, our possessions, parents, siblings, children, or country—anything with which we might associate.","a":"EPICTETUS, DISCOURSES, 1.22.10"},{"q":"Understand at last that you have something in you more powerful and divine than what causes the bodily passions and pulls you like a mere puppet. What thoughts now occupy my mind? Is it not fear, suspicion, desire, or something like that?","a":"MARCUS AURELIUS, MEDITATIONS, 12.19"},{"q":"Pass through this brief patch of time in harmony with nature, and come to your final resting place gracefully, just as a ripened olive might drop, praising the earth that nourished it and grateful to the tree that gave it growth.","a":"MARCUS AURELIUS, MEDITATIONS, 4.48.2"},{"q":"A podium and a prison is each a place, one high and the other low, but in either place your freedom of choice can be maintained if you so wish.","a":"EPICTETUS, DISCOURSES, 2.6.25"},{"q":"Your principles can’t be extinguished unless you snuff out the thoughts that feed them, for it’s continually in your power to reignite new ones. . . . It’s possible to start living again! See things anew as you once did—that is how to restart life!","a":"MARCUS AURELIUS, MEDITATIONS, 7.2"},{"q":"I will keep constant watch over myself and—most usefully—will put each day up for review. For this is what makes us evil—that none of us looks back upon our own lives. We reflect upon only that which we are about to do. And yet our plans for the future descend from the past.","a":"SENECA, MORAL LETTERS, 83.2"},{"q":"Let’s pass over to the really rich—how often the occasions they look just like the poor! When they travel abroad they must restrict their baggage, and when haste is necessary, they dismiss their entourage. And those who are in the army, how few of their possessions they get to keep . . .","a":"SENECA, ON CONSOLATION TO HELVIA, 12. 1.b–2"},{"q":"From Rusticus . . . I learned to read carefully and not be satisfied with a rough understanding of the whole, and not to agree too quickly with those who have a lot to say about something.","a":"MARCUS AURELIUS, MEDITATIONS, 1.7.3"},{"q":"Erase the false impressions from your mind by constantly saying to yourself, I have it in my soul to keep out any evil, desire or any kind of disturbance—instead, seeing the true nature of things, I will give them only their due. Always remember this power that nature gave you.","a":"MARCUS AURELIUS, MEDITATIONS, 8.29"},{"q":"Take a good hard look at people’s ruling principle, especially of the wise, what they run away from and what they seek out.","a":"MARCUS AURELIUS, MEDITATIONS, 4.38"},{"q":"If you wish to improve, be content to appear clueless or stupid in extraneous matters—don’t wish to seem knowledgeable. And if some regard you as important, distrust yourself.","a":"EPICTETUS, ENCHIRIDION, 13a"},{"q":"Don’t return to philosophy as a task-master, but as patients seek out relief in a treatment of sore eyes, or a dressing for a burn, or from an ointment. Regarding it this way, you’ll obey reason without putting it on display and rest easy in its care.","a":"MARCUS AURELIUS, MEDITATIONS, 5.9"},{"q":"Frame your thoughts like this—you are an old person, you won’t let yourself be enslaved by this any longer, no longer pulled like a puppet by every impulse, and you’ll stop complaining about your present fortune or dreading the future.","a":"MARCUS AURELIUS, MEDITATIONS, 2.2"},{"q":"When I see an anxious person, I ask myself, what do they want? For if a person wasn’t wanting something outside of their own control, why would they be stricken by anxiety?","a":"EPICTETUS, DISCOURSES, 2.13.1"},{"q":"Who then is invincible? The one who cannot be upset by anything outside their reasoned choice.","a":"EPICTETUS, DISCOURSES, 1.18.21"},{"q":"Don’t be bounced around, but submit every impulse to the claims of justice, and protect your clear conviction in every appearance.","a":"MARCUS AURELIUS, MEDITATIONS, 4.22"},{"q":"I don’t agree with those who plunge headlong into the middle of the flood and who, accepting a turbulent life, struggle daily in great spirit with difficult circumstances. The wise person will endure that, but won’t choose it—choosing to be at peace, rather than at war.","a":"SENECA, MORAL LETTERS, 28.7"},{"q":"Many are harmed by fear itself, and many may have come to their fate while dreading fate.","a":"SENECA, OEDIPUS, 992"},{"q":"You cry, I’m suffering severe pain! Are you then relieved from feeling it, if you bear it in an unmanly way?","a":"SENECA, MORAL LETTERS, 78.17"},{"q":"We have the power to hold no opinion about a thing and to not let it upset our state of mind—for things have no natural power to shape our judgments.","a":"MARCUS AURELIUS, MEDITATIONS, 6.52"},{"q":"There is no more stupefying thing than anger, nothing more bent on its own strength. If successful, none more arrogant, if foiled, none more insane—since it’s not driven back by weariness even in defeat, when fortune removes its adversary it turns its teeth on itself.","a":"SENECA, ON ANGER, 3.1.5"},{"q":"Our soul is sometimes a king, and sometimes a tyrant. A king, by attending to what is honorable, protects the good health of the body in its care, and gives it no base or sordid command. But an uncontrolled, desire-fueled, over-indulged soul is turned from a king into that most feared and detested thing—a tyrant.","a":"SENECA, MORAL LETTERS, 114.24"},{"q":"Keep constant guard over your perceptions, for it is no small thing you are protecting, but your respect, trustworthiness and steadiness, peace of mind, freedom from pain and fear, in a word your freedom. For what would you sell these things?","a":"EPICTETUS, DISCOURSES, 4.3.6b–8"},{"q":"For to be wise is only one thing—to fix our attention on our intelligence, which guides all things everywhere.","a":"HERACLITUS, QUOTED IN DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 9.1"},{"q":"Clear your mind and get a hold on yourself and, as when awakened from sleep and realizing it was only a bad dream upsetting you, wake up and see that what’s there is just like those dreams.","a":"MARCUS AURELIUS, MEDITATIONS, 6.31"},{"q":"It is quite impossible to unite happiness with a yearning for what we don’t have. Happiness has all that it wants, and resembling the well-fed, there shouldn’t be hunger or thirst.","a":"EPICTETUS, DISCOURSES, 3.24.17"},{"q":"This is the true athlete—the person in rigorous training against false impressions. Remain firm, you who suffer, don’t be kidnapped by your impressions! The struggle is great, the task divine—to gain mastery, freedom, happiness, and tranquility.","a":"EPICTETUS, DISCOURSES, 2.18.27–28"},{"q":"Robbers, perverts, killers, and tyrants—gather for your inspection their so-called pleasures!","a":"MARCUS AURELIUS, MEDITATIONS, 6.34"},{"q":"Remember that it’s not only the desire for wealth and position that debases and subjugates us, but also the desire for peace, leisure, travel, and learning. It doesn’t matter what the external thing is, the value we place on it subjugates us to another . . . where our heart is set, there our impediment lies.","a":"EPICTETUS, DISCOURSES, 4.4.1–2; 15"},{"q":"You shouldn’t give circumstances the power to rouse anger, for they don’t care at all.","a":"MARCUS AURELIUS, MEDITATIONS, 7.38"},{"q":"Keep a list before your mind of those who burned with anger and resentment about something, of even the most renowned for success, misfortune, evil deeds, or any special distinction. Then ask yourself, how did that work out? Smoke and dust, the stuff of simple myth trying to be legend . . .","a":"MARCUS AURELIUS, MEDITATIONS, 12.27"},{"q":"Another has done me wrong? Let him see to it. He has his own tendencies, and his own affairs. What I have now is what the common nature has willed, and what I endeavor to accomplish now is what my nature wills.","a":"MARCUS AURELIUS, MEDITATIONS, 5.25"},{"q":"Of all the things that are, some are good, others bad, and yet others indifferent. The good are virtues and all that share in them; the bad are the vices and all that indulge them; the indifferent lie in between virtue and vice and include wealth, health, life, death, pleasure, and pain.","a":"EPICTETUS, DISCOURSES, 2.19.12b–13"},{"q":"When children stick their hand down a narrow goody jar they can’t get their full fist out and start crying. Drop a few treats and you will get it out! Curb your desire—don’t set your heart on so many things and you will get what you need.","a":"EPICTETUS, DISCOURSES, 3.9.22"},{"q":"An important place to begin in philosophy is this: a clear perception of one’s own ruling principle.","a":"EPICTETUS, DISCOURSES, 1.26.15"},{"q":"Above all, it is necessary for a person to have a true self-estimate, for we commonly think we can do more than we really can.","a":"SENECA, ON TRANQUILITY OF MIND, 5.2"},{"q":"These things don’t go together. You must be a unified human being, either good or bad. You must diligently work either on your own reasoning or on things out of your control—take great care with the inside and not what’s outside, which is to say, stand with the philosopher, or else with the mob!","a":"EPICTETUS, DISCOURSES, 3.15.13"},{"q":"So, concerning the things we pursue, and for which we vigorously exert ourselves, we owe this consideration—either there is nothing useful in them, or most aren’t useful. Some of them are superfluous, while others aren’t worth that much. But we don’t discern this and see them as free, when they cost us dearly.","a":"SENECA, MORAL LETTERS, 42.6"},{"q":"In public avoid talking often and excessively about your accomplishments and dangers, for however much you enjoy recounting your dangers, it’s not so pleasant for others to hear about your affairs.","a":"EPICTETUS, ENCHIRIDION, 33.14"},{"q":"Heraclitus called self-deception an awful disease and eyesight a lying sense.","a":"DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 9.7"},{"q":"If a person gave away your body to some passerby, you’d be furious. Yet you hand over your mind to anyone who comes along, so they may abuse you, leaving it disturbed and troubled—have you no shame in that?","a":"EPICTETUS, ENCHIRIDION, 28"},{"q":"We can remove most sins if we have a witness standing by as we are about to go wrong. The soul should have someone it can respect, by whose example it can make its inner sanctum more inviolable. Happy is the person who can improve others, not only when present, but even when in their thoughts!","a":"SENECA, MORAL LETTERS, 11.9"},{"q":"The unrestricted person, who has in hand what they will in all events, is free. But anyone who can be restricted, coerced, or pushed into something against what they will is a slave.","a":"EPICTETUS, DISCOURSES, 4.1.128b–129a"},{"q":"Whenever you find yourself blaming providence, turn it around in your mind and you will see that what has happened is in keeping with reason.","a":"EPICTETUS, DISCOURSES, 3.17.1"},{"q":"Zeno would also say that nothing is more hostile to a firm grasp on knowledge than self-deception.","a":"DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 7.23"},{"q":"Hold sacred your capacity for understanding. For in it is all, that our ruling principle won’t allow anything to enter that is either inconsistent with nature or with the constitution of a logical creature. It’s what demands due diligence, care for others, and obedience to God.","a":"MARCUS AURELIUS, MEDITATIONS, 3.9"},{"q":"You are not your body and hair-style, but your capacity for choosing well. If your choices are beautiful, so too will you be.","a":"EPICTETUS, DISCOURSES, 3.1.39b–40a"},{"q":"Today I escaped from the crush of circumstances, or better put, I threw them out, for the crush wasn’t from outside me but in my own assumptions.","a":"MARCUS AURELIUS, MEDITATIONS, 9.13"},{"q":"For there are two rules to keep at the ready—that there is nothing good or bad outside my own reasoned choice, and that we shouldn’t try to lead events but to follow them.","a":"EPICTETUS, DISCOURSES, 3.10.18"},{"q":"What is it then to be properly educated? It is learning to apply our natural preconceptions to the right things according to Nature, and beyond that to separate the things that lie within our power from those that don’t.","a":"EPICTETUS, DISCOURSES, 1.22.9–10a"},{"q":"The diseases of the rational soul are long-standing and hardened vices, such as greed and ambition—they have put the soul in a straitjacket and have begun to be permanent evils inside it. To put it briefly, this sickness is an unrelenting distortion of judgment, so things that are only mildly desirable are vigorously sought after.","a":"SENECA, MORAL LETTERS, 75.11"},{"q":"Eat like a human being, drink like a human being, dress up, marry, have children, get politically active—suffer abuse, bear with a headstrong brother, father, son, neighbor, or companion. Show us these things so we can see that you truly have learned from the philosophers.","a":"EPICTETUS, DISCOURSES, 3.21.5–6"},{"q":". . . freedom isn’t secured by filling up on your heart’s desire but by removing your desire.","a":"EPICTETUS, DISCOURSES, 4.1.175"},{"q":"How does your ruling reason manage itself? For in that is the key to everything. Whatever else remains, be it in the power of your choice or not, is but a corpse and smoke.","a":"MARCUS AURELIUS, MEDITATIONS, 12.33"},{"q":"Diogenes of Sinope said we sell things of great value for things of very little, and vice versa.","a":"DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 6.2.35b"},{"q":"If you should ever turn your will to things outside your control in order to impress someone, be sure that you have wrecked your whole purpose in life. Be content, then, to be a philosopher in all that you do, and if you wish also to be seen as one, show yourself first that you are and you will succeed.","a":"EPICTETUS, ENCHIRIDION, 23"},{"q":"Hurry to your own ruling reason, to the reason of the Whole, and to your neighbor’s. To your own mind to make it just; to the mind of the Whole to remember your place in it; and to your neighbor’s mind to learn whether it’s ignorant or of sound knowledge—while recognizing it’s like yours.","a":"MARCUS AURELIUS, MEDITATIONS, 9.22"},{"q":"Chasing what can’t be done is madness. But the base person is unable to do anything else.","a":"MARCUS AURELIUS, MEDITATIONS, 5.17"},{"q":"Your mind will take the shape of what you frequently hold in thought, for the human spirit is colored by such impressions.","a":"MARCUS AURELIUS, MEDITATIONS, 5.16"},{"q":"Drama, combat, terror, numbness, and subservience—every day these things wipe out your sacred principles, whenever your mind entertains them uncritically or lets them slip in.","a":"MARCUS AURELIUS, MEDITATIONS, 10.9"},{"q":"Circumstances are what deceive us—you must be discerning in them. We embrace evil before good. We desire the opposite of what we once desired. Our prayers are at war with our prayers, our plans with our plans.","a":"SENECA, MORAL LETTERS, 45.6"},{"q":"First off, don’t let the force of the impression carry you away. Say to it, ‘hold up a bit and let me see who you are and where you are from—let me put you to the test’ . . .","a":"EPICTETUS, DISCOURSES, 2.18.24"},{"q":"There are two things that must be rooted out in human beings—arrogant opinion and mistrust. Arrogant opinion expects that there is nothing further needed, and mistrust assumes that under the torrent of circumstance there can be no happiness.","a":"EPICTETUS, DISCOURSES, 3.14.8"},{"q":"It isn’t events themselves that disturb people, but only their judgments about them.","a":"EPICTETUS, ENCHIRIDION, 5"},{"q":"Throw out your conceited opinions, for it is impossible for a person to begin to learn what he thinks he already knows.","a":"EPICTETUS, DISCOURSES, 2.17.1"},{"q":"Atreus: Who would reject the flood of fortune’s gifts? Thyestes: Anyone who has experienced how easily they flow back.","a":"SENECA, THYESTES, 536"},{"q":"Don’t act grudgingly, selfishly, without due diligence, or to be a contrarian. Don’t overdress your thought in fine language. Don’t be a person of too many words and too many deeds. . . . Be cheerful, not wanting outside help or the relief others might bring. A person needs to stand on their own, not be propped up.","a":"MARCUS AURELIUS, MEDITATIONS, 3.5"},{"q":"Believe me, it’s better to produce the balance-sheet of your own life than that of the grain market.","a":"SENECA, ON THE BREVITY OF LIFE, 18.3b"},{"q":"Nothing will ever befall me that I will receive with gloom or a bad disposition. I will pay my taxes gladly. Now, all the things which cause complaint or dread are like the taxes of life—things from which, my dear Lucilius, you should never hope for exemption or seek escape.","a":"SENECA, MORAL LETTERS, 96.2"},{"q":"Pay close attention in conversation to what is being said, and to what follows from any action. In the action, immediately look for the target, in words, listen closely to what’s being signaled.","a":"MARCUS AURELIUS, MEDITATIONS, 7.4"},{"q":"Do away with the opinion I am harmed, and the harm is cast away too. Do away with being harmed, and harm disappears.","a":"MARCUS AURELIUS, MEDITATIONS, 4.7"},{"q":"Epictetus says we must discover the missing art of assent and pay special attention to the sphere of our impulses—that they are subject to reservation, to the common good, and that they are in proportion to actual worth.","a":"MARCUS AURELIUS, MEDITATIONS, 11.37"},{"q":"Here’s a way to think about what the masses regard as being ‘good’ things. If you would first start by setting your mind upon things that are unquestionably good—wisdom, self-control, justice, courage—with this preconception you’ll no longer be able to listen to the popular refrain that there are too many good things to experience in a lifetime.","a":"MARCUS AURELIUS, MEDITATIONS, 5.12"},{"q":"These are the characteristics of the rational soul: self-awareness, self-examination, and self-determination. It reaps its own harvest. . . . It succeeds in its own purpose . . .","a":"MARCUS AURELIUS, MEDITATIONS, 11.1–2"},{"q":"You have been formed of three parts—body, breath, and mind. Of these, the first two are yours insofar as they are only in your care. The third alone is truly yours.","a":"MARCUS AURELIUS, MEDITATIONS, 12.3"},{"q":"If anyone can prove and show to me that I think and act in error, I will gladly change it—for I seek the truth, by which no one has ever been harmed. The one who is harmed is the one who abides in deceit and ignorance.","a":"MARCUS AURELIUS, MEDITATIONS, 6.21"},{"q":"Turn it inside out and see what it is like—what it becomes like when old, sick, or prostituting itself. How short-lived the praiser and praised, the one who remembers and the remembered. Remembered in some corner of these parts, and even there not in the same way by all, or even by one. And the whole earth is but a mere speck.","a":"MARCUS AURELIUS, MEDITATIONS, 8.21"},{"q":"Tantalus: The highest power is— Thyestes: No power, if you desire nothing.","a":"SENECA, THYESTES, 440"},{"q":"Watch the stars in their courses and imagine yourself running alongside them. Think constantly on the changes of the elements into each other, for such thoughts wash away the dust of earthly life.","a":"MARCUS AURELIUS, MEDITATIONS, 7.47"},{"q":"For philosophy doesn’t consist in outward display, but in taking heed to what is needed and being mindful of it.","a":"MUSONIUS RUFUS, LECTURES, 16.75.15–16"},{"q":"First tell yourself what kind of person you want to be, then do what you have to do. For in nearly every pursuit we see this to be the case. Those in athletic pursuit first choose the sport they want, and then do that work.","a":"EPICTETUS, DISCOURSES, 3.23.1–2a"},{"q":"How much better is it to be known for doing well by many than for living extravagantly? How much more worthy than spending on sticks and stones is it to spend on people?","a":"MUSONIUS RUFUS, LECTURES, 19.91.26–28"},{"q":"The raw material for the work of a good and excellent person is their own guiding reason, the body is that of the doctor and the physical trainer, and the farm the farmer’s.","a":"EPICTETUS, DISCOURSES, 3.3.1"},{"q":"God laid down this law, saying: if you want some good, get it from yourself.","a":"EPICTETUS, DISCOURSES, 1.29.4"},{"q":"Where is Good? In our reasoned choices. Where is Evil? In our reasoned choices. Where is that which is neither Good nor Evil? In the things outside of our own reasoned choice.","a":"EPICTETUS, DISCOURSES, 2.16.1"},{"q":"Let us therefore set out whole-heartedly, leaving aside our many distractions and exert ourselves in this single purpose, before we realize too late the swift and unstoppable flight of time and are left behind. As each day arises, welcome it as the very best day of all, and make it your own possession. We must seize what flees.","a":"SENECA, MORAL LETTERS, 108.27b–28a"},{"q":"Let us also produce some bold act of our own—and join the ranks of the most emulated.","a":"SENECA, MORAL LETTERS, 98.13b"},{"q":"The greatest portion of peace of mind is doing nothing wrong. Those who lack self-control live disoriented and disturbed lives.","a":"SENECA, MORAL LETTERS, 105.7"},{"q":"Kindness is invincible, but only when it’s sincere, with no hypocrisy or faking. For what can even the most malicious person do if you keep showing kindness and, if given the chance, you gently point out where they went wrong—right as they are trying to harm you?","a":"MARCUS AURELIUS, MEDITATIONS, 11.18.5.9a"},{"q":"Don’t set your mind on things you don’t possess as if they were yours, but count the blessings you actually possess and think how much you would desire them if they weren’t already yours. But watch yourself, that you don’t value these things to the point of being troubled if you should lose them.","a":"MARCUS AURELIUS, MEDITATIONS, 7.27"},{"q":"Show me someone sick and happy, in danger and happy, dying and happy, exiled and happy, disgraced and happy. Show me! By God, how much I’d like to see a Stoic. But since you can’t show me someone that perfectly formed, at least show me someone actively forming themselves so, inclined in this way. . . . Show me!","a":"EPICTETUS, DISCOURSES, 2.19.24–25a, 28"},{"q":"Pay attention to what’s in front of you—the principle, the task, or what’s being portrayed.","a":"MARCUS AURELIUS, MEDITATIONS, 8.22"},{"q":"That’s why the philosophers warn us not to be satisfied with mere learning, but to add practice and then training. For as time passes we forget what we learned and end up doing the opposite, and hold opinions the opposite of what we should.","a":"EPICTETUS, DISCOURSES, 2.9.13–14"},{"q":"What’s the point of having countless books and libraries, whose titles could hardly be read through in a lifetime. The learner is not taught, but burdened by the sheer volume, and it’s better to plant the seeds of a few authors than to be scattered about by many.","a":"SENECA, ON TRANQUILITY OF MIND, 9.4"},{"q":"You get what you deserve. Instead of being a good person today, you choose instead to become one tomorrow.","a":"MARCUS AURELIUS, MEDITATIONS, 8.22"},{"q":"Show me that the good life doesn’t consist in its length, but in its use, and that it is possible—no, entirely too common—for a person who has had a long life to have lived too little.","a":"SENECA, MORAL LETTERS, 49.10b"},{"q":"You say, good fortune used to meet you at every corner. But the fortunate person is the one who gives themselves a good fortune. And good fortunes are a well-tuned soul, good impulses and good actions.","a":"MARCUS AURELIUS, MEDITATIONS, 5.36"},{"q":"Joy for human beings lies in proper human work. And proper human work consists in: acts of kindness to other human beings, disdain for the stirrings of the senses, identifying trustworthy impressions, and contemplating the natural order and all that happens in keeping with it.","a":"MARCUS AURELIUS, MEDITATIONS, 8.26"},{"q":"I’m constantly amazed by how easily we love ourselves above all others, yet we put more stock in the opinions of others than in our own estimation of self. . . . How much credence we give to the opinions our peers have of us and how little to our very own!","a":"MARCUS AURELIUS, MEDITATIONS, 12.4"},{"q":"Well-being is realized by small steps, but is truly no small thing.","a":"ZENO, QUOTED IN DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 7.1.26"},{"q":"I can’t call a person a hard worker just because I hear they read and write, even if working at it all night. Until I know what a person is working for, I can’t deem them industrious. . . . I can if the end they work for is their own ruling principle, having it be and remain in constant harmony with Nature.","a":"EPICTETUS, DISCOURSES, 4.4.41; 43"},{"q":"What is your vocation? To be a good person.","a":"MARCUS AURELIUS, MEDITATIONS, 11.5"},{"q":"Indeed, no one can thwart the purposes of your mind—for they can’t be touched by fire, steel, tyranny, slander, or anything.","a":"MARCUS AURELIUS, MEDITATIONS, 8.41"},{"q":"Why then are we offended? Why do we complain? This is what we’re here for.","a":"SENECA, ON PROVIDENCE, 5.7b–8"},{"q":"We cry to God Almighty, how can we escape this agony? Fool, don’t you have hands? Or could it be God forgot to give you a pair? Sit and pray your nose doesn’t run! Or, rather just wipe your nose and stop seeking a scapegoat.","a":"EPICTETUS, DISCOURSES, 2.16.13"},{"q":"Think of those who, not by fault of inconsistency but by lack of effort, are too unstable to live as they wish, but only live as they have begun.","a":"SENECA, ON TRANQUILITY OF MIND, 2.6b"},{"q":"We like to say that we don’t get to choose our parents, that they were given by chance—yet we can truly choose whose children we’d like to be.","a":"SENECA, ON THE BREVITY OF LIFE, 15.3a"},{"q":"If you find something very difficult to achieve yourself, don’t imagine it impossible—for anything possible and proper for another person can be achieved as easily by you.","a":"MARCUS AURELIUS, MEDITATIONS, 6.19"},{"q":"How much more harmful are the consequences of anger and grief than the circumstances that aroused them in us!","a":"MARCUS AURELIUS, MEDITATIONS, 11.18.8"},{"q":"In this way you must understand how laughable it is to say, ‘Tell me what to do!’ What advice could I possibly give? No, a far better request is, ‘Train my mind to adapt to any circumstance.’ . . . In this way, if circumstances take you off script . . . you won’t be desperate for a new prompting.","a":"EPICTETUS, DISCOURSES, 2.2.20b–1; 24b–25a"},{"q":"Every event has two handles—one by which it can be carried, and one by which it can’t. If your brother does you wrong, don’t grab it by his wronging, because this is the handle incapable of lifting it. Instead, use the other—that he is your brother, that you were raised together, and then you will have hold of the handle that carries.","a":"EPICTETUS, ENCHIRIDION, 43"},{"q":"To the youngster talking nonsense Zeno said, ‘The reason why we have two ears and only one mouth is so we might listen more and talk less.’","a":"DIOGENES LAERTIUS, LIVES OF EMINENT PHILOSOPHERS, 7.1.23"},{"q":"Don’t be ashamed of needing help. You have a duty to fulfill just like a soldier on the wall of battle. So what if you are injured and can’t climb up without another soldier’s help?","a":"MARCUS AURELIUS, MEDITATIONS, 7.7"},{"q":"Fortune doesn’t have the long reach we suppose, she can only lay siege to those who hold her tight. So, let’s step back from her as much as possible.","a":"SENECA, MORAL LETTERS, 82.5b–6"},{"q":"Let Fate find us prepared and active. Here is the great soul—the one who surrenders to Fate. The opposite is the weak and degenerate one, who struggles with and has a poor regard for the order of the world, and seeks to correct the faults of the gods rather than their own.","a":"SENECA, MORAL LETTERS, 107.12"},{"q":"Don’t let your reflection on the whole sweep of life crush you. Don’t fill your mind with all the bad things that might still happen. Stay focused on the present situation and ask yourself why it’s so unbearable and can’t be survived.","a":"MARCUS AURELIUS, MEDITATIONS, 8.36"},{"q":"If then it’s not that the things you pursue or avoid are coming at you, but rather that you in a sense are seeking them out, at least try to keep your judgment of them steady, and they too will remain calm and you won’t be seen chasing after or fleeing from them.","a":"MARCUS AURELIUS, MEDITATIONS, 11.11"},{"q":"We should take wandering outdoor walks, so that the mind might be nourished and refreshed by the open air and deep breathing.","a":"SENECA, ON TRANQUILITY OF MIND, 17.8"},{"q":"If you are defeated once and tell yourself you will overcome, but carry on as before, know in the end you’ll be so ill and weakened that eventually you won’t even notice your mistake and will begin to rationalize your behavior.","a":"EPICTETUS, DISCOURSES, 2.18.31"},{"q":"You could enjoy this very moment all the things you are praying to reach by taking the long way around—if you’d stop depriving yourself of them.","a":"MARCUS AURELIUS, MEDITATIONS, 12.1"},{"q":"The beautiful and good person neither fights with anyone nor, as much as they are able, permits others to fight . . . this is the meaning of getting an education—learning what is your own affair and what is not. If a person carries themselves so, where is there any room for fighting?","a":"EPICTETUS, DISCOURSES, 4.5.1; 7b–8a"},{"q":"What assistance can we find in the fight against habit? Try the opposite!","a":"EPICTETUS, DISCOURSES, 1.27.4"},{"q":"How does it help, my husband, to make misfortune heavier by complaining about it? This is more fit for a king—to seize your adversities head on. The more precarious his situation, the more imminent his fall from power, the more firmly he should be resolved to stand and fight. It isn’t manly to retreat from fortune.","a":"SENECA, OEDIPUS, 80"},{"q":"Philosophy calls for simple living, but not for penance—it’s quite possible to be simple without being crude.","a":"SENECA, MORAL LETTERS, 5.5"},{"q":"It is possible to curb your arrogance, to overcome pleasure and pain, to rise above your ambition, and to not be angry with stupid and ungrateful people—yes, even to care for them.","a":"MARCUS AURELIUS, MEDITATIONS, 8.8"},{"q":"Whatever anyone does or says, for my part I’m bound to the good. In the same way an emerald or gold or purple might always proclaim: ‘whatever anyone does or says, I must be what I am and show my true colors.’","a":"MARCUS AURELIUS, MEDITATIONS, 7.15"},{"q":"Never shirk the proper dispatch of your duty, no matter if you are freezing or hot, groggy or well-rested, vilified or praised, not even if dying or pressed by other demands. Even dying is one of the important assignments of life and, in this as in all else, make the most of your resources to do well the duty at hand.","a":"MARCUS AURELIUS, MEDITATIONS, 6.2"},{"q":"The task of a philosopher: we should bring our will into harmony with whatever happens, so that nothing happens against our will and nothing that we wish for fails to happen.","a":"EPICTETUS, DISCOURSES, 2.14.7"},{"q":"Protect your own good in all that you do, and as concerns everything else take what is given as far as you can make reasoned use of it. If you don’t, you’ll be unlucky, prone to failure, hindered and stymied.","a":"EPICTETUS, DISCOURSES, 4.3.11"},{"q":"This is what you should teach me, how to be like Odysseus—how to love my country, wife and father, and how, even after suffering shipwreck, I might keep sailing on course to those honorable ends.","a":"SENECA, MORAL LETTERS, 88.7b"},{"q":"For I believe a good king is from the outset and by necessity a philosopher, and the philosopher is from the outset a kingly person.","a":"MUSONIUS RUFUS, LECTURES, 8.33.32–34"},{"q":"Love the humble art you have learned, and take rest in it. Pass through the remainder of your days as one who whole-heartedly entrusts all possessions to the gods, making yourself neither a tyrant nor a slave to any person.","a":"MARCUS AURELIUS, MEDITATIONS, 4.31"},{"q":"But what does Socrates say? ‘Just as one person delights in improving his farm, and another his horse, so I delight in attending to my own improvement day by day.’","a":"EPICTETUS, DISCOURSES, 3.5.14"},{"q":"In your actions, don’t procrastinate. In your conversations, don’t confuse. In your thoughts, don’t wander. In your soul, don’t be passive or aggressive. In your life, don’t be all about business.","a":"MARCUS AURELIUS, MEDITATIONS, 8.51"},{"q":"Every great power is dangerous for the beginner. You must therefore wield them as you are able, but in harmony with nature.","a":"EPICTETUS, DISCOURSES, 3.13.20"},{"q":"When you’ve done well and another has benefited by it, why like a fool do you look for a third thing on top—credit for the good deed or a favor in return?","a":"MARCUS AURELIUS, MEDITATIONS, 7.73"},{"q":"To what service is my soul committed? Constantly ask yourself this and thoroughly examine yourself by seeing how you relate to that part called the ruling principle. Whose soul do I have now? Do I have that of a child, a youth . . . a tyrant, a pet, or a wild animal?","a":"MARCUS AURELIUS, MEDITATIONS, 5.11"},{"q":"My reasoned choice is as indifferent to the reasoned choice of my neighbor, as to his breath and body. However much we’ve been made for cooperation, the ruling reason in each of us is master of its own affairs. If this weren’t the case, the evil in someone else could become my harm, and God didn’t mean for someone else to control my misfortune.","a":"MARCUS AURELIUS, MEDITATIONS, 8.56"},{"q":"As Plato said, every soul is deprived of truth against its will. The same holds true for justice, self-control, goodwill to others, and every similar virtue. It’s essential to constantly keep this in your mind, for it will make you more gentle to all.","a":"MARCUS AURELIUS, MEDITATIONS, 7.63"},{"q":"The unjust person acts against the gods. For insofar as the nature of the universe made rational creatures for the sake of each other, with an eye toward mutual benefit based on true value and never for harm, anyone breaking nature’s will obviously acts against the oldest of gods.","a":"MARCUS AURELIUS, MEDITATIONS, 9.1.1"},{"q":"Whenever you have trouble getting up in the morning, remind yourself that you’ve been made by nature for the purpose of working with others, whereas even unthinking animals share sleeping. And it’s our own natural purpose that is more fitting and more satisfying.","a":"MARCUS AURELIUS, MEDITATIONS, 8.12"},{"q":"Nothing is noble if it’s done unwillingly or under compulsion. Every noble deed is voluntary.","a":"SENECA, MORAL LETTERS, 66.16b"},{"q":"Receive without pride, let go without attachment.","a":"MARCUS AURELIUS, MEDITATIONS, 8.33"},{"q":"Whenever disturbing news is delivered to you, bear in mind that no news can ever be relevant to your reasoned choice. Can anyone break news to you that your assumptions or desires are wrong? No way! But they can tell you someone died—even so, what is that to you?","a":"EPICTETUS, DISCOURSES, 3.18.1–2"},{"q":"Often injustice lies in what you aren’t doing, not only in what you are doing.","a":"MARCUS AURELIUS, MEDITATIONS, 9.5"},{"q":"How disgraceful is the lawyer whose dying breath passes while at court, at an advanced age, pleading for unknown litigants and still seeking the approval of ignorant spectators.","a":"SENECA, ON THE BREVITY OF LIFE, 20.2"},{"q":"Indeed, how could exile be an obstacle to a person’s own cultivation, or to attaining virtue when no one has ever been cut off from learning or practicing what is needed by exile?","a":"MUSONIUS RUFUS, LECTURES, 9.37.30–31, 9.39.1"},{"q":"At this moment you aren’t on a journey, but wandering about, being driven from place to place, even though what you seek—to live well—is found in all places. Is there any place more full of confusion than the Forum? Yet even there you can live at peace, if needed.","a":"SENECA, MORAL LETTERS, 28.5b–6a"},{"q":"You must stop blaming God, and not blame any person. You must completely control your desire and shift your avoidance to what lies within your reasoned choice. You must no longer feel anger, resentment, envy, or regret.","a":"EPICTETUS, DISCOURSES, 3.22.13"},{"q":"Silence is a lesson learned from the many sufferings of life.","a":"SENECA, THYESTES, 309"},{"q":"Apply yourself to thinking through difficulties—hard times can be softened, tight squeezes widened, and heavy loads made lighter for those who can apply the right pressure.","a":"SENECA, ON TRANQUILITY OF MIND, 10.4b"},{"q":"Wherever a person can live, there one can also live well; life is also in the demands of court, there too one can live well.","a":"MARCUS AURELIUS, MEDITATIONS, 5.16"},{"q":"Do now what nature demands of you. Get right to it if that’s in your power. Don’t look around to see if people will know about it. Don’t await the perfection of Plato’s Republic, but be satisfied with even the smallest step forward and regard the outcome as a small thing.","a":"MARCUS AURELIUS, MEDITATIONS, 9.29.(4)"},{"q":"We don’t abandon our pursuits because we despair of ever perfecting them.","a":"EPICTETUS, DISCOURSES, 1.2.37b"},{"q":"When the problem arose for us whether habit or theory was better for getting virtue—if by theory is meant what teaches us correct conduct, and by habit we mean being accustomed to act according to this theory—Musonius thought habit to be more effective.","a":"Musonius thought habit to be more effective.”"},{"q":"Many words have been spoken by Plato, Zeno, Chrysippus, Posidonius, and by a whole host of equally excellent Stoics. I’ll tell you how people can prove their words to be their own—by putting into practice what they’ve been preaching.","a":"SENECA, MORAL LETTERS, 108.35; 38"},{"q":"You’ve endured countless troubles—all from not letting your ruling reason do the work it was made for—enough already!","a":"MARCUS AURELIUS, MEDITATIONS, 9.26"},{"q":"Just as the nature of rational things has given to each person their rational powers, so it also gives us this power—just as nature turns to its own purpose any obstacle or any opposition, sets its place in the destined order, and co-opts it, so every rational person can convert any obstacle into the raw material for their own purpose.","a":"MARCUS AURELIUS, MEDITATIONS, 8.35"},{"q":"For nothing outside my reasoned choice can hinder or harm it—my reasoned choice alone can do this to itself. If we would lean this way whenever we fail, and would blame only ourselves and remember that nothing but opinion is the cause of a troubled mind and uneasiness, then by God, I swear we would be making progress.","a":"EPICTETUS, DISCOURSES, 3.19.2–3"},{"q":"Inwardly, we ought to be different in every respect, but our outward dress should blend in with the crowd.","a":"SENECA, MORAL LETTERS, 5.2"},{"q":"It’s ruinous for the soul to be anxious about the future and miserable in advance of misery, engulfed by anxiety that the things it desires might remain its own until the very end. For such a soul will never be at rest—by longing for things to come it will lose the ability to enjoy present things.","a":"SENECA, MORAL LETTERS, 98.5b–6a"},{"q":"It is essential for you to remember that the attention you give to any action should be in due proportion to its worth, for then you won’t tire and give up, if you aren’t busying yourself with lesser things beyond what should be allowed.","a":"MARCUS AURELIUS, MEDITATIONS, 4.32b"},{"q":"Therefore, explain why a wise person shouldn’t get drunk—not with words, but by the facts of its ugliness and offensiveness. It’s most easy to prove that so-called pleasures, when they go beyond proper measure, are but punishments.","a":"SENECA, MORAL LETTERS, 83.27"},{"q":"I’ll never be ashamed to quote a bad writer with a good saying.","a":"SENECA, ON TRANQUILITY OF MIND, 11.8"},{"q":"Won’t you be walking in your predecessors’ footsteps? I surely will use the older path, but if I find a shorter and smoother way, I’ll blaze a trail there. The ones who pioneered these paths aren’t our masters, but our guides. Truth stands open to everyone, it hasn’t been monopolized.","a":"SENECA, MORAL LETTERS, 33.11"},{"q":"I was shipwrecked before I even boarded . . . the journey showed me this—how much of what we have is unnecessary, and how easily we can decide to rid ourselves of these things whenever it’s necessary, never suffering the loss.","a":"SENECA, MORAL LETTERS, 87.1"},{"q":"Heraclitus would shed tears whenever he went out in public—Democritus laughed. One saw the whole as a parade of miseries, the other of follies. And so, we should take a lighter view of things and bear them with an easy spirit, for it is more human to laugh at life than to lament it.","a":"Democritus laughed. One saw the whole as a parade of miseries, the other of follies. And so, we should take a lighter view of things and bear them with an easy spirit, for it is more human to laugh at life than to lament it.”"},{"q":"The founder of the universe, who assigned to us the laws of life, provided that we should live well, but not in luxury. Everything needed for our well-being is right before us, whereas what luxury requires is gathered by many miseries and anxieties. Let us use this gift of nature and count it among the greatest things.","a":"SENECA, MORAL LETTERS, 119.15b"},{"q":"No person has the power to have everything they want, but it is in their power not to want what they don’t have, and to cheerfully put to good use what they do have.","a":"SENECA, MORAL LETTERS, 123.3"},{"q":"Anything that must yet be done, virtue can do with courage and promptness. For anyone would call it a sign of foolishness for one to undertake a task with a lazy and begrudging spirit, or to push the body in one direction and the mind in another, to be torn apart by wildly divergent impulses.","a":"SENECA, MORAL LETTERS, 31.b–32"},{"q":"Whenever you take offense at someone’s wrongdoing, immediately turn to your own similar failings, such as seeing money as good, or pleasure, or a little fame—whatever form it takes. By thinking on this, you’ll quickly forget your anger, considering also what compels them—for what else could they do? Or, if you are able, remove their compulsion.","a":"MARCUS AURELIUS, MEDITATIONS, 10.30"},{"q":"The rational soul is stronger than any kind of fortune—from its own share it guides its affairs here or there, and is itself the cause of a happy or miserable life.","a":"SENECA, MORAL LETTERS, 98.2b"},{"q":"Men, the philosopher’s lecture-hall is a hospital—you shouldn’t walk out of it feeling pleasure, but pain, for you aren’t well when you enter it.","a":"EPICTETUS, DISCOURSES, 3.23.30"},{"q":"We must undergo a hard winter training and not rush into things for which we haven’t prepared.","a":"EPICTETUS, DISCOURSES, 1.2.32"},{"q":"I judge you unfortunate because you have never lived through misfortune. You have passed through life without an opponent—no one can ever know what you are capable of, not even you.","a":"SENECA, ON PROVIDENCE, 4.3"},{"q":"You can bind up my leg, but not even Zeus has the power to break my freedom of choice.","a":"EPICTETUS, DISCOURSES, 1.1.23"},{"q":"Consider who you are. Above all, a human being, carrying no greater power than your own reasoned choice, which oversees all other things, and is free from any other master.","a":"EPICTETUS, DISCOURSES, 2.10.1"},{"q":"No one is crushed by Fortune, unless they are first deceived by her . . . those who aren’t pompous in good times, don’t have their bubbles burst with change. Against either circumstance, the stable person keeps their rational soul invincible, for it’s precisely in the good times they prove their strength against adversity.","a":"SENECA, ON CONSOLATION TO HELVIA, 5.4b, 5b–6"},{"q":"But there is no reason to live and no limit to our miseries if we let our fears predominate.","a":"SENECA, MORAL LETTERS, 13.12b"},{"q":"Let us get used to dining out without the crowds, to being a slave to fewer slaves, to getting clothes only for their real purpose, and to living in more modest quarters.","a":"SENECA, ON TRANQUILITY OF MIND, 9.3b"},{"q":"Zeno always said that nothing was more unbecoming than putting on airs, especially with the young.","a":"DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 7.1.22"},{"q":"No, it is events that give rise to fear—when another has power over them or can prevent them, that person becomes able to inspire fear. How is the fortress destroyed? Not by iron or fire, but by judgments . . . here is where we must begin, and it is from this front that we must seize the fortress and throw out the tyrants.","a":"EPICTETUS, DISCOURSES, 4.1.85–86; 87a"},{"q":"Try praying differently, and see what happens: Instead of asking for ‘a way to sleep with her,’ try asking for ‘a way to stop desiring to sleep with her.’ Instead of ‘a way to get rid of him,’ try asking for ‘a way to not crave his demise.’ Instead of ‘a way to not lose my child,’ try asking for ‘a way to lose my fear of it.’","a":"MARCUS AURELIUS, MEDITATIONS, 9.40.(6)"},{"q":"Success comes to the lowly and to the poorly talented, but the special characteristic of a great person is to triumph over the disasters and panics of human life.","a":"SENECA, ON PROVIDENCE, 4.1"},{"q":"Remember that to change your mind and to follow someone’s correction are consistent with a free will. For the action is yours alone—to fulfill its purpose in keeping with your impulse and judgment, and yes, with your intelligence.","a":"MARCUS AURELIUS, MEDITATIONS, 8.16"},{"q":"The art of living is more like wrestling than dancing, because an artful life requires being prepared to meet and withstand sudden and unexpected attacks.","a":"MARCUS AURELIUS, MEDITATIONS, 7.61"},{"q":"When forced, as it seems, by circumstances into utter confusion, get a hold of yourself quickly. Don’t be locked out of the rhythm any longer than necessary. You’ll be able to keep the beat if you are constantly returning to it.","a":"MARCUS AURELIUS, MEDITATIONS, 6.11"},{"q":"Difficulties show a person’s character. So when a challenge confronts you, remember that God is matching you with a younger sparring partner, as would a physical trainer. Why? Becoming an Olympian takes sweat! I think no one has a better challenge than yours, if only you would use it like an athlete would that younger sparring partner.","a":"EPICTETUS, DISCOURSES, 1.24.1–2"},{"q":"Show me someone who isn’t a slave! One is a slave to lust, another to greed, another to power, and all are slaves to fear. I could name a former Consul who is a slave to a little old woman, a millionaire who is the slave of the cleaning woman. . . . No servitude is more abject than the self-imposed.","a":"SENECA, MORAL LETTERS, 47.17"},{"q":"Leisure without study is death—a tomb for the living person.","a":"SENECA, MORAL LETTERS, 82.4"},{"q":"For even peace itself will supply more reason for worry. Not even safe circumstances will bring you confidence once your mind has been shocked—once it gets in the habit of blind panic, it can’t provide for its own safety. For it doesn’t really avoid danger, it just runs away. Yet we are exposed to greater danger with our backs turned.","a":"SENECA, MORAL LETTERS, 104.10b"},{"q":"Nothing can satisfy greed, but even a small measure satisfies nature. So it is that the poverty of an exile brings no misfortune, for no place of exile is so barren as not to produce ample support for a person.","a":"SENECA, ON CONSOLATION TO HELVIA, 10.11b"},{"q":"If you lay violent hands on me, you’ll have my body, but my mind will remain with Stilpo.","a":"ZENO, QUOTED IN DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 7.1.24"},{"q":"Does the light of a lamp shine and keep its glow until its fuel is spent? Why shouldn’t your truth, justice, and self-control shine until you are extinguished?","a":"MARCUS AURELIUS, MEDITATIONS, 12.15"},{"q":"But the wise person can lose nothing. Such a person has everything stored up for themselves, leaving nothing to Fortune, their own goods are held firm, bound in virtue, which requires nothing from chance, and therefore can’t be either increased or diminished.","a":"SENECA, ON THE FIRMNESS OF THE WISE, 5.4"},{"q":"Meditate often on the interconnectedness and mutual interdependence of all things in the universe. For in a sense, all things are mutually woven together and therefore have an affinity for each other—for one thing follows after another according to their tension of movement, their sympathetic stirrings, and the unity of all substance.","a":"MARCUS AURELIUS, MEDITATIONS, 6.38"},{"q":"That which isn’t good for the hive, isn’t good for the bee.","a":"MARCUS AURELIUS, MEDITATIONS, 6.54"},{"q":"Better to trip with the feet than with the tongue.","a":"ZENO, QUOTED IN DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 7.1.26"},{"q":"It’s in keeping with Nature to show our friends affection and to celebrate their advancement, as if it were our very own. For if we don’t do this, virtue, which is strengthened only by exercising our perceptions, will no longer endure in us.","a":"SENECA, MORAL LETTERS, 109.15"},{"q":"The person who does wrong, does wrong to themselves. The unjust person is unjust to themselves—making themselves evil.","a":"MARCUS AURELIUS, MEDITATIONS, 9.4"},{"q":"Yes, getting your wish would have been so nice. But isn’t that exactly why pleasure trips us up? Instead, see if these things might be even nicer—a great soul, freedom, honesty, kindness, saintliness. For there is nothing so pleasing as wisdom itself, when you consider how sure-footed and effortless the works of understanding and knowledge are.","a":"MARCUS AURELIUS, MEDITATIONS, 5.9"},{"q":"When the standards have been set, things are tested and weighed. And the work of philosophy is just this, to examine and uphold the standards, but the work of a truly good person is in using those standards when they know them.","a":"EPICTETUS, DISCOURSES, 2.11.23–25"},{"q":"Hecato says, ‘I can teach you a love potion made without any drugs, herbs, or special spell—if you would be loved, love.’","a":"SENECA, MORAL LETTERS, 9.6"},{"q":"The best way to avenge yourself is to not be like that.","a":"MARCUS AURELIUS, MEDITATIONS, 6.6"},{"q":"Everything turns on your assumptions about it, and that’s on you. You can pluck out the hasty judgment at will, and like steering a ship around the point, you will find calm seas, fair weather and a safe port.","a":"MARCUS AURELIUS, MEDITATIONS, 12.22"},{"q":"Some people with exceptional minds quickly grasp virtue, or produce it within themselves. But other dim and lazy types, hindered by bad habits, must have their rusty souls constantly scrubbed down. . . . The weaker sorts will be helped and lifted from their bad opinions if we put them in the care of philosophy’s principles.","a":"SENECA, MORAL LETTERS, 95.36–37"},{"q":"A benefit should be kept like a buried treasure, only to be dug up in necessity. . . . Nature bids us to do well by all. . . . Wherever there is a human being, we have an opportunity for kindness.","a":"SENECA, ON THE HAPPY LIFE, 24.2–3"},{"q":"There’s nothing worse than a wolf befriending sheep. Avoid false friendship at all costs. If you are good, straightforward, and well meaning it should show in your eyes and not escape notice.","a":"MARCUS AURELIUS, MEDITATIONS, 11.15"},{"q":"Since habit is such a powerful influence, and we’re used to pursuing our impulses to gain and avoid outside our own choice, we should set a contrary habit against that, and where appearances are really slippery, use the counterforce of our training.","a":"EPICTETUS, DISCOURSES, 3.12.6"},{"q":"Such behavior! People don’t want to praise their contemporaries whose lives they actually share, but hold great expectations for the praise of future generations—people they haven’t met or ever will! This is akin to being upset that past generations didn’t praise you.","a":"MARCUS AURELIUS, MEDITATIONS, 6.18"},{"q":"So someone’s good at taking down an opponent, but that doesn’t make them more community-minded, or modest, or well-prepared for any circumstance, or more tolerant of the faults of others.","a":"MARCUS AURELIUS, MEDITATIONS, 7.52"},{"q":"People aren’t in awe of your sharp mind? So be it. But you have many other qualities you can’t claim to have been deprived of at birth. Display then those qualities in your own power: honesty, dignity, endurance, chastity, contentment, frugality, kindness, freedom, persistence, avoiding gossip, and magnanimity.","a":"MARCUS AURELIUS, MEDITATIONS, 5.5"},{"q":"Dig deep within yourself, for there is a fountain of goodness ever ready to flow if you will keep digging.","a":"MARCUS AURELIUS, MEDITATIONS, 7.59"},{"q":"What, then, makes a person free from hindrance and self-determining? For wealth doesn’t, neither does high-office, state or kingdom—rather, something else must be found . . . in the case of living, it is the knowledge of how to live.","a":"EPICTETUS, DISCOURSES, 4.1.62–64"},{"q":"Crimes often return to their teacher.","a":"SENECA, THYESTES, 311"},{"q":"You’ll more quickly find an earthly thing kept from the earth than you will a person cut off from other human beings.","a":"MARCUS AURELIUS, MEDITATIONS, 9.9.3"},{"q":"Each person acquires their own character, but their official roles are designated by chance. You should invite some to your table because they are deserving, others because they may come to deserve it.","a":"SENECA, MORAL LETTERS, 47.15b"},{"q":"Aren’t you ashamed to reserve for yourself only the remnants of your life and to dedicate to wisdom only that time can’t be directed to business?","a":"SENECA, ON THE BREVITY OF LIFE, 3.5b"},{"q":"The human being is born with an inclination toward virtue.","a":"MUSONIUS RUFUS, LECTURES, 2.7.1–2"},{"q":"Don’t seek for everything to happen as you wish it would, but rather wish that everything happens as it actually will—then your life will flow well.","a":"EPICTETUS, ENCHIRIDION, 8"},{"q":"There is no evil in things changing, just as there is no good in persisting in a new state.","a":"MARCUS AURELIUS, MEDITATIONS, 4.42"},{"q":"This is the very thing which makes up the virtue of the happy person and a well-flowing life—when the affairs of life are in every way tuned to the harmony between the individual divine spirit and the will of the director of the universe.","a":"CHRYSIPPUS, QUOTED IN DIOGENES LAERTIUS, LIVES OF THE EMINENT PHILOSOPHERS, 7.1.88"},{"q":"Don’t trust in your reputation, money, or position, but in the strength that is yours—namely, your judgments about the things that you control and don’t control. For this alone is what makes us free and unfettered, that picks us up by the neck from the depths and lifts us eye to eye with the rich and powerful.","a":"EPICTETUS, DISCOURSES, 3.26.34–35"},{"q":"The universe is change. Life is opinion.","a":"MARCUS AURELIUS, MEDITATIONS, 4.3.4b"},{"q":"When you are distressed by an external thing, it’s not the thing itself that troubles you, but only your judgment of it. And you can wipe this out at a moment’s notice.","a":"MARCUS AURELIUS, MEDITATIONS, 8.47"},{"q":"If we judge as good and evil only the things in the power of our own choice, then there is no room left for blaming gods or being hostile to others.","a":"MARCUS AURELIUS, MEDITATIONS, 6.41"},{"q":"Don’t allow yourself to be heard any longer griping about public life, not even with your own ears!","a":"MARCUS AURELIUS, MEDITATIONS, 8.9"},{"q":"He was sent to prison. But the observation ‘he has suffered evil,’ is an addition coming from you.","a":"EPICTETUS, DISCOURSES, 3.8.5b–6a"},{"q":"Meditate often on the swiftness with which all that exists and is coming into being is swept by us and carried away. For substance is like a river’s unending flow, its activities continually changing and causes infinitely shifting so that almost nothing at all stands still.","a":"MARCUS AURELIUS, MEDITATIONS, 5.23"},{"q":"Hecato says, ‘cease to hope and you will cease to fear.’ . . . The primary cause of both these ills is that instead of adapting ourselves to present circumstances we send out thoughts too far ahead.","a":"SENECA, MORAL LETTERS, 5.7b–8"},{"q":"When philosophy is wielded with arrogance and stubbornly, it is the cause for the ruin of many. Let philosophy scrape off your own faults, rather than be a way to rail against the faults of others.","a":"SENECA, MORAL LETTERS, 103.4b–5a"},{"q":"Our rational nature moves freely forward in its impressions when it: 1) accepts nothing false or uncertain; 2) directs its impulses only to acts for the common good; 3) limits its desires and aversions only to what’s in its own power; 4) embraces everything nature assigns it.","a":"MARCUS AURELIUS, MEDITATIONS, 8.7"},{"q":"For any challenge we should hold three thoughts at our command: ‘Lead on God and Destiny, To that Goal fixed for me long ago. I will follow and not stumble; even if my will is weak I will soldier on.’","a":"CLEANTHES"},{"q":"If you’ve seen the present, you’ve seen all things, from time immemorial into all of eternity. For everything that happens is related and the same.","a":"MARCUS AURELIUS, MEDITATIONS, 6.37"},{"q":"A good isn’t increased by the addition of time, but if one is wise for even a moment, they will be no less happy than the person who exercises virtue for all time and happily passes their life in it.","a":"CHRYSIPPUS QUOTED BY PLUTARCH IN MORALIA: “AGAINST THE STOICS ON COMMON CONCEPTIONS,” 1062 (LOEB, P. 682)"},{"q":"Fortune falls heavily on those for whom she’s unexpected. The one always on the lookout easily endures.","a":"SENECA, ON CONSOLATION TO HELVIA, 5.3"},{"q":"In short, you must remember this—that if you hold anything dear outside of your own reasoned choice, you will have destroyed your capacity for choice.","a":"EPICTETUS, DISCOURSES, 4.4.23"},{"q":"As for me, I would choose being sick over living in luxury, for being sick only harms the body, whereas luxury destroys both the body and the soul, causing weakness and incapacity in the body, and lack of control and cowardice in the soul. What’s more, luxury breeds injustice because it also breeds greediness.","a":"MUSONIUS RUFUS, LECTURES, 20.95.14–17"},{"q":"We are like many pellets of incense falling on the same altar. Some collapse sooner, others later, but it makes no difference.","a":"MARCUS AURELIUS, MEDITATIONS, 4.15"},{"q":"How satisfying it is to dismiss and block out any upsetting or foreign impression, and immediately to have peace in all things.","a":"MARCUS AURELIUS, MEDITATIONS, 5.2"},{"q":"If someone is slipping up, kindly correct them and point out what they missed. But if you can’t, blame yourself—or no one.","a":"MARCUS AURELIUS, MEDITATIONS, 10.4"},{"q":"Don’t lament this and don’t get agitated.","a":"MARCUS AURELIUS, MEDITATIONS, 7.43"},{"q":"The person who follows reason in all things will have both leisure and a readiness to act—they are at once both cheerful and self-composed.","a":"MARCUS AURELIUS, MEDITATIONS, 10.12b"},{"q":"Let us prepare our minds as if we’d come to the very end of life. Let us postpone nothing. Let us balance life’s books each day. . . . The one who puts the finishing touches on their life each day is never short of time.","a":"SENECA, MORAL LETTERS, 101.7b–8a"},{"q":"Let each thing you would do, say or intend be like that of a dying person.","a":"MARCUS AURELIUS, MEDITATIONS, 2.11.1"},{"q":"Philosophy does not claim to get a person any external possession. To do so would be beyond its field. As wood is to the carpenter, bronze to the sculptor, so our own lives are the proper material in the art of living.","a":"EPICTETUS, DISCOURSES, 1.15.2"},{"q":"Anything that can be prevented, taken away, or coerced is not a person’s own—but those things that can’t be blocked are their own.","a":"EPICTETUS, DISCOURSES, 3.24.3"},{"q":"Keep death and exile before your eyes each day, along with everything that seems terrible—by doing so, you’ll never have a base thought nor will you have excessive desire.","a":"EPICTETUS, ENCHIRIDION, 21"},{"q":"Don’t behave as if you are destined to live forever. What’s fated hangs over you. As long as you live and while you can, become good now.","a":"MARCUS AURELIUS, MEDITATIONS, 4.17"},{"q":"Think of the life you have lived until now as over and, as a dead man, see what’s left as a bonus and live it according to Nature. Love the hand that fate deals you and play it as your own, for what could be more fitting?","a":"MARCUS AURELIUS, MEDITATIONS, 7.56–57"},{"q":"It’s better to conquer grief than to deceive it.","a":"SENECA, ON CONSOLATION TO HELVIA, 17.1b"},{"q":"I say, let no one rob me of a single day who isn’t going to make a full return on the loss.","a":"SENECA, ON TRANQUILITY OF MIND, 1.11b"},{"q":"As Cicero says, we hate gladiators if they are quick to save their lives by any means; we favor them if they show contempt for their lives.","a":"SENECA, ON TRANQUILITY OF MIND, 11.4b"},{"q":"Walk the long gallery of the past, of empires and kingdoms succeeding each other without number. And you can also see the future, for surely it will be exactly the same, unable to deviate from the present rhythm. It’s all one whether we’ve experienced forty years or an aeon. What more is there to see?","a":"MARCUS AURELIUS, MEDITATIONS, 7.49"},{"q":"You aren’t bothered, are you, because you weigh a certain amount and not twice as much? So why get worked up that you’ve been given a certain lifespan and not more? Just as you are satisfied with your normal weight, so you should be with the time you’ve been given.","a":"MARCUS AURELIUS, MEDITATIONS, 6.49"},{"q":"Soon you will die, and still you aren’t sincere, undisturbed, or free from suspicion that external things can harm you, nor are you gracious to all, knowing that wisdom and acting justly are one and the same.","a":"MARCUS AURELIUS, MEDITATIONS, 4.37"},{"q":"This is the mark of perfection of character—to spend each day as if it were your last, without frenzy, laziness, or any pretending.","a":"MARCUS AURELIUS, MEDITATIONS, 7.69"},{"q":"I tell you, you only have to learn to live like the healthy person does . . . living with complete confidence. What confidence? The only one worth holding, in what is trustworthy, unhindered, and can’t be taken away—your own reasoned choice.","a":"EPICTETUS, DISCOURSES, 3.26.23b–24"},{"q":"Death lies heavy upon one who, known exceedingly well by all, dies unknown to himself.","a":"BEFORE IT’S TOO LATE"},{"q":"Both Alexander the Great and his mule-keeper were both brought to the same place by death—they were either received into the all-generative reason, or scattered among the atoms.","a":"MARCUS AURELIUS, MEDITATIONS, 6.24"},{"q":"Think of the whole universe of matter and how small your share. Think about the expanse of time and how brief—almost momentary—the part marked for you. Think of the workings of fate and how infinitesimal your role.","a":"MARCUS AURELIUS, MEDITATIONS, 5.24"},{"q":"Do you then ponder how the supreme of human evils, the surest mark of the base and cowardly, is not death, but the fear of death? I urge you to discipline yourself against such fear, direct all your thinking, exercises, and reading this way—and you will know the only path to human freedom.","a":"EPICTETUS, DISCOURSES, 3.26.38–39"},{"q":"Many times an old man has no other evidence besides his age to prove he has lived a long time.","a":"SENECA, ON TRANQUILITY OF MIND, 3.8b"},{"q":"For it’s disgraceful for an old person, or one in sight of old age, to have only the knowledge carried in their notebooks. Zeno said this . . . what do you say? Cleanthes said that . . . what do you say? How long will you be compelled by the claims of another? Take charge and stake your own claim—something posterity will carry in its notebook.","a":"SENECA, MORAL LETTERS, 33.7"},{"q":"You are afraid of dying. But, come now, how is this life of yours anything but death?","a":"SENECA, MORAL LETTERS, 77.18"},{"q":"You know what wine and liqueur tastes like. It makes no difference whether a hundred or a thousand bottles pass through your bladder—you are nothing more than a filter.","a":"SENECA, MORAL LETTERS, 77.16"},{"q":"It’s a disgrace in this life when the soul surrenders first while the body refuses to.","a":"MARCUS AURELIUS, MEDITATIONS, 6.29"},{"q":"Everything lasts for a day, the one who remembers and the remembered.","a":"MARCUS AURELIUS, MEDITATIONS, 4.35"}];
 
-// ── Daily quote (deterministic by calendar date) ──────────────────────────────
+// ── Global loan data ───────────────────────────────────────────────────────────
+let LOAN_ROWS = []; // [{fundingDate:'2025-04-01', loanType, loanAmount, compensation, leadSource, borrower}, ...]
+
+// ── Daily quote ────────────────────────────────────────────────────────────────
 function loadDailyQuote() {
   const now = new Date();
   const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
   const q = STOIC_QUOTES[dayOfYear % STOIC_QUOTES.length];
   document.getElementById('quoteText').textContent = q.q;
-  // Clean up attribution: remove source refs like ", 2.5.4–5"
-  const attr = q.a.replace(/,\s*[\d\.–]+[a-z]?$/, '').trim();
+  const attr = q.a.replace(/,\s*[\d\.–\-]+[a-z]?$/i, '').trim();
   document.getElementById('quoteAttr').textContent = '— ' + attr;
 }
 
-const SUPA_URL='https://ddimalkvoezwziyghuph.supabase.co';
-const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkaW1hbGt2b2V6d3ppeWdodXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjAyNzQsImV4cCI6MjA5MDE5NjI3NH0.be30CaTC2XM699HVDL-mf4LSpRC5UPDPOX5mMSsqmyo';
-const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
-let currentUser=null,userProfile=null;
+// ── File upload handler ────────────────────────────────────────────────────────
+function handleFileUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: 'array', cellDates: true });
 
-// ── Fiscal month helpers ──────────────────────────────────────────────────────
+      // Find the Loan Log sheet (case-insensitive, or fall back to first sheet)
+      const sheetName = wb.SheetNames.find(n => /loan.?log/i.test(n)) || wb.SheetNames[0];
+      const ws = wb.Sheets[sheetName];
+
+      // Convert to array of arrays to handle the title row
+      const raw = XLSX.utils.sheet_to_json(ws, { header: 1, raw: false, dateNF: 'yyyy-mm-dd' });
+
+      // Find header row (first row containing 'Funding Date')
+      let headerIdx = 0;
+      for (let i = 0; i < Math.min(raw.length, 5); i++) {
+        if (raw[i].some(c => /funding.?date/i.test(String(c || '')))) { headerIdx = i; break; }
+      }
+      const headers = raw[headerIdx].map(h => String(h || '').trim());
+      const dataRows = raw.slice(headerIdx + 1);
+
+      // Column index map
+      const col = name => headers.findIndex(h => h.toLowerCase().includes(name.toLowerCase()));
+      const iDate = col('funding date');
+      const iType = col('loan type');
+      const iAmt  = col('loan amount');
+      const iComp = col('compensation');
+      const iSrc  = col('lead source');
+      const iBorr = col('borrower');
+
+      LOAN_ROWS = [];
+      dataRows.forEach(row => {
+        const rawDate = row[iDate];
+        if (!rawDate) return;
+        // Normalize date to YYYY-MM-DD string
+        let dateStr = '';
+        if (typeof rawDate === 'string') {
+          // Could be 'yyyy-mm-dd' or 'mm/dd/yyyy' or Excel serial
+          if (/^\d{4}-\d{2}-\d{2}/.test(rawDate)) {
+            dateStr = rawDate.slice(0, 10);
+          } else if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(rawDate)) {
+            const [m, d, y] = rawDate.split('/');
+            dateStr = `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+          } else {
+            dateStr = rawDate.slice(0, 10);
+          }
+        } else if (rawDate instanceof Date) {
+          dateStr = rawDate.toISOString().slice(0, 10);
+        } else if (typeof rawDate === 'number') {
+          // Excel serial date
+          const d = XLSX.SSF.parse_date_code(rawDate);
+          dateStr = `${d.y}-${String(d.m).padStart(2,'0')}-${String(d.d).padStart(2,'0')}`;
+        }
+        if (!dateStr || dateStr < '2000-01-01') return;
+
+        LOAN_ROWS.push({
+          fundingDate: dateStr,
+          loanType:    String(row[iType] || '').trim(),
+          loanAmount:  parseFloat(String(row[iAmt] || '').replace(/[$,]/g, '')) || 0,
+          compensation:parseFloat(String(row[iComp] || '').replace(/[$,]/g, '')) || 0,
+          leadSource:  String(row[iSrc] || '').trim(),
+          borrower:    String(row[iBorr] || '').trim().toLowerCase(),
+        });
+      });
+
+      // Persist to localStorage
+      localStorage.setItem('atlas_loan_rows', JSON.stringify(LOAN_ROWS));
+      localStorage.setItem('atlas_loan_file_name', file.name);
+      localStorage.setItem('atlas_loan_file_date', new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}));
+
+      updateUploadBanner(file.name, LOAN_ROWS.length);
+      renderDashboard();
+    } catch(err) {
+      alert('Could not read file: ' + err.message);
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+  input.value = ''; // reset so same file can be re-uploaded
+}
+
+function updateUploadBanner(fileName, rowCount) {
+  const banner = document.getElementById('uploadBanner');
+  banner.classList.add('has-data');
+  banner.onclick = null;
+  document.getElementById('uploadTitle').textContent = fileName;
+  document.getElementById('uploadSub').textContent = rowCount.toLocaleString() + ' loans loaded · click "Replace" to update';
+  document.getElementById('uploadBtnEl').textContent = 'Replace';
+  document.getElementById('uploadBtnEl').onclick = e => { e.stopPropagation(); document.getElementById('fileInput').click(); };
+}
+
+function loadPersistedData() {
+  const stored = localStorage.getItem('atlas_loan_rows');
+  if (!stored) return false;
+  try {
+    LOAN_ROWS = JSON.parse(stored);
+    const fileName = localStorage.getItem('atlas_loan_file_name') || 'Loan log';
+    const fileDate = localStorage.getItem('atlas_loan_file_date') || '';
+    updateUploadBanner(fileName, LOAN_ROWS.length);
+    return true;
+  } catch(e) { return false; }
+}
+
+// ── Fiscal month helpers ───────────────────────────────────────────────────────
 function fiscalMonthKey(dateStr) {
-  const d = new Date(dateStr + 'T12:00:00');
-  let year = d.getFullYear(), month = d.getMonth();
-  if (d.getDate() >= 21) { month += 1; if (month > 11) { month = 0; year++; } }
-  return year + '-' + String(month + 1).padStart(2, '0');
+  // dateStr = 'YYYY-MM-DD'
+  const [y, m, d] = dateStr.split('-').map(Number);
+  let year = y, month = m;
+  if (d >= 21) {
+    month += 1;
+    if (month > 12) { month = 1; year++; }
+  }
+  return year + '-' + String(month).padStart(2, '0');
 }
 function fiscalMonthLabel(key) {
   const [y, m] = key.split('-').map(Number);
   return new Date(y, m - 1, 1).toLocaleString('en-US', { month: 'short', year: '2-digit' });
 }
 function currentFiscalKey() { return fiscalMonthKey(new Date().toISOString().slice(0, 10)); }
-function isFiscalYTD(dateStr, today) {
-  if (dateStr > today) return false;
-  const fKey = fiscalMonthKey(dateStr);
-  return fKey.startsWith(String(new Date().getFullYear()));
-}
 
-// ── CSV parser ─────────────────────────────────────────────────────────────────
-function parseOutreachCSV() {
-  const csv = localStorage.getItem('outreach_v6_source_csv_text') || '';
-  if (!csv) return [];
-  const lines = csv.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
-  return lines.slice(1).map(line => {
-    const vals = []; let inQ = false, cur = '';
-    for (const c of line) {
-      if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
-      else cur += c;
-    }
-    vals.push(cur.trim());
-    const row = {}; headers.forEach((h,j) => row[h] = vals[j] || '');
-    return row;
-  }).filter(r => r['Funding Date']);
-}
-
-function fmtMoney(v) {
-  if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
-  if (v >= 1e3) return '$' + Math.round(v / 1e3) + 'K';
-  return '$' + Math.round(v);
-}
-function fmtComp(v) {
-  if (v >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K';
-  return '$' + Math.round(v);
-}
-function fmtDelta(v6, v48, fmt) {
-  if (!v48) return '';
-  const pct = Math.round((v6 - v48) / v48 * 100);
-  const sign = pct >= 0 ? '+' : '';
-  return sign + pct + '% vs 48-mo avg';
-}
-
-// ── Last N fiscal months ───────────────────────────────────────────────────────
 function lastNFiscalMonths(n) {
   const now = new Date();
   const months = [];
@@ -442,374 +500,333 @@ function lastNFiscalMonths(n) {
   return months;
 }
 
-function shiftFiscalKey(key, yearOffset = 0) {
+function shiftFiscalKey(key, yearOffset) {
   const [y, m] = key.split('-').map(Number);
   return `${y + yearOffset}-${String(m).padStart(2, '0')}`;
 }
-function getComparisonKeys(baseMonths, yearOffset) {
-  return baseMonths.map(m => ({ key: shiftFiscalKey(m.key, yearOffset), label: m.label }));
-}
-function sumSeriesByKeys(rows, keys, valueField, today) {
-  const map = new Map(keys.map((k, i) => [k.key, i]));
-  const totals = keys.map(() => 0);
-  rows.forEach(r => {
-    if (r['Funding Date'] > today) return;
-    const idx = map.get(fiscalMonthKey(r['Funding Date']));
-    if (idx !== undefined) totals[idx] += parseFloat(r[valueField]) || 0;
-  });
-  return totals;
-}
 
-// ── Loan type classification ───────────────────────────────────────────────────
-function isPassive(row) {
-  const lt = (row['Loan Type'] || '').toLowerCase().trim();
-  return lt === 'heloc' || lt === 'heloan';
-}
-function is1stMortgage(row) {
-  const lt = (row['Loan Type'] || '').toLowerCase().trim();
-  return lt === 'purchase' || lt === 'refinance' || lt === 'refi';
-}
-function is2ndMortgage(row) {
-  return isPassive(row);
-}
+// ── Loan classification ────────────────────────────────────────────────────────
+function isPassive(r) { return /heloc|heloan/i.test(r.loanType); }
+function is1stMtg(r)  { return /purchase|refi/i.test(r.loanType); }
+
 function normLeadSource(s) {
   const v = (s || '').toLowerCase().trim();
   if (v === 'marketing') return 'Marketing';
   if (v === 'past client') return 'Past Client';
-  if (v === 'referral' || v === 'realtor referral') return 'Referral';
+  if (/referral/.test(v)) return 'Referral';
   if (v === 'self generated') return 'Self Generated';
   return 'Other';
 }
 
-// ── Date window helpers ────────────────────────────────────────────────────────
-function getWindowRows(rows, today, monthsBack) {
+// ── Windowed row helpers ───────────────────────────────────────────────────────
+function getWindowRows(today, monthsBack) {
   const cutoff = new Date(today);
   cutoff.setMonth(cutoff.getMonth() - monthsBack);
   const cutoffStr = cutoff.toISOString().slice(0, 10);
-  return rows.filter(r => r['Funding Date'] <= today && r['Funding Date'] > cutoffStr);
+  return LOAN_ROWS.filter(r => r.fundingDate <= today && r.fundingDate > cutoffStr);
 }
 
-function distinctFiscalMonthCount(rows, today) {
-  const keys = new Set();
-  rows.forEach(r => { if (r['Funding Date'] <= today) keys.add(fiscalMonthKey(r['Funding Date'])); });
+function distinctFiscalMonths(rows, today) {
+  const keys = new Set(rows.filter(r => r.fundingDate <= today).map(r => fiscalMonthKey(r.fundingDate)));
   return Math.max(keys.size, 1);
 }
 
-function dominantLeadSource(rows) {
+function dominantSource(rows) {
   const counts = {};
-  rows.forEach(r => { const s = normLeadSource(r['Lead Source']); counts[s] = (counts[s] || 0) + 1; });
+  rows.forEach(r => { const s = normLeadSource(r.leadSource); counts[s] = (counts[s] || 0) + 1; });
   return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
 }
 
-function setDelta(elId, v6, v48, higherIsBetter = true) {
+function setDelta(elId, v6, v48) {
   const el = document.getElementById(elId);
   if (!v48 || !v6) { el.textContent = ''; return; }
   const pct = Math.round((v6 - v48) / Math.abs(v48) * 100);
-  const sign = pct >= 0 ? '+' : '';
-  const text = sign + pct + '% vs 48-mo avg';
-  el.textContent = text;
-  el.className = 'metric-delta ' + (pct === 0 ? 'flat' : (pct > 0) === higherIsBetter ? 'up' : 'down');
+  el.textContent = (pct >= 0 ? '+' : '') + pct + '% vs 48-mo avg';
+  el.className = 'metric-delta ' + (pct === 0 ? 'flat' : pct > 0 ? 'up' : 'down');
 }
 
-// ── Repeat client detection ────────────────────────────────────────────────────
-// A repeat client is a borrower whose name appears in more than one funded loan
-// Uses the 'Borrower Name' or 'Borrower' column
-function getRepeatClientRows(rows, today) {
-  const closed = rows.filter(r => r['Funding Date'] <= today);
-  // Try common column name variants
-  const nameCol = Object.keys(closed[0] || {}).find(k =>
-    /borrower/i.test(k) && !/co.?borrower/i.test(k)
-  ) || 'Borrower Name';
-
-  const nameCounts = {};
-  closed.forEach(r => {
-    const n = (r[nameCol] || '').trim().toLowerCase();
-    if (n) nameCounts[n] = (nameCounts[n] || 0) + 1;
-  });
-  // Rows where borrower has appeared before (2nd+ time)
-  const seenOnce = new Set();
-  return closed.filter(r => {
-    const n = (r[nameCol] || '').trim().toLowerCase();
-    if (!n) return false;
-    if (seenOnce.has(n)) return true; // this is a repeat occurrence
-    seenOnce.add(n);
-    return false;
-  });
+function fmtMoney(v) {
+  if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+  if (v >= 1e3) return '$' + Math.round(v / 1e3) + 'K';
+  return '$' + Math.round(v);
+}
+function fmtComp(v) {
+  if (v >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K';
+  return '$' + Math.round(v);
 }
 
-let compChartInstance = null;
+// ── Chart instances ────────────────────────────────────────────────────────────
+let compChartInst = null, prodDeltaInst = null, compDeltaInst = null;
 let prodDelta1 = [], prodDelta2 = [];
-let prodDeltaChartInst = null, compDeltaChartInst = null;
 
 function buildProdDeltaChart(data) {
-  if (prodDeltaChartInst) prodDeltaChartInst.destroy();
+  if (prodDeltaInst) prodDeltaInst.destroy();
   const ctx = document.getElementById('prodCompareChart').getContext('2d');
-  const colors = data.map(v => v >= 0 ? 'rgba(45,106,79,0.25)' : 'rgba(176,74,48,0.25)');
-  const borders = data.map(v => v >= 0 ? '#2d6a4f' : '#b04a30');
-  prodDeltaChartInst = new Chart(ctx, {
+  prodDeltaInst = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: lastNFiscalMonths(6).map(m => m.label),
-      datasets: [{ data, backgroundColor: colors, borderColor: borders, borderWidth: 1.5, borderRadius: 4, borderSkipped: false }]
+      datasets: [{ data, borderRadius: 4, borderSkipped: false, borderWidth: 1.5,
+        backgroundColor: data.map(v => v >= 0 ? 'rgba(45,106,79,0.22)' : 'rgba(176,74,48,0.22)'),
+        borderColor:     data.map(v => v >= 0 ? '#2d6a4f' : '#b04a30') }]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => { const v = c.raw, s = v >= 0 ? '+' : '-', a = Math.abs(v); return s + '$' + (a >= 1e6 ? (a/1e6).toFixed(2)+'M' : Math.round(a/1000)+'K'); }}}},
-      scales: {
-        x: { ticks: { autoSkip: false, maxRotation: 0, font: { size: 10 }, color: '#8a8680' }, grid: { display: false }, border: { display: false } },
-        y: { ticks: { callback: v => { if (!v) return '$0'; const s = v >= 0 ? '+' : '-', a = Math.abs(v); return s+'$'+(a>=1e6?(a/1e6).toFixed(1)+'M':Math.round(a/1000)+'K'); }, font: { size: 10 }, color: '#8a8680' }, grid: { color: c => c.tick.value === 0 ? 'rgba(60,60,50,0.3)' : 'rgba(60,60,50,0.07)', lineWidth: c => c.tick.value === 0 ? 1.5 : 1 }, border: { display: false } }
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => { const v=c.raw,s=v>=0?'+':'-',a=Math.abs(v); return s+'$'+(a>=1e6?(a/1e6).toFixed(2)+'M':Math.round(a/1e3)+'K'); }}}},
+      scales:{
+        x:{ grid:{display:false}, border:{display:false}, ticks:{font:{size:10},color:'#8a8680'} },
+        y:{ border:{display:false}, grid:{color:c=>c.tick.value===0?'rgba(60,60,50,0.25)':'rgba(60,60,50,0.06)', lineWidth:c=>c.tick.value===0?1.5:1},
+          ticks:{font:{size:10},color:'#8a8680', callback:v=>{if(!v)return'$0';const s=v>=0?'+':'-',a=Math.abs(v);return s+'$'+(a>=1e6?(a/1e6).toFixed(1)+'M':Math.round(a/1e3)+'K');}}}
       }
     }
   });
 }
 
 function buildCompDeltaChart(data, labels) {
-  if (compDeltaChartInst) compDeltaChartInst.destroy();
+  if (compDeltaInst) compDeltaInst.destroy();
   const ctx = document.getElementById('compCompareChart').getContext('2d');
-  const colors = data.map(v => v >= 0 ? 'rgba(45,106,79,0.25)' : 'rgba(176,74,48,0.25)');
-  const borders = data.map(v => v >= 0 ? '#2d6a4f' : '#b04a30');
-  compDeltaChartInst = new Chart(ctx, {
+  compDeltaInst = new Chart(ctx, {
     type: 'bar',
     data: {
       labels,
-      datasets: [{ data, backgroundColor: colors, borderColor: borders, borderWidth: 1.5, borderRadius: 4, borderSkipped: false }]
+      datasets: [{ data, borderRadius:4, borderSkipped:false, borderWidth:1.5,
+        backgroundColor: data.map(v => v >= 0 ? 'rgba(45,106,79,0.22)' : 'rgba(176,74,48,0.22)'),
+        borderColor:     data.map(v => v >= 0 ? '#2d6a4f' : '#b04a30') }]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => { const v = c.raw, s = v >= 0 ? '+' : '-'; return s + '$' + Math.abs(v).toLocaleString(); }}}},
-      scales: {
-        x: { ticks: { autoSkip: false, maxRotation: 0, font: { size: 10 }, color: '#8a8680' }, grid: { display: false }, border: { display: false } },
-        y: { ticks: { callback: v => { if (!v) return '$0'; return (v>=0?'+':'-')+'$'+Math.abs(v).toLocaleString(); }, font: { size: 10 }, color: '#8a8680' }, grid: { color: c => c.tick.value === 0 ? 'rgba(60,60,50,0.3)' : 'rgba(60,60,50,0.07)', lineWidth: c => c.tick.value === 0 ? 1.5 : 1 }, border: { display: false } }
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => { const v=c.raw,s=v>=0?'+':'-'; return s+'$'+Math.abs(v).toLocaleString(); }}}},
+      scales:{
+        x:{ grid:{display:false}, border:{display:false}, ticks:{font:{size:10},color:'#8a8680'} },
+        y:{ border:{display:false}, grid:{color:c=>c.tick.value===0?'rgba(60,60,50,0.25)':'rgba(60,60,50,0.06)', lineWidth:c=>c.tick.value===0?1.5:1},
+          ticks:{font:{size:10},color:'#8a8680', callback:v=>{if(!v)return'$0';return(v>=0?'+':'-')+'$'+Math.abs(v).toLocaleString();}}}
       }
     }
   });
 }
 
-// ── Main KPI + chart loader ────────────────────────────────────────────────────
-function loadOutreachKPIs() {
-  const rows = parseOutreachCSV();
-  const today = new Date().toISOString().slice(0, 10);
-  const curFKey = currentFiscalKey();
+// ── Main render ────────────────────────────────────────────────────────────────
+function renderDashboard() {
+  if (!LOAN_ROWS.length) return;
+  document.getElementById('chartsArea').style.display = 'block';
 
-  if (!rows.length) return;
+  const today    = new Date().toISOString().slice(0, 10);
+  const curFKey  = currentFiscalKey();
 
-  // KPI tiles
-  const pipeline = rows.filter(r => r['Funding Date'] > today);
-  const pipelineVol = pipeline.reduce((s, r) => s + (parseFloat(r['Loan Amount']) || 0), 0);
-  const fiscalMTD = rows.filter(r => r['Funding Date'] <= today && fiscalMonthKey(r['Funding Date']) === curFKey);
-  const fiscalMTDVol = fiscalMTD.reduce((s, r) => s + (parseFloat(r['Loan Amount']) || 0), 0);
-  const fiscalYTD = rows.filter(r => isFiscalYTD(r['Funding Date'], today));
-  const fiscalYTDVol = fiscalYTD.reduce((s, r) => s + (parseFloat(r['Loan Amount']) || 0), 0);
-  const compMTD = fiscalMTD.reduce((s, r) => s + (parseFloat(r['Compensation']) || 0), 0);
-  const compYTD = fiscalYTD.reduce((s, r) => s + (parseFloat(r['Compensation']) || 0), 0);
+  // ── KPIs ──
+  const pipeline    = LOAN_ROWS.filter(r => r.fundingDate > today);
+  const pipeVol     = pipeline.reduce((s, r) => s + r.loanAmount, 0);
 
-  document.getElementById('kpiPipeline').textContent = fmtMoney(pipelineVol);
+  const fiscalMTD   = LOAN_ROWS.filter(r => r.fundingDate <= today && fiscalMonthKey(r.fundingDate) === curFKey);
+  const fiscalMTDVol= fiscalMTD.reduce((s, r) => s + r.loanAmount, 0);
+
+  // YTD: all fiscal months whose key starts with this calendar year
+  const thisYear    = String(new Date().getFullYear());
+  const fiscalYTD   = LOAN_ROWS.filter(r => r.fundingDate <= today && fiscalMonthKey(r.fundingDate).startsWith(thisYear));
+  const fiscalYTDVol= fiscalYTD.reduce((s, r) => s + r.loanAmount, 0);
+  const compMTD     = fiscalMTD.reduce((s, r) => s + r.compensation, 0);
+  const compYTD     = fiscalYTD.reduce((s, r) => s + r.compensation, 0);
+
+  document.getElementById('kpiPipeline').textContent    = fmtMoney(pipeVol);
   document.getElementById('kpiPipelineSub').textContent = pipeline.length + ' loan' + (pipeline.length !== 1 ? 's' : '') + ' closing soon';
-  document.getElementById('kpiMonth').textContent = fmtMoney(fiscalMTDVol);
-  document.getElementById('kpiMonthSub').textContent = fiscalMTD.length + ' loan' + (fiscalMTD.length !== 1 ? 's' : '');
-  document.getElementById('kpiYTD').textContent = fmtMoney(fiscalYTDVol);
-  document.getElementById('kpiYTDSub').textContent = fiscalYTD.length + ' loan' + (fiscalYTD.length !== 1 ? 's' : '');
+  document.getElementById('kpiMonth').textContent       = fmtMoney(fiscalMTDVol);
+  document.getElementById('kpiMonthSub').textContent    = fiscalMTD.length + ' loan' + (fiscalMTD.length !== 1 ? 's' : '');
+  document.getElementById('kpiYTD').textContent         = fmtMoney(fiscalYTDVol);
+  document.getElementById('kpiYTDSub').textContent      = fiscalYTD.length + ' loan' + (fiscalYTD.length !== 1 ? 's' : '');
 
-  // Monthly production bars (last 6 fiscal months)
+  // ── Production bars (last 6 fiscal months) ──
   const fiscalMonths6 = lastNFiscalMonths(6);
-  const volVals = fiscalMonths6.map(() => 0);
-  rows.forEach(r => {
-    if (r['Funding Date'] > today) return;
-    const fk = fiscalMonthKey(r['Funding Date']);
-    const i = fiscalMonths6.findIndex(m => m.key === fk);
-    if (i >= 0) volVals[i] += parseFloat(r['Loan Amount']) || 0;
+  const volByMonth = Object.fromEntries(fiscalMonths6.map(m => [m.key, 0]));
+  LOAN_ROWS.forEach(r => {
+    if (r.fundingDate > today) return;
+    const fk = fiscalMonthKey(r.fundingDate);
+    if (fk in volByMonth) volByMonth[fk] += r.loanAmount;
   });
-  const maxVol = Math.max(...volVals, 1);
+  const volVals = fiscalMonths6.map(m => volByMonth[m.key]);
+  const maxVol  = Math.max(...volVals, 1);
   document.getElementById('prodChart').innerHTML = fiscalMonths6.map((m, i) => {
     const h = Math.round((volVals[i] / maxVol) * 90) + 10;
-    const isCur = m.key === curFKey;
-    return `<div class="bar-col" title="${m.label}: ${volVals[i] > 0 ? fmtMoney(volVals[i]) : '—'}">
-      <div class="${isCur ? 'bar current' : 'bar'}" style="height:${h}px"></div>
+    return `<div class="bar-col" title="${m.label}: ${volVals[i] ? fmtMoney(volVals[i]) : '—'}">
+      <div class="${m.key === curFKey ? 'bar current' : 'bar'}" style="height:${h}px"></div>
       <span class="bar-label">${m.label}</span>
     </div>`;
   }).join('');
 
-  // ── Income composition (active vs passive) ──
-  const closedRows = rows.filter(r => r['Funding Date'] <= today);
-  const activeRows = closedRows.filter(r => !isPassive(r));
-  const passiveRows = closedRows.filter(r => isPassive(r));
-  const activeComp = activeRows.reduce((s, r) => s + (parseFloat(r['Compensation']) || 0), 0);
-  const passiveComp = passiveRows.reduce((s, r) => s + (parseFloat(r['Compensation']) || 0), 0);
-  const totalComp = activeComp + passiveComp || 1;
-  const activePct = Math.round(activeComp / totalComp * 100);
-  const passivePct = 100 - activePct;
-  document.getElementById('incomeSplitActive').style.flex = activePct;
-  document.getElementById('incomeSplitPassive').style.flex = passivePct;
-  document.getElementById('incomeActiveLabel').textContent = `Active — ${activePct}%`;
-  document.getElementById('incomePassiveLabel').textContent = `Passive — ${passivePct}%`;
+  // ── Income composition ──
+  const closed     = LOAN_ROWS.filter(r => r.fundingDate <= today);
+  const activeComp = closed.filter(r => !isPassive(r)).reduce((s, r) => s + r.compensation, 0);
+  const passiveComp= closed.filter(r => isPassive(r)).reduce((s, r) => s + r.compensation, 0);
+  const totalComp2 = activeComp + passiveComp || 1;
+  const activePct  = Math.round(activeComp / totalComp2 * 100);
+  document.getElementById('incomeSplitActive').style.flex  = activePct;
+  document.getElementById('incomeSplitPassive').style.flex = 100 - activePct;
+  document.getElementById('incomeActiveLabel').textContent  = `Active — ${activePct}%`;
+  document.getElementById('incomePassiveLabel').textContent = `Passive — ${100 - activePct}%`;
 
-  // ── Performance benchmarks: 6mo vs 48mo ──
-  const rows6 = getWindowRows(rows, today, 6);
-  const rows48 = getWindowRows(rows, today, 48);
+  // ── Benchmarks: 6mo vs 48mo ──
+  const rows6  = getWindowRows(today, 6);
+  const rows48 = getWindowRows(today, 48);
+  const m6     = distinctFiscalMonths(rows6, today);
+  const m48    = distinctFiscalMonths(rows48, today);
 
   // Top lead source
-  document.getElementById('lsrc6').textContent = dominantLeadSource(rows6) || '—';
-  document.getElementById('lsrc48').textContent = dominantLeadSource(rows48) || '—';
+  document.getElementById('lsrc6').textContent  = dominantSource(rows6);
+  document.getElementById('lsrc48').textContent = dominantSource(rows48);
 
   // Avg loan amount
-  const loanAmt6 = rows6.length ? rows6.reduce((s, r) => s + (parseFloat(r['Loan Amount']) || 0), 0) / rows6.length : 0;
-  const loanAmt48 = rows48.length ? rows48.reduce((s, r) => s + (parseFloat(r['Loan Amount']) || 0), 0) / rows48.length : 0;
-  document.getElementById('avgLoan6').textContent = loanAmt6 ? fmtMoney(loanAmt6) : '—';
-  document.getElementById('avgLoan48').textContent = loanAmt48 ? fmtMoney(loanAmt48) : '—';
-  setDelta('avgLoanDelta', loanAmt6, loanAmt48, true);
+  const la6  = rows6.length  ? rows6.reduce((s,r)=>s+r.loanAmount,0)  / rows6.length  : 0;
+  const la48 = rows48.length ? rows48.reduce((s,r)=>s+r.loanAmount,0) / rows48.length : 0;
+  document.getElementById('avgLoan6').textContent  = la6  ? fmtMoney(la6)  : '—';
+  document.getElementById('avgLoan48').textContent = la48 ? fmtMoney(la48) : '—';
+  setDelta('avgLoanDelta', la6, la48);
 
-  // Units/mo — 1st mortgage
-  const m6 = Math.min(6, distinctFiscalMonthCount(rows6, today));
-  const m48 = Math.min(48, distinctFiscalMonthCount(rows48, today));
-  const units1st6 = rows6.filter(is1stMortgage).length / m6;
-  const units1st48 = rows48.filter(is1stMortgage).length / m48;
-  document.getElementById('units1st6').textContent = units1st6 ? units1st6.toFixed(1) : '—';
-  document.getElementById('units1st48').textContent = units1st48 ? units1st48.toFixed(1) : '—';
-  setDelta('units1stDelta', units1st6, units1st48, true);
+  // Units/mo — 1st mtg
+  const u1_6  = rows6.filter(is1stMtg).length  / m6;
+  const u1_48 = rows48.filter(is1stMtg).length / m48;
+  document.getElementById('units1st6').textContent  = u1_6.toFixed(1);
+  document.getElementById('units1st48').textContent = u1_48.toFixed(1);
+  setDelta('units1stDelta', u1_6, u1_48);
 
-  // Units/mo — 2nd mortgage
-  const units2nd6 = rows6.filter(is2ndMortgage).length / m6;
-  const units2nd48 = rows48.filter(is2ndMortgage).length / m48;
-  document.getElementById('units2nd6').textContent = units2nd6 ? units2nd6.toFixed(1) : '—';
-  document.getElementById('units2nd48').textContent = units2nd48 ? units2nd48.toFixed(1) : '—';
-  setDelta('units2ndDelta', units2nd6, units2nd48, true);
+  // Units/mo — 2nd mtg
+  const u2_6  = rows6.filter(isPassive).length  / m6;
+  const u2_48 = rows48.filter(isPassive).length / m48;
+  document.getElementById('units2nd6').textContent  = u2_6.toFixed(1);
+  document.getElementById('units2nd48').textContent = u2_48.toFixed(1);
+  setDelta('units2ndDelta', u2_6, u2_48);
 
-  // Avg comp per unit (all closed loans)
-  const compUnit6 = rows6.length ? rows6.reduce((s, r) => s + (parseFloat(r['Compensation']) || 0), 0) / rows6.length : 0;
-  const compUnit48 = rows48.length ? rows48.reduce((s, r) => s + (parseFloat(r['Compensation']) || 0), 0) / rows48.length : 0;
-  document.getElementById('compUnit6').textContent = compUnit6 ? fmtComp(compUnit6) : '—';
-  document.getElementById('compUnit48').textContent = compUnit48 ? fmtComp(compUnit48) : '—';
-  setDelta('compUnitDelta', compUnit6, compUnit48, true);
+  // Avg comp/unit
+  const cu6  = rows6.length  ? rows6.reduce((s,r)=>s+r.compensation,0)  / rows6.length  : 0;
+  const cu48 = rows48.length ? rows48.reduce((s,r)=>s+r.compensation,0) / rows48.length : 0;
+  document.getElementById('compUnit6').textContent  = cu6  ? fmtComp(cu6)  : '—';
+  document.getElementById('compUnit48').textContent = cu48 ? fmtComp(cu48) : '—';
+  setDelta('compUnitDelta', cu6, cu48);
 
-  // Repeat clients / mo
-  const repeat6 = getRepeatClientRows(rows, today).filter(r => rows6.includes(r));
-  const repeat48 = getRepeatClientRows(rows, today).filter(r => rows48.includes(r));
-  const repeatRate6 = repeat6.length / m6;
-  const repeatRate48 = repeat48.length / m48;
-  document.getElementById('repeat6').textContent = repeatRate6 ? repeatRate6.toFixed(1) : '0.0';
-  document.getElementById('repeat48').textContent = repeatRate48 ? repeatRate48.toFixed(1) : '0.0';
-  setDelta('repeatDelta', repeatRate6, repeatRate48, true);
+  // Repeat clients — borrower seen more than once in full history
+  const allClosed = LOAN_ROWS.filter(r => r.fundingDate <= today);
+  const nameCounts = {};
+  allClosed.forEach(r => { if (r.borrower) nameCounts[r.borrower] = (nameCounts[r.borrower] || 0) + 1; });
+  const repeatBorrowers = new Set(Object.keys(nameCounts).filter(n => nameCounts[n] > 1));
+  const rep6  = rows6.filter(r  => repeatBorrowers.has(r.borrower)).length  / m6;
+  const rep48 = rows48.filter(r => repeatBorrowers.has(r.borrower)).length / m48;
+  document.getElementById('repeat6').textContent  = rep6.toFixed(1);
+  document.getElementById('repeat48').textContent = rep48.toFixed(1);
+  setDelta('repeatDelta', rep6, rep48);
 
-  // ── Compensation chart ──
-  const compVals = fiscalMonths6.map(() => 0);
-  rows.forEach(r => {
-    if (r['Funding Date'] > today) return;
-    const fk = fiscalMonthKey(r['Funding Date']);
-    const i = fiscalMonths6.findIndex(m => m.key === fk);
-    if (i >= 0) compVals[i] += parseFloat(r['Compensation']) || 0;
+  // ── Comp chart ──
+  const compByMonth = Object.fromEntries(fiscalMonths6.map(m => [m.key, 0]));
+  LOAN_ROWS.forEach(r => {
+    if (r.fundingDate > today) return;
+    const fk = fiscalMonthKey(r.fundingDate);
+    if (fk in compByMonth) compByMonth[fk] += r.compensation;
   });
+  const compVals = fiscalMonths6.map(m => compByMonth[m.key]);
   document.getElementById('compThisMonth').textContent = fmtComp(compMTD);
-  document.getElementById('compYTD').textContent = fmtComp(compYTD);
-
-  const compCtx = document.getElementById('compChart').getContext('2d');
-  if (compChartInstance) { compChartInstance.destroy(); compChartInstance = null; }
-  compChartInstance = new Chart(compCtx, {
+  document.getElementById('compYTD').textContent       = fmtComp(compYTD);
+  if (compChartInst) compChartInst.destroy();
+  compChartInst = new Chart(document.getElementById('compChart').getContext('2d'), {
     type: 'bar',
     data: {
       labels: fiscalMonths6.map(m => m.label),
-      datasets: [{ data: compVals,
+      datasets: [{
+        data: compVals,
         backgroundColor: fiscalMonths6.map(m => m.key === curFKey ? 'rgba(45,106,79,0.85)' : 'rgba(45,106,79,0.2)'),
-        borderColor: fiscalMonths6.map(m => m.key === curFKey ? '#2d6a4f' : 'rgba(45,106,79,0.4)'),
-        borderWidth: 1, borderRadius: 4 }]
+        borderColor:     fiscalMonths6.map(m => m.key === curFKey ? '#2d6a4f' : 'rgba(45,106,79,0.4)'),
+        borderWidth: 1, borderRadius: 4
+      }]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ' + fmtComp(c.parsed.y) }}},
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#b4b0a8' }},
-        y: { grid: { color: 'rgba(226,222,214,0.5)' }, ticks: { font: { size: 10 }, color: '#8a8680', callback: v => fmtComp(v) }}
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>' '+fmtComp(c.parsed.y)}}},
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{size:10},color:'#b4b0a8'} },
+        y:{ grid:{color:'rgba(226,222,214,0.5)'}, ticks:{font:{size:10},color:'#8a8680',callback:v=>fmtComp(v)} }
       }
     }
   });
 
-  // ── Production comparison delta charts ──
-  const baseMonths = fiscalMonths6;
-  const prevYearMonths = getComparisonKeys(baseMonths, -1);
-  const twoYearsAgoMonths = getComparisonKeys(baseMonths, -2);
-  const prodCurrent = sumSeriesByKeys(rows, baseMonths, 'Loan Amount', today);
-  const prodPrev1 = sumSeriesByKeys(rows, prevYearMonths, 'Loan Amount', today);
-  const prodPrev2 = sumSeriesByKeys(rows, twoYearsAgoMonths, 'Loan Amount', today);
-  prodDelta1 = prodCurrent.map((v, i) => v - (prodPrev1[i] ?? 0));
-  prodDelta2 = prodCurrent.map((v, i) => v - (prodPrev2[i] ?? 0));
+  // ── Production delta charts ──
+  const sumByKeys = (keys, field) => {
+    const map = Object.fromEntries(keys.map(k => [k, 0]));
+    LOAN_ROWS.forEach(r => {
+      if (r.fundingDate > today) return;
+      const fk = fiscalMonthKey(r.fundingDate);
+      if (fk in map) map[fk] += r[field];
+    });
+    return keys.map(k => map[k]);
+  };
+  const baseKeys    = fiscalMonths6.map(m => m.key);
+  const prevKeys    = baseKeys.map(k => shiftFiscalKey(k, -1));
+  const prev2Keys   = baseKeys.map(k => shiftFiscalKey(k, -2));
+  const prodCur     = sumByKeys(baseKeys,  'loanAmount');
+  prodDelta1 = prodCur.map((v,i) => v - sumByKeys(prevKeys,  'loanAmount')[i]);
+  prodDelta2 = prodCur.map((v,i) => v - sumByKeys(prev2Keys, 'loanAmount')[i]);
   buildProdDeltaChart(prodDelta1);
 
-  const compCurrentSeries = sumSeriesByKeys(rows, baseMonths, 'Compensation', today);
-  const compPrev1Series = sumSeriesByKeys(rows, prevYearMonths, 'Compensation', today);
-  const compDelta1 = compCurrentSeries.map((v, i) => v - (compPrev1Series[i] ?? 0));
-  buildCompDeltaChart(compDelta1, baseMonths.map(m => m.label));
+  const compCur  = sumByKeys(baseKeys, 'compensation');
+  const compPrev = sumByKeys(prevKeys, 'compensation');
+  buildCompDeltaChart(compCur.map((v,i) => v - compPrev[i]), fiscalMonths6.map(m => m.label));
 
   // ── Lead source breakdown (fiscal YTD) ──
-  const norm = s => {
-    const v = (s || '').toLowerCase().trim();
-    if (v === 'marketing') return 'mkt';
-    if (v === 'past client') return 'past';
-    if (v === 'referral' || v === 'realtor referral') return 'ref';
-    if (v === 'self generated') return 'self';
-    return 'other';
-  };
-  const counts = { mkt: 0, past: 0, ref: 0, self: 0 };
-  fiscalYTD.forEach(r => { const k = norm(r['Lead Source']); if (counts[k] !== undefined) counts[k]++; });
-  const total = fiscalYTD.length || 1;
-  const setPct = (valId, barId, n) => {
-    const pc = Math.round(n / total * 100);
-    document.getElementById(valId).textContent = n + ' loan' + (n !== 1 ? 's' : '') + ' · ' + pc + '%';
-    document.getElementById(barId).style.width = pc + '%';
-  };
-  setPct('srcMktVal',  'srcMktBar',  counts.mkt);
-  setPct('srcPastVal', 'srcPastBar', counts.past);
-  setPct('srcRefVal',  'srcRefBar',  counts.ref);
-  setPct('srcSelfVal', 'srcSelfBar', counts.self);
+  const srcCounts = { mkt:0, past:0, ref:0, self:0 };
+  fiscalYTD.forEach(r => {
+    const v = (r.leadSource || '').toLowerCase().trim();
+    if (v === 'marketing') srcCounts.mkt++;
+    else if (v === 'past client') srcCounts.past++;
+    else if (/referral/.test(v)) srcCounts.ref++;
+    else if (v === 'self generated') srcCounts.self++;
+  });
+  const srcTotal = fiscalYTD.length || 1;
+  [['mkt','srcMktVal','srcMktBar'],['past','srcPastVal','srcPastBar'],['ref','srcRefVal','srcRefBar'],['self','srcSelfVal','srcSelfBar']].forEach(([k,vId,bId]) => {
+    const n = srcCounts[k], pc = Math.round(n / srcTotal * 100);
+    document.getElementById(vId).textContent = n + ' loan' + (n!==1?'s':'') + ' · ' + pc + '%';
+    document.getElementById(bId).style.width = pc + '%';
+  });
 }
 
-// ── Outreach side panel ────────────────────────────────────────────────────────
+// ── Outreach sidebar ───────────────────────────────────────────────────────────
 function loadOutreachPanel() {
-  const streak = parseInt(localStorage.getItem('outreach_v6_streak') || '0');
+  const streak   = parseInt(localStorage.getItem('outreach_v6_streak') || '0');
   const fileName = localStorage.getItem('outreach_v6_source_file_name');
   const fileDate = localStorage.getItem('outreach_v6_source_file_date');
-  const carryover = JSON.parse(localStorage.getItem('outreach_v6_carryover') || '[]');
-  const today = new Date().toISOString().slice(0, 10);
+  const carryover= JSON.parse(localStorage.getItem('outreach_v6_carryover') || '[]');
+  const today    = new Date().toISOString().slice(0, 10);
   let doneTodayNames = [];
   try { const dd = JSON.parse(localStorage.getItem('outreach_v6_dailyDone') || '{}'); doneTodayNames = dd[today] || []; } catch(e) {}
 
-  const streakCount = document.getElementById('streakCount');
-  if (streakCount) streakCount.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
-  const streakRow = document.getElementById('streakRow');
-  if (streakRow) {
-    streakRow.querySelectorAll('.streak-dot').forEach((dot, i) => {
-      dot.classList.toggle('filled', i < Math.min(streak, 7));
-      dot.classList.toggle('empty', i >= Math.min(streak, 7));
-    });
-  }
+  const sc = document.getElementById('streakCount');
+  if (sc) sc.textContent = streak + ' day' + (streak !== 1 ? 's' : '');
+  document.getElementById('streakRow').querySelectorAll('.streak-dot').forEach((dot, i) => {
+    dot.classList.toggle('filled', i < Math.min(streak, 7));
+    dot.classList.toggle('empty',  i >= Math.min(streak, 7));
+  });
 
   const summary = document.getElementById('outreachSummary');
   if (!fileName) { summary.textContent = 'Open the Outreach tab to load your book'; return; }
-  const totalDone = doneTodayNames.length, carryCount = carryover.length;
   const mustLeft = parseInt(localStorage.getItem('outreach_v6_lastMustDoCount') || '0');
-  if (mustLeft > 0) summary.textContent = mustLeft + ' must-do contact' + (mustLeft !== 1 ? 's' : '') + ' remaining today';
+  const carryCount = carryover.length, totalDone = doneTodayNames.length;
+  if (mustLeft > 0) summary.textContent = mustLeft + ' must-do contact' + (mustLeft!==1?'s':'') + ' remaining today';
   else if (totalDone > 0) summary.textContent = totalDone + ' contacted today · ' + carryCount + ' carrying over';
   else summary.textContent = 'Book loaded: ' + fileName + (fileDate ? ' · ' + fileDate : '');
 
   const preview = document.getElementById('outreachPreview');
   if (carryCount === 0 && totalDone === 0) {
-    preview.innerHTML = `<div class="contact-card must"><div class="contact-top"><span class="contact-name">Book loaded</span><span class="contact-badge badge-must">Ready</span></div><div class="contact-trigger">Loaded ${fileDate || ''} · Switch to Outreach to see today's contacts.</div></div>`;
+    preview.innerHTML = `<div class="contact-card must"><div class="contact-top"><span class="contact-name">Book loaded</span><span class="contact-badge badge-must">Ready</span></div><div class="contact-trigger">Loaded ${fileDate||''} · Switch to Outreach to see today\'s contacts.</div></div>`;
     return;
   }
   let html = '';
-  carryover.slice(0, 3).forEach(name => {
-    html += `<div class="contact-card must"><div class="contact-top"><span class="contact-name">${name}</span><span class="contact-badge badge-must">Carryover</span></div><div class="contact-trigger">Carried over from previous day</div></div>`;
-  });
-  const doneSlots = Math.max(0, 4 - Math.min(carryover.length, 3));
-  doneTodayNames.slice(0, doneSlots).forEach(name => {
-    html += `<div class="contact-card" style="opacity:0.5"><div class="contact-top"><span class="contact-name">${name}</span><span class="contact-badge" style="background:var(--accent-soft);color:var(--accent)">Done</span></div><div class="contact-trigger">Contacted today</div></div>`;
-  });
-  const shown = Math.min(carryover.length, 3) + Math.min(totalDone, doneSlots);
+  carryover.slice(0, 3).forEach(n => { html += `<div class="contact-card must"><div class="contact-top"><span class="contact-name">${n}</span><span class="contact-badge badge-must">Carryover</span></div><div class="contact-trigger">Carried over from previous day</div></div>`; });
+  const slots = Math.max(0, 4 - Math.min(carryCount, 3));
+  doneTodayNames.slice(0, slots).forEach(n => { html += `<div class="contact-card" style="opacity:0.5"><div class="contact-top"><span class="contact-name">${n}</span><span class="contact-badge" style="background:var(--accent-soft);color:var(--accent)">Done</span></div><div class="contact-trigger">Contacted today</div></div>`; });
+  const shown = Math.min(carryCount,3) + Math.min(totalDone,slots);
   const remaining = (carryCount + totalDone) - shown;
   if (remaining > 0) html += `<div style="font-size:11px;color:var(--text4);text-align:center;padding:6px 0">+${remaining} more — open Outreach tab</div>`;
   preview.innerHTML = html;
 }
 
 // ── Auth ───────────────────────────────────────────────────────────────────────
+const SUPA_URL='https://ddimalkvoezwziyghuph.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkaW1hbGt2b2V6d3ppeWdodXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjAyNzQsImV4cCI6MjA5MDE5NjI3NH0.be30CaTC2XM699HVDL-mf4LSpRC5UPDPOX5mMSsqmyo';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+let currentUser = null, userProfile = null;
 let authMode = 'signin';
+
 function toggleAuthMode() {
   authMode = authMode === 'signin' ? 'signup' : 'signin';
   document.getElementById('authBtn').textContent = authMode === 'signin' ? 'Sign in' : 'Create account';
@@ -863,32 +880,11 @@ async function loadProfile() {
   const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
   userProfile = data || { full_name: currentUser.user_metadata?.full_name || '', rate_30: 6.875, rate_15: 6.125 };
 }
-
 async function saveProfile() {
   if (!currentUser) return;
   const r30 = parseFloat(document.getElementById('rate30').value) || 6.875;
   const r15 = parseFloat(document.getElementById('rate15').value) || 6.125;
   await sb.from('profiles').upsert({ id: currentUser.id, rate_30: r30, rate_15: r15, updated_at: new Date().toISOString() });
-}
-
-function toggleSidebar() {
-  const dash = document.querySelector('.dash');
-  const btn = document.getElementById('sidebarToggle');
-  const collapsed = dash.classList.toggle('sidebar-collapsed');
-  btn.textContent = collapsed ? '←' : '→';
-  btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
-  btn.title = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
-  localStorage.setItem('atlas_home_sidebar_collapsed', collapsed ? '1' : '0');
-}
-
-function applySavedSidebarState() {
-  const dash = document.querySelector('.dash');
-  const btn = document.getElementById('sidebarToggle');
-  const collapsed = localStorage.getItem('atlas_home_sidebar_collapsed') === '1';
-  dash.classList.toggle('sidebar-collapsed', collapsed);
-  btn.textContent = collapsed ? '←' : '→';
-  btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
-  btn.title = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
 }
 
 function showApp() {
@@ -898,56 +894,65 @@ function showApp() {
   document.getElementById('navUser').textContent = userProfile?.full_name || currentUser.email;
   const h = new Date().getHours(), g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
   document.getElementById('greeting').textContent = g + ', ' + (fn || 'there');
-  document.getElementById('greetingDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  document.getElementById('greetingDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
   if (userProfile) { document.getElementById('rate30').value = (userProfile.rate_30 || 6.875) + '%'; document.getElementById('rate15').value = (userProfile.rate_15 || 6.125) + '%'; }
   applySavedSidebarState();
   loadDailyQuote();
-  loadOutreachKPIs();
   loadOutreachPanel();
+  if (loadPersistedData()) renderDashboard();
 }
 
-document.querySelectorAll('.nav-tab').forEach(tab => { tab.addEventListener('click', () => switchView(tab.dataset.view)); });
+function toggleSidebar() {
+  const dash = document.querySelector('.dash'), btn = document.getElementById('sidebarToggle');
+  const collapsed = dash.classList.toggle('sidebar-collapsed');
+  btn.textContent = collapsed ? '←' : '→';
+  btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+  localStorage.setItem('atlas_home_sidebar_collapsed', collapsed ? '1' : '0');
+}
+function applySavedSidebarState() {
+  const dash = document.querySelector('.dash'), btn = document.getElementById('sidebarToggle');
+  const collapsed = localStorage.getItem('atlas_home_sidebar_collapsed') === '1';
+  dash.classList.toggle('sidebar-collapsed', collapsed);
+  btn.textContent = collapsed ? '←' : '→';
+}
+
+document.querySelectorAll('.nav-tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
 function switchView(v) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
   document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
   const f = document.getElementById('frame-' + v);
   if (f && f.dataset.src && !f.src.includes(f.dataset.src)) f.src = f.dataset.src;
-  if (v === 'home') { loadOutreachKPIs(); loadOutreachPanel(); }
 }
-
-const leMap = { refi: 'le-refi.html', purchase: 'le-purchase.html', second: 'le-second.html' };
-function switchLE(t) { document.querySelectorAll('.le-btn').forEach(b => b.classList.toggle('active', b.dataset.le === t)); document.getElementById('frame-le').src = leMap[t]; }
+const leMap = { refi:'le-refi.html', purchase:'le-purchase.html', second:'le-second.html' };
+function switchLE(t) { document.querySelectorAll('.le-btn').forEach(b => b.classList.toggle('active', b.dataset.le===t)); document.getElementById('frame-le').src = leMap[t]; }
 
 function openSettings() {
-  document.getElementById('setName').value = userProfile?.full_name || '';
+  document.getElementById('setName').value    = userProfile?.full_name || '';
   document.getElementById('setCompany').value = userProfile?.company || '';
-  document.getElementById('setNmls').value = userProfile?.nmls || '';
-  document.getElementById('setPhone').value = userProfile?.phone || '';
+  document.getElementById('setNmls').value    = userProfile?.nmls || '';
+  document.getElementById('setPhone').value   = userProfile?.phone || '';
   document.getElementById('settingsModal').style.display = 'flex';
 }
 function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-
 async function saveSettingsModal() {
   if (!currentUser) return;
-  const u = { id: currentUser.id, full_name: document.getElementById('setName').value.trim(), company: document.getElementById('setCompany').value.trim(), nmls: document.getElementById('setNmls').value.trim(), phone: document.getElementById('setPhone').value.trim(), updated_at: new Date().toISOString() };
+  const u = { id:currentUser.id, full_name:document.getElementById('setName').value.trim(), company:document.getElementById('setCompany').value.trim(), nmls:document.getElementById('setNmls').value.trim(), phone:document.getElementById('setPhone').value.trim(), updated_at:new Date().toISOString() };
   const { error } = await sb.from('profiles').upsert(u);
   if (error) { alert('Save failed: ' + error.message); return; }
   userProfile = { ...userProfile, ...u };
   document.getElementById('navUser').textContent = u.full_name || currentUser.email;
-  const fn = (u.full_name || '').split(' ')[0] || 'there';
-  const h = new Date().getHours();
-  document.getElementById('greeting').textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ', ' + fn;
+  const fn = (u.full_name||'').split(' ')[0]||'there', h = new Date().getHours();
+  document.getElementById('greeting').textContent = (h<12?'Good morning':h<17?'Good afternoon':'Good evening') + ', ' + fn;
   closeSettings();
 }
 
 document.addEventListener('keydown', e => {
   if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
-  if (e.key === '1') switchView('home'); if (e.key === '2') switchView('scenario');
-  if (e.key === '3') switchView('le'); if (e.key === '4') switchView('preapproval');
-  if (e.key === '5') switchView('outreach');
+  const map = {'1':'home','2':'scenario','3':'le','4':'preapproval','5':'outreach'};
+  if (map[e.key]) switchView(map[e.key]);
 });
 
-(async () => { const { data: { session } } = await sb.auth.getSession(); if (!session) document.getElementById('authScreen').classList.remove('hidden'); })();
+(async () => { const { data:{ session } } = await sb.auth.getSession(); if (!session) document.getElementById('authScreen').classList.remove('hidden'); })();
 </script>
 </body>
 </html>
