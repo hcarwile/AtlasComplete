@@ -111,6 +111,51 @@
 .empty-state-icon{font-size:32px;margin-bottom:10px;opacity:0.3}
 .empty-state-title{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:4px}
 .empty-state-sub{font-size:12px;color:var(--text4);line-height:1.5}
+
+/* Pipeline view */
+.pipeline-wrap{max-width:1100px;margin:0 auto;padding:28px 32px}
+.pipeline-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px}
+.pipeline-title{font-size:18px;font-weight:600;letter-spacing:-0.01em}
+.pipeline-summary{font-size:12px;color:var(--text3)}
+.pipeline-add-btn{height:34px;padding:0 16px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.15s}.pipeline-add-btn:hover{filter:brightness(1.1)}
+
+/* Add deal form */
+.deal-form{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:20px;display:none}
+.deal-form.open{display:block}
+.deal-form-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.deal-form-field{display:flex;flex-direction:column;gap:4px}
+.deal-form-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em}
+.deal-form-input{height:34px;padding:0 10px;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:12px;color:var(--text);background:var(--surface2);outline:none;width:100%}
+.deal-form-input:focus{border-color:var(--accent)}
+.deal-form-input::placeholder{color:var(--text4)}
+select.deal-form-input{cursor:pointer}
+.deal-form-actions{display:flex;gap:8px;justify-content:flex-end}
+.deal-form-save{height:32px;padding:0 18px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer}.deal-form-save:hover{filter:brightness(1.1)}
+.deal-form-cancel{height:32px;padding:0 14px;border:1px solid var(--border);border-radius:8px;background:transparent;font-family:var(--sans);font-size:12px;color:var(--text3);cursor:pointer}.deal-form-cancel:hover{border-color:var(--text3);color:var(--text)}
+
+/* Deal table */
+.deal-table{width:100%;border-collapse:collapse}
+.deal-table th{font-size:10px;font-weight:600;color:var(--text4);text-transform:uppercase;letter-spacing:0.04em;padding:0 12px 8px;text-align:left;border-bottom:1px solid var(--border)}
+.deal-table th:last-child{text-align:right}
+.deal-row{background:var(--surface);border-bottom:1px solid var(--border);transition:background 0.1s}
+.deal-row:last-child{border-bottom:none}
+.deal-row:hover{background:var(--surface2)}
+.deal-row td{padding:12px 12px;font-size:12px;color:var(--text2);vertical-align:middle}
+.deal-client{font-weight:600;color:var(--text);font-size:13px}
+.deal-type-badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:0.03em;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+.badge-purchase{background:var(--blue-soft);color:var(--blue)}
+.badge-refinance{background:var(--accent-soft);color:var(--accent)}
+.badge-heloc{background:var(--amber-soft);color:var(--amber)}
+.badge-heloan{background:var(--amber-soft);color:var(--amber)}
+.deal-amount{font-weight:600;color:var(--text)}
+.deal-comp{color:var(--accent);font-weight:600}
+.deal-remove{background:none;border:none;cursor:pointer;color:var(--text4);font-size:16px;line-height:1;padding:4px 6px;border-radius:4px;transition:all 0.12s;float:right}
+.deal-remove:hover{background:var(--red-soft);color:var(--red)}
+.deal-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.pipeline-totals{display:flex;gap:24px;margin-top:16px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+.pipeline-total-item{display:flex;flex-direction:column;gap:2px}
+.pipeline-total-label{font-size:10px;font-weight:600;color:var(--text4);text-transform:uppercase;letter-spacing:0.04em}
+.pipeline-total-val{font-size:16px;font-weight:700;color:var(--text)}.pipeline-total-val.green{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -133,6 +178,7 @@
       <div class="nav-logo"><span class="nav-logo-dot"></span> Atlas</div>
       <div class="nav-tabs">
         <div class="nav-tab active" data-view="home">Home</div>
+        <div class="nav-tab" data-view="pipeline">Pipeline</div>
         <div class="nav-tab" data-view="scenario">Scenario</div>
         <div class="nav-tab" data-view="le">Loan Estimate</div>
         <div class="nav-tab" data-view="preapproval">Pre-Approval</div>
@@ -328,7 +374,102 @@
         </div>
       </div>
     </div>
-    <div class="view" id="view-scenario"><iframe id="frame-scenario" data-src="scenario.html"></iframe></div>
+    <div class="view" id="view-pipeline">
+      <div class="pipeline-wrap">
+        <div class="pipeline-header">
+          <div>
+            <div class="pipeline-title">Pipeline</div>
+            <div class="pipeline-summary" id="pipelineSummary">No deals in progress</div>
+          </div>
+          <button class="pipeline-add-btn" onclick="toggleDealForm()">+ Add deal</button>
+        </div>
+
+        <!-- Add form -->
+        <div class="deal-form" id="dealForm">
+          <div class="deal-form-grid">
+            <div class="deal-form-field">
+              <label class="deal-form-label">Client name</label>
+              <input class="deal-form-input" id="df-client" placeholder="Last, First" type="text">
+            </div>
+            <div class="deal-form-field">
+              <label class="deal-form-label">Loan type</label>
+              <select class="deal-form-input" id="df-type">
+                <option value="">— select —</option>
+                <option>Purchase</option>
+                <option>Refinance</option>
+                <option>HELOC</option>
+                <option>HELOAN</option>
+              </select>
+            </div>
+            <div class="deal-form-field">
+              <label class="deal-form-label">Loan amount</label>
+              <input class="deal-form-input" id="df-amount" placeholder="$000,000" type="text">
+            </div>
+            <div class="deal-form-field">
+              <label class="deal-form-label">Est. comp</label>
+              <input class="deal-form-input" id="df-comp" placeholder="$0,000" type="text">
+            </div>
+            <div class="deal-form-field">
+              <label class="deal-form-label">Submission date</label>
+              <input class="deal-form-input" id="df-date" type="date">
+            </div>
+            <div class="deal-form-field">
+              <label class="deal-form-label">Lender</label>
+              <select class="deal-form-input" id="df-lender">
+                <option value="">— select —</option>
+                <option>AWMS</option>
+                <option>Button</option>
+                <option>EPM</option>
+                <option>Figure</option>
+                <option>Flagstar</option>
+                <option>NationsDirect</option>
+                <option>NewRez</option>
+                <option>PennyMac</option>
+                <option>Quorum</option>
+                <option>REMN</option>
+                <option>SpringEQ</option>
+                <option>Symmetry</option>
+                <option>UWM</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="deal-form-actions">
+            <button class="deal-form-cancel" onclick="toggleDealForm()">Cancel</button>
+            <button class="deal-form-save" onclick="saveDeal()">Save deal</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="deal-table-wrap" id="dealTableWrap" style="display:none">
+          <table class="deal-table">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Loan amount</th>
+                <th>Est. comp</th>
+                <th>Submitted</th>
+                <th>Lender</th>
+                <th style="text-align:right">Remove</th>
+              </tr>
+            </thead>
+            <tbody id="dealTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="pipelineEmpty" style="display:none;text-align:center;padding:48px 0;color:var(--text4);font-size:13px">
+          No deals in progress — click <strong>+ Add deal</strong> to get started
+        </div>
+
+        <!-- Totals -->
+        <div class="pipeline-totals" id="pipelineTotals" style="display:none">
+          <div class="pipeline-total-item"><div class="pipeline-total-label">Deals in progress</div><div class="pipeline-total-val" id="ptCount">0</div></div>
+          <div class="pipeline-total-item"><div class="pipeline-total-label">Total loan volume</div><div class="pipeline-total-val" id="ptVolume">—</div></div>
+          <div class="pipeline-total-item"><div class="pipeline-total-label">Est. total comp</div><div class="pipeline-total-val green" id="ptComp">—</div></div>
+        </div>
+      </div>
+    </div>
     <div class="view" id="view-le"><div class="le-view"><div class="le-bar"><button class="le-btn active" data-le="refi" onclick="switchLE('refi')">Refinance</button><button class="le-btn" data-le="purchase" onclick="switchLE('purchase')">Purchase</button><button class="le-btn" data-le="second" onclick="switchLE('second')">Second Lien</button></div><div class="le-frame-wrap"><iframe id="frame-le" src="le-refi.html"></iframe></div></div></div>
     <div class="view" id="view-preapproval"><iframe id="frame-preapproval" data-src="preapproval.html"></iframe></div>
     <div class="view" id="view-outreach"><iframe id="frame-outreach" data-src="outreach.html"></iframe></div>
@@ -908,6 +1049,7 @@ function showApp() {
   applySavedSidebarState();
   loadDailyQuote();
   loadOutreachPanel();
+  loadPipeline();
   if (loadPersistedData()) renderDashboard();
 }
 
@@ -960,6 +1102,116 @@ document.addEventListener('keydown', e => {
   const map = {'1':'home','2':'scenario','3':'le','4':'preapproval','5':'outreach'};
   if (map[e.key]) switchView(map[e.key]);
 });
+
+// ── Pipeline ───────────────────────────────────────────────────────────────────
+let pipelineDeals = [];
+
+function toggleDealForm() {
+  const form = document.getElementById('dealForm');
+  const open = form.classList.toggle('open');
+  if (open) {
+    // Default submission date to today
+    document.getElementById('df-date').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('df-client').focus();
+  } else {
+    clearDealForm();
+  }
+}
+
+function clearDealForm() {
+  ['df-client','df-type','df-amount','df-comp','df-date','df-lender'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+async function saveDeal() {
+  const client = document.getElementById('df-client').value.trim();
+  const type   = document.getElementById('df-type').value;
+  const amount = parseFloat(document.getElementById('df-amount').value.replace(/[$,]/g,'')) || 0;
+  const comp   = parseFloat(document.getElementById('df-comp').value.replace(/[$,]/g,'')) || 0;
+  const date   = document.getElementById('df-date').value;
+  const lender = document.getElementById('df-lender').value;
+
+  if (!client) { document.getElementById('df-client').focus(); return; }
+
+  const deal = {
+    user_id:    currentUser.id,
+    client,
+    loan_type:  type,
+    loan_amount:amount,
+    compensation:comp,
+    submitted_date: date || null,
+    lender,
+    created_at: new Date().toISOString()
+  };
+
+  const { data, error } = await sb.from('pipeline_deals').insert([deal]).select().single();
+  if (error) { alert('Save failed: ' + error.message); return; }
+
+  pipelineDeals.unshift(data);
+  renderPipeline();
+  toggleDealForm();
+}
+
+async function removeDeal(id) {
+  const { error } = await sb.from('pipeline_deals').delete().eq('id', id);
+  if (error) { alert('Remove failed: ' + error.message); return; }
+  pipelineDeals = pipelineDeals.filter(d => d.id !== id);
+  renderPipeline();
+}
+
+async function loadPipeline() {
+  if (!currentUser) return;
+  const { data, error } = await sb.from('pipeline_deals').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+  if (error) { console.error('Pipeline load error:', error); return; }
+  pipelineDeals = data || [];
+  renderPipeline();
+}
+
+function renderPipeline() {
+  const tbody   = document.getElementById('dealTableBody');
+  const wrap    = document.getElementById('dealTableWrap');
+  const empty   = document.getElementById('pipelineEmpty');
+  const totals  = document.getElementById('pipelineTotals');
+  const summary = document.getElementById('pipelineSummary');
+
+  if (!pipelineDeals.length) {
+    wrap.style.display   = 'none';
+    totals.style.display = 'none';
+    empty.style.display  = 'block';
+    summary.textContent  = 'No deals in progress';
+    return;
+  }
+
+  empty.style.display  = 'none';
+  wrap.style.display   = 'block';
+  totals.style.display = 'flex';
+
+  const totalVol  = pipelineDeals.reduce((s, d) => s + (d.loan_amount || 0), 0);
+  const totalComp = pipelineDeals.reduce((s, d) => s + (d.compensation || 0), 0);
+
+  document.getElementById('ptCount').textContent  = pipelineDeals.length;
+  document.getElementById('ptVolume').textContent = fmtMoney(totalVol);
+  document.getElementById('ptComp').textContent   = fmtComp(totalComp);
+  summary.textContent = pipelineDeals.length + ' deal' + (pipelineDeals.length !== 1 ? 's' : '') + ' · ' + fmtMoney(totalVol) + ' · est. ' + fmtComp(totalComp);
+
+  const typeBadge = t => {
+    const cls = { Purchase:'badge-purchase', Refinance:'badge-refinance', HELOC:'badge-heloc', HELOAN:'badge-heloan' }[t] || 'badge-refinance';
+    return `<span class="deal-type-badge ${cls}">${t || '—'}</span>`;
+  };
+  const fmtDate = s => s ? new Date(s + 'T12:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
+
+  tbody.innerHTML = pipelineDeals.map(d => `
+    <tr class="deal-row">
+      <td class="deal-client">${d.client || '—'}</td>
+      <td>${typeBadge(d.loan_type)}</td>
+      <td class="deal-amount">${d.loan_amount ? fmtMoney(d.loan_amount) : '—'}</td>
+      <td class="deal-comp">${d.compensation ? fmtComp(d.compensation) : '—'}</td>
+      <td>${fmtDate(d.submitted_date)}</td>
+      <td>${d.lender || '—'}</td>
+      <td><button class="deal-remove" onclick="removeDeal('${d.id}')" title="Remove">×</button></td>
+    </tr>`).join('');
+}
 
 (async () => { const { data:{ session } } = await sb.auth.getSession(); if (!session) document.getElementById('authScreen').classList.remove('hidden'); })();
 </script>
