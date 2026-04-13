@@ -14,6 +14,7 @@
   --ochre:#c67c2a; --ochre-soft:#fdf0e0; --red:#c1440e; --red-soft:#fdeee8;
   --blue:#2563a8; --blue-soft:#e8f0fb; --purple:#7c3aed; --purple-soft:#ede9fe;
   --gold:#a16207; --gold-soft:#fefce8;
+  --teal:#0d7377; --teal-soft:#e0f4f4;
   --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
   --shadow-md:0 4px 12px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.04);
   --shadow-lg:0 8px 24px rgba(0,0,0,0.09),0 4px 8px rgba(0,0,0,0.04);
@@ -25,6 +26,7 @@
   --ochre:#e8943a; --ochre-soft:rgba(232,148,58,0.12); --red:#e05c3a; --red-soft:rgba(224,92,58,0.12);
   --blue:#5b9bd5; --blue-soft:rgba(91,155,213,0.12); --purple:#a78bfa; --purple-soft:rgba(167,139,250,0.12);
   --gold:#facc15; --gold-soft:rgba(250,204,21,0.1);
+  --teal:#2dd4bf; --teal-soft:rgba(45,212,191,0.12);
   --shadow-sm:0 1px 3px rgba(0,0,0,0.3); --shadow-md:0 4px 12px rgba(0,0,0,0.35); --shadow-lg:0 8px 24px rgba(0,0,0,0.4);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -38,20 +40,27 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .wordmark-dot{width:7px;height:7px;border-radius:50%;background:var(--ochre);display:inline-block;margin-bottom:1px;}
 .date-pill{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:500;color:var(--text-3);}
 .header-right{display:flex;align-items:center;gap:12px;}
-.rate-panel{display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-.rate-cell{display:flex;align-items:center;gap:6px;padding:7px 14px;}
-.rate-cell+.rate-cell{border-left:1px solid var(--border);}
-.rate-lbl{font-size:10px;font-weight:600;letter-spacing:0.06em;color:var(--text-3);text-transform:uppercase;}
-.rate-input{background:transparent;border:none;outline:none;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;color:var(--accent);width:58px;text-align:right;cursor:pointer;}
 .theme-toggle{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;}
 .theme-toggle:hover{border-color:var(--accent);transform:scale(1.05);}
+.settings-btn{height:36px;padding:0 14px;background:var(--surface2);color:var(--text-2);border:1px solid var(--border);border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
+.settings-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
 .refresh-btn{height:36px;padding:0 18px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s;box-shadow:0 2px 8px rgba(45,106,79,0.25);}
 .refresh-btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
 .refresh-btn:disabled{background:var(--border2);color:var(--text-4);cursor:not-allowed;box-shadow:none;transform:none;}
 
+/* RATES POPOVER */
+.settings-popover-wrap{position:relative;}
+.settings-popover{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow-lg);z-index:300;min-width:220px;animation:fadeUp 0.2s ease;}
+.settings-popover-title{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;}
+.rate-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.rate-row:last-child{margin-bottom:0;}
+.rate-row-label{font-size:12px;font-weight:600;color:var(--text-2);}
+.rate-input-new{background:var(--bg);border:1.5px solid var(--border2);border-radius:8px;padding:5px 10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;color:var(--accent);width:90px;text-align:right;outline:none;transition:border-color 0.15s;}
+.rate-input-new:focus{border-color:var(--accent);}
+
 /* STATS BAR */
 .stats-bar{display:grid;grid-template-columns:repeat(6,1fr);background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;}
-.stat-card{padding:12px 0;padding-right:20px;}
+.stat-card{padding:12px 0;padding-right:20px;position:relative;cursor:default;}
 .stat-card+.stat-card{padding-left:20px;border-left:1px solid var(--border);}
 .stat-label{font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;}
 .stat-val{font-size:24px;font-weight:700;color:var(--text);line-height:1;margin-bottom:2px;letter-spacing:-0.02em;}
@@ -60,11 +69,13 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .stat-val.red{color:var(--red);}
 .stat-val.gold{color:var(--gold);}
 .stat-sub{font-size:10px;color:var(--text-4);}
+.stat-tooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--text);color:var(--surface);font-size:11px;font-weight:500;padding:6px 10px;border-radius:8px;white-space:nowrap;z-index:100;pointer-events:none;line-height:1.4;text-align:center;}
+.stat-card:hover .stat-tooltip{display:block;}
+.stat-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--text);}
 
 /* SUMMARY BANNER */
 .summary-banner{background:var(--accent-soft);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;align-items:center;gap:16px;}
 .summary-text{font-size:12px;font-weight:600;color:var(--accent);}
-.summary-comp{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent);color:#fff;padding:3px 10px;border-radius:20px;}
 .streak-badge{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold);border-radius:20px;padding:3px 10px;}
 .summary-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
 
@@ -83,6 +94,8 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .tab-pill{font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--accent-soft);color:var(--accent);min-width:20px;text-align:center;}
 .tab.active .tab-pill{background:var(--accent);color:#fff;}
 .tab-pill-red{background:var(--red-soft)!important;color:var(--red)!important;}
+.tab-pill-gold{background:var(--gold-soft)!important;color:var(--gold)!important;}
+.tab-pill-teal{background:var(--teal-soft)!important;color:var(--teal)!important;}
 
 /* MAIN */
 .main{display:grid;grid-template-columns:300px 1fr;height:calc(100vh - 178px);}
@@ -94,12 +107,15 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .sidebar-count{font-size:11px;font-weight:700;background:var(--accent);color:#fff;padding:2px 9px;border-radius:20px;min-width:24px;text-align:center;}
 
 /* SECTION DIVIDER */
-.section-divider{padding:8px 20px 6px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:41px;z-index:9;}
+.section-divider{padding:8px 20px 6px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
 .section-divider-label{font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);}
 .section-divider-comp{font-size:10px;font-weight:700;color:var(--accent);}
+.section-divider.followup-trigger{border-left:3px solid var(--teal);}
+.section-divider.followup-trigger .section-divider-label{color:var(--teal);}
 .section-divider.must{border-left:3px solid var(--red);}
 .section-divider.must .section-divider-label{color:var(--red);}
-.section-divider.iftime{border-left:3px solid var(--border2);}
+.section-divider.iftime{border-left:3px solid var(--ochre);}
+.section-divider.iftime .section-divider-label{color:var(--ochre);}
 
 /* CLIENT ROW */
 .client-row{padding:12px 20px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.12s;display:flex;align-items:flex-start;gap:12px;}
@@ -107,8 +123,8 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .client-row.active{background:var(--accent-soft);border-left:3px solid var(--accent);padding-left:17px;}
 .client-row.done-row{opacity:0.4;}
 .client-row.done-row .row-name{text-decoration:line-through;}
-.client-row.carryover{background:var(--red-soft);}
-.client-row.carryover.active{background:var(--accent-soft);}
+.client-row.followup-row-item{border-left:3px solid var(--teal);padding-left:17px;}
+.client-row.followup-row-item.active{background:var(--teal-soft);}
 .row-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;margin-top:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;background:transparent;font-size:10px;color:transparent;}
 .row-check:hover{border-color:var(--accent);}
 .row-check.checked{background:var(--accent);border-color:var(--accent);color:white;}
@@ -124,21 +140,18 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .tag-red{background:var(--red-soft);color:var(--red);}
 .tag-blue{background:var(--blue-soft);color:var(--blue);}
 .tag-purple{background:var(--purple-soft);color:var(--purple);}
-.carryover-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--red-soft);color:var(--red);letter-spacing:0.05em;text-transform:uppercase;}
-.row-lead-badge{font-size:9px;font-weight:700;letter-spacing:0.05em;padding:2px 6px;border-radius:4px;text-transform:uppercase;}
-.lead-future{background:var(--blue-soft);color:var(--blue);}
-.lead-warm{background:var(--ochre-soft);color:var(--ochre);}
-.overdue-pill{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--red-soft);color:var(--red);letter-spacing:0.03em;}
-.upcoming-pill{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--ochre-soft);color:var(--ochre);letter-spacing:0.03em;}
+.tag-teal{background:var(--teal-soft);color:var(--teal);}
 .sidebar-empty{padding:48px 24px;text-align:center;color:var(--text-4);font-size:12px;font-weight:500;line-height:1.6;}
 .sidebar-empty-icon{font-size:32px;margin-bottom:12px;display:block;}
 
 /* DETAIL */
 .detail{overflow-y:auto;background:var(--bg);padding:28px 32px;}
 .detail-empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-4);gap:12px;text-align:center;}
-.detail-empty-glyph{font-size:56px;color:var(--border2);line-height:1;font-style:italic;}
+.detail-empty-glyph{font-size:56px;color:var(--border2);line-height:1;}
 .detail-empty-text{font-size:13px;color:var(--text-4);font-weight:500;}
 .detail-empty-sub{font-size:11px;color:var(--text-4);}
+.detail-empty-action{margin-top:14px;padding:9px 20px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 8px rgba(45,106,79,0.25);}
+.detail-empty-action:hover{filter:brightness(1.1);transform:translateY(-1px);}
 .detail-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:20px;}
 .detail-name{font-size:28px;font-weight:500;color:var(--text);letter-spacing:-0.02em;margin-bottom:6px;line-height:1.1;}
 .detail-meta{font-size:12px;color:var(--text-3);line-height:1.8;}
@@ -159,23 +172,6 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .section-hd{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;}
 .section-hd::after{content:'';flex:1;height:1px;background:var(--border);}
 
-/* LEAD STATUS */
-.lead-status-wrap{margin-bottom:24px;}
-.lead-status-row{display:flex;gap:8px;}
-.lead-status-btn{flex:1;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border2);background:var(--surface);font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--text-3);}
-.lead-status-btn:hover{background:var(--surface2);color:var(--text-2);}
-.lead-status-btn.active-none{border-color:var(--border2);color:var(--text-3);background:var(--surface3);}
-.lead-status-btn.active-future{border-color:var(--blue);color:var(--blue);background:var(--blue-soft);}
-.lead-status-btn.active-warm{border-color:var(--ochre);color:var(--ochre);background:var(--ochre-soft);}
-.followup-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-sm);flex-wrap:wrap;}
-.followup-label{font-size:11px;font-weight:600;color:var(--text-3);white-space:nowrap;}
-.followup-input{background:var(--bg);border:1.5px solid var(--border2);border-radius:8px;padding:5px 9px;font-family:'Noto Sans',sans-serif;font-size:12px;color:var(--text);outline:none;transition:border-color 0.15s;}
-.followup-input:focus{border-color:var(--accent);}
-.followup-input.note-input{flex:1;min-width:120px;}
-.ics-btn{padding:6px 12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'Noto Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;white-space:nowrap;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(45,106,79,0.25);}
-.ics-btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
-.ics-btn:disabled{background:var(--border2);color:var(--text-4);cursor:not-allowed;box-shadow:none;transform:none;}
-
 /* FACT GRID */
 .fact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
 .fact-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow-sm);}
@@ -187,7 +183,9 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 /* TRIGGERS */
 .trigger-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
 .trigger-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:flex-start;gap:12px;box-shadow:var(--shadow-sm);}
+.trigger-card.followup-trigger-card{border-color:var(--teal);border-left:3px solid var(--teal);background:var(--teal-soft);}
 .trigger-icon-wrap{width:34px;height:34px;border-radius:9px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.trigger-icon-wrap.teal{background:var(--teal-soft);}
 .trigger-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
 .trigger-reason{font-size:12px;color:var(--text-2);line-height:1.5;}
 
@@ -210,12 +208,6 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .refi-save-label{font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;}
 .refi-save-sub{font-size:9px;color:var(--text-4);margin-top:1px;}
 
-/* CREDIT CARD */
-.credit-card{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:12px;padding:14px 16px;margin-bottom:8px;box-shadow:var(--shadow-sm);}
-.credit-card-hd{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
-.credit-card-title{font-size:13px;font-weight:600;color:var(--purple);}
-.credit-card-body{font-size:12px;color:var(--text-2);line-height:1.5;}
-
 /* AI + MESSAGES */
 .ai-card{background:var(--surface);border:1px solid var(--border);border-left:3.5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 18px;margin-bottom:24px;font-size:13px;line-height:1.7;color:var(--text-2);box-shadow:var(--shadow-sm);}
 .msg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
@@ -224,19 +216,85 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .msg-type{font-size:11px;font-weight:700;color:var(--text-2);display:flex;align-items:center;gap:6px;}
 .copy-btn{font-size:10px;font-weight:600;padding:3px 9px;border-radius:6px;border:1.5px solid var(--border2);background:transparent;color:var(--text-3);cursor:pointer;transition:all 0.15s;font-family:'Noto Sans',sans-serif;}
 .copy-btn:hover,.copy-btn.copied{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+.email-btn{font-size:10px;font-weight:600;padding:3px 9px;border-radius:6px;border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent);cursor:pointer;transition:all 0.15s;font-family:'Noto Sans',sans-serif;}
+.email-btn:hover{background:var(--accent);color:#fff;}
 .msg-body{padding:12px 14px;font-size:12px;line-height:1.7;color:var(--text-2);min-height:90px;white-space:pre-wrap;}
 .loading-row{display:flex;align-items:center;gap:8px;padding:16px;min-height:90px;}
 .spinner{width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .loading-text{font-size:11px;color:var(--text-3);font-weight:500;}
 
-/* CLOSED TAB */
+/* COMPLETE ACTION PANEL */
+.complete-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:24px;box-shadow:var(--shadow-sm);}
+.complete-panel-title{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;}
+.recontact-presets{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.preset-btn{padding:6px 12px;border-radius:8px;border:1.5px solid var(--border2);background:transparent;color:var(--text-2);font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.preset-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-soft);}
+.preset-btn.active-preset{border-color:var(--teal);color:var(--teal);background:var(--teal-soft);}
+.preset-btn.skip-preset{border-color:var(--border2);color:var(--text-4);}
+.preset-btn.skip-preset:hover{border-color:var(--red);color:var(--red);background:var(--red-soft);}
+.complete-confirm-btn{width:100%;height:38px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 8px rgba(45,106,79,0.2);}
+.complete-confirm-btn:hover{filter:brightness(1.08);}
+
+/* HISTORY / OUTREACH LOG */
+.history-filters{display:flex;gap:8px;padding:14px 20px 10px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--surface);}
+.filter-btn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border2);background:transparent;color:var(--text-3);font-family:'Noto Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+.filter-btn.active-filter{background:var(--accent);border-color:var(--accent);color:#fff;}
+.filter-btn.positive{border-color:var(--accent);color:var(--accent);}
+.filter-btn.positive.active-filter{background:var(--accent);}
+.filter-btn.negative{border-color:var(--red);color:var(--red);}
+.filter-btn.negative.active-filter{background:var(--red);border-color:var(--red);color:#fff;}
+.filter-btn.no-response{border-color:var(--text-4);color:var(--text-4);}
+.filter-btn.no-response.active-filter{background:var(--text-3);border-color:var(--text-3);color:#fff;}
+.history-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.hstat{background:var(--surface);padding:10px 20px;}
+.hstat-label{font-size:9px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:2px;}
+.hstat-val{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em;}
+.hstat-val.green{color:var(--accent);}
+.hstat-val.red{color:var(--red);}
+.history-list{overflow-y:auto;flex:1;}
+.history-item{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;cursor:pointer;transition:background 0.12s;}
+.history-item:hover{background:var(--surface2);}
+.history-item.selected-history{background:var(--accent-soft);}
+.history-grade{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:700;}
+.grade-positive{background:var(--accent-soft);color:var(--accent);}
+.grade-negative{background:var(--red-soft);color:var(--red);}
+.grade-none{background:var(--surface3);color:var(--text-4);}
+.history-body{flex:1;min-width:0;}
+.history-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.history-meta{font-size:11px;color:var(--text-3);line-height:1.4;margin-bottom:4px;}
+.history-note{font-size:11px;color:var(--text-2);font-style:italic;}
+.history-right{text-align:right;flex-shrink:0;}
+.history-date{font-size:11px;font-weight:600;color:var(--text-3);}
+.history-trigger{font-size:10px;color:var(--text-4);margin-top:2px;}
+
+/* HISTORY DETAIL PANEL */
+.history-detail{overflow-y:auto;background:var(--bg);padding:28px 32px;}
+.grade-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
+.grade-panel-title{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;}
+.grade-btns{display:flex;gap:8px;margin-bottom:12px;}
+.grade-btn{flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--border2);background:transparent;font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text-3);}
+.grade-btn:hover{background:var(--surface2);}
+.grade-btn.grade-active-positive{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);}
+.grade-btn.grade-active-negative{border-color:var(--red);background:var(--red-soft);color:var(--red);}
+.grade-btn.grade-active-none{border-color:var(--text-3);background:var(--surface3);color:var(--text-3);}
+.grade-icon{font-size:18px;}
+.grade-note-input{width:100%;background:var(--bg);border:1.5px solid var(--border2);border-radius:10px;padding:10px 14px;font-family:'Noto Sans',sans-serif;font-size:12px;color:var(--text);outline:none;resize:vertical;min-height:60px;transition:border-color 0.15s;}
+.grade-note-input:focus{border-color:var(--accent);}
+.grade-save-btn{margin-top:10px;width:100%;height:36px;background:var(--accent);color:#fff;border:none;border-radius:9px;font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.grade-save-btn:hover{filter:brightness(1.08);}
+
+/* HISTORY TAB LAYOUT */
+.history-layout{display:grid;grid-template-columns:340px 1fr;height:100%;}
+.history-sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+
+/* CLOSED TABLE */
 .closed-table{width:100%;border-collapse:collapse;font-size:12px;}
 .closed-table th{text-align:left;padding:8px 12px;font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border);background:var(--surface2);}
 .closed-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text-2);vertical-align:middle;}
 .closed-table tr:hover td{background:var(--surface2);}
 .closed-total-row td{font-weight:700;color:var(--accent);border-top:2px solid var(--border);background:var(--accent-soft);}
-.trigger-chip{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:0.04em;}
 
 /* MODAL */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;}
@@ -249,26 +307,13 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .modal-btn{width:100%;height:44px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 12px rgba(45,106,79,0.3);}
 .modal-btn:hover{filter:brightness(1.08);transform:translateY(-1px);}
 .modal-note{font-size:11px;color:var(--text-4);margin-top:12px;line-height:1.6;text-align:center;}
-
-
-.settings-btn{height:36px;padding:0 14px;background:var(--surface2);color:var(--text-2);border:1px solid var(--border);border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
-.settings-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
 .modal-actions{display:flex;gap:10px;align-items:center;}
-.datasource-grid{display:grid;gap:12px;}
-.datasource-help{font-size:11px;color:var(--text-4);line-height:1.6;margin-top:-8px;margin-bottom:8px;}
-.datasource-row{display:grid;gap:6px;}
-.datasource-file{font-size:12px;color:var(--text-2);}
-.modal-inline-note{font-size:11px;color:var(--text-4);line-height:1.6;}
 .modal-btn-secondary{background:transparent!important;border:1.5px solid var(--border2)!important;color:var(--text-2)!important;box-shadow:none!important;}
-.source-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue);}
 
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-.animate-in{animation:fadeUp 0.3s ease forwards;}
+/* DATA SOURCE MODAL */
+#dsDropZone{border:2px dashed var(--border2);border-radius:14px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:16px;}
 
-/* TOAST NOTIFICATIONS */
+/* TOAST */
 #toast-container{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:900;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
 .toast{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--text);box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;pointer-events:all;animation:toastIn 0.25s ease forwards;}
 .toast.toast-out{animation:toastOut 0.25s ease forwards;}
@@ -276,55 +321,32 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .toast-undo:hover{background:var(--accent-soft);}
 .toast-icon{font-size:15px;line-height:1;}
 @keyframes toastIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-@keyframes toastOut{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(12px);}}
+@keyframes toastOut{from{opacity:1;}to{opacity:0;transform:translateY(12px);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.animate-in{animation:fadeUp 0.3s ease forwards;}
 
-/* AI GENERATING BADGE on sidebar row */
+/* AI GEN BADGE */
 .ai-gen-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--accent-soft);color:var(--accent);letter-spacing:0.04em;text-transform:uppercase;}
-.ai-gen-badge .mini-spin{width:8px;height:8px;border:1.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
+.ai-gen-badge .mini-spin{width:8px;height:8px;border:1.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;}
 
-/* SETTINGS POPOVER (rates moved here) */
-.settings-popover-wrap{position:relative;}
-.settings-popover{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow-lg);z-index:300;min-width:220px;animation:fadeUp 0.2s ease;}
-.settings-popover-title{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;}
-.rate-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
-.rate-row:last-child{margin-bottom:0;}
-.rate-row-label{font-size:12px;font-weight:600;color:var(--text-2);}
-.rate-input-new{background:var(--bg);border:1.5px solid var(--border2);border-radius:8px;padding:5px 10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;color:var(--accent);width:90px;text-align:right;outline:none;transition:border-color 0.15s;}
-.rate-input-new:focus{border-color:var(--accent);}
-
-/* STAT TOOLTIPS */
-.stat-card{position:relative;cursor:default;}
-.stat-tooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--text);color:var(--surface);font-size:11px;font-weight:500;padding:6px 10px;border-radius:8px;white-space:nowrap;z-index:100;pointer-events:none;line-height:1.4;text-align:center;}
-.stat-card:hover .stat-tooltip{display:block;}
-.stat-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--text);}
-
-/* IMPROVED EMPTY STATE */
-.detail-empty-action{margin-top:14px;padding:9px 20px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 8px rgba(45,106,79,0.25);}
-.detail-empty-action:hover{filter:brightness(1.1);transform:translateY(-1px);}
-.detail-empty-hint{font-size:11px;color:var(--text-4);margin-top:6px;}
-
-/* IF-TIME section styling improvement */
-.section-divider.iftime{border-left:3px solid var(--ochre);}
-.section-divider.iftime .section-divider-label{color:var(--ochre);}
-
-/* CLOSE CONFIRMATION MODAL */
+/* CLOSE CONFIRM */
 .confirm-modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;width:380px;box-shadow:var(--shadow-lg);animation:fadeUp 0.2s ease;text-align:center;}
 .confirm-modal-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
 .confirm-modal-body{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:20px;}
 .confirm-modal-comp{font-size:28px;font-weight:700;color:var(--gold);margin:8px 0;}
 .confirm-actions{display:flex;gap:10px;}
-.confirm-btn-yes{flex:1;height:40px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;}
-.confirm-btn-yes:hover{filter:brightness(1.08);}
-.confirm-btn-no{flex:1;height:40px;background:transparent;color:var(--text-2);border:1.5px solid var(--border2);border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
-.confirm-btn-no:hover{border-color:var(--text-2);}
+.confirm-btn-yes{flex:1;height:40px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+.confirm-btn-no{flex:1;height:40px;background:transparent;color:var(--text-2);border:1.5px solid var(--border2);border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
 
-/* Row keyboard focus */
-.client-row:focus{outline:2px solid var(--accent);outline-offset:-2px;background:var(--surface2);}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px;}
+.client-row:focus{outline:2px solid var(--accent);outline-offset:-2px;}
 </style>
 </head>
 <body>
 
-<!-- MODAL -->
+<!-- API KEY MODAL -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
     <div class="modal-logo"><span class="wordmark-dot"></span> Outreach Command</div>
@@ -337,12 +359,12 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
   </div>
 </div>
 
-
+<!-- DATA SOURCE MODAL -->
 <div class="modal-bg" id="dataSourceModal" style="display:none">
   <div class="modal" style="width:460px">
     <div class="modal-logo"><span class="wordmark-dot"></span> Load Client Data</div>
-    <div class="modal-sub">Upload your Excel (.xlsx) or CSV file exported from your LOS or spreadsheet. Your data is saved locally in this browser — just re-upload when it changes.</div>
-    <div id="dsDropZone" style="border:2px dashed var(--border2);border-radius:14px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:16px;" onclick="document.getElementById('dsFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border2)'" ondrop="handleFileDrop(event)">
+    <div class="modal-sub">Upload your Excel (.xlsx) or CSV file exported from your LOS or spreadsheet.</div>
+    <div id="dsDropZone" onclick="document.getElementById('dsFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border2)'" ondrop="handleFileDrop(event)">
       <div style="font-size:28px;margin-bottom:8px">📂</div>
       <div style="font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:4px">Drop your file here or click to browse</div>
       <div style="font-size:11px;color:var(--text-4)">.xlsx or .csv · Your export from Excel, Encompass, or any LOS</div>
@@ -357,7 +379,6 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
   </div>
 </div>
 
-
 <!-- LOADING -->
 <div class="loading-overlay" id="loadingOverlay" style="display:none">
   <div class="loading-box">
@@ -367,10 +388,10 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
   </div>
 </div>
 
-<!-- TOAST CONTAINER -->
+<!-- TOAST -->
 <div id="toast-container"></div>
 
-<!-- CLOSE CONFIRMATION MODAL -->
+<!-- CLOSE CONFIRM MODAL -->
 <div class="modal-bg" id="closeConfirmModal" style="display:none">
   <div class="confirm-modal">
     <div class="confirm-modal-title">Log this as a closed deal?</div>
@@ -391,7 +412,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
   </div>
   <div class="header-right">
     <div class="settings-popover-wrap" id="ratesPopoverWrap">
-      <button class="settings-btn" id="ratesBtn" onclick="toggleRatesPopover()" title="Edit today's rates" style="gap:5px;">
+      <button class="settings-btn" id="ratesBtn" onclick="toggleRatesPopover()">
         <span style="font-size:11px;color:var(--text-3)">30yr</span>
         <span id="r30display" style="font-size:12px;font-weight:700;color:var(--accent)">6.875%</span>
         <span style="font-size:10px;color:var(--border2)">|</span>
@@ -401,32 +422,26 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
       </button>
       <div class="settings-popover" id="ratesPopover" style="display:none">
         <div class="settings-popover-title">Today's Market Rates</div>
-        <div class="rate-row">
-          <span class="rate-row-label">30-Year Fixed</span>
-          <input class="rate-input-new" id="r30" type="text" value="6.875%" onchange="ratesChanged()" onkeydown="if(event.key==='Enter'){this.blur();toggleRatesPopover();}"/>
-        </div>
-        <div class="rate-row">
-          <span class="rate-row-label">15-Year Fixed</span>
-          <input class="rate-input-new" id="r15" type="text" value="6.125%" onchange="ratesChanged()" onkeydown="if(event.key==='Enter'){this.blur();toggleRatesPopover();}"/>
-        </div>
-        <div style="font-size:10px;color:var(--text-4);margin-top:10px;line-height:1.5">Enter as 6.875 or 6.875% · Changes re-score all contacts</div>
+        <div class="rate-row"><span class="rate-row-label">30-Year Fixed</span><input class="rate-input-new" id="r30" type="text" value="6.875%" onchange="ratesChanged()" onkeydown="if(event.key==='Enter'){this.blur();toggleRatesPopover();}"/></div>
+        <div class="rate-row"><span class="rate-row-label">15-Year Fixed</span><input class="rate-input-new" id="r15" type="text" value="6.125%" onchange="ratesChanged()" onkeydown="if(event.key==='Enter'){this.blur();toggleRatesPopover();}"/></div>
+        <div style="font-size:10px;color:var(--text-4);margin-top:10px;line-height:1.5">Enter as 6.875 or 6.875%</div>
       </div>
     </div>
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌙</button>
     <button class="settings-btn" onclick="openDataSourceModal()">📂 Load Data</button>
-    <button class="settings-btn" onclick="document.getElementById('modalBg').style.display='flex'" title="API Key">🔑 API Key</button>
+    <button class="settings-btn" onclick="document.getElementById('modalBg').style.display='flex'">🔑 API Key</button>
     <button class="refresh-btn" id="refreshBtn" onclick="load()" disabled>↻ Refresh</button>
   </div>
 </header>
 
 <!-- STATS -->
 <div class="stats-bar">
-  <div class="stat-card"><div class="stat-tooltip">Contacts scoring 55+ with an active trigger today</div><div class="stat-label">Must Do Today</div><div class="stat-val red" id="sMustDo">—</div><div class="stat-sub">priority contacts</div></div>
-  <div class="stat-card"><div class="stat-tooltip">Total estimated comp from Must Do contacts</div><div class="stat-label">Est. Comp Today</div><div class="stat-val green" id="sComp">—</div><div class="stat-sub">Must Do pipeline</div></div>
-  <div class="stat-card"><div class="stat-tooltip">Contacts you've marked as actively interested</div><div class="stat-label">Warm Leads</div><div class="stat-val ochre" id="sWarm">0</div><div class="stat-sub">active interest</div></div>
-  <div class="stat-card"><div class="stat-tooltip">Scheduled follow-ups that are overdue or due today</div><div class="stat-label">Follow-ups Due</div><div class="stat-val red" id="sFollowup">0</div><div class="stat-sub">overdue or today</div></div>
-  <div class="stat-card"><div class="stat-tooltip">Deals you've logged as closed using this tool</div><div class="stat-label">Closed (This Tool)</div><div class="stat-val gold" id="sClosed">0</div><div class="stat-sub" id="sClosedComp">$0 sourced</div></div>
-  <div class="stat-card"><div class="stat-tooltip">Consecutive days you've cleared all Must Do contacts</div><div class="stat-label">🔥 Streak</div><div class="stat-val green" id="sStreak">0</div><div class="stat-sub">days Must Do cleared</div></div>
+  <div class="stat-card"><div class="stat-tooltip">Contacts with active triggers today</div><div class="stat-label">Active Today</div><div class="stat-val red" id="sMustDo">—</div><div class="stat-sub">need outreach</div></div>
+  <div class="stat-card"><div class="stat-tooltip">Est. comp from active contacts</div><div class="stat-label">Est. Comp</div><div class="stat-val green" id="sComp">—</div><div class="stat-sub">active pipeline</div></div>
+  <div class="stat-card"><div class="stat-tooltip">Follow Up Requests due today</div><div class="stat-label">Follow-Ups Due</div><div class="stat-val ochre" id="sFollowup">0</div><div class="stat-sub">scheduled re-contacts</div></div>
+  <div class="stat-card"><div class="stat-tooltip">Total outreach logged</div><div class="stat-label">Total Contacted</div><div class="stat-val green" id="sTotalContacted">0</div><div class="stat-sub">all time</div></div>
+  <div class="stat-card"><div class="stat-tooltip">Positive responses / total graded</div><div class="stat-label">Response Rate</div><div class="stat-val green" id="sResponseRate">—</div><div class="stat-sub">positive responses</div></div>
+  <div class="stat-card"><div class="stat-tooltip">Deals logged as closed</div><div class="stat-label">Closed</div><div class="stat-val gold" id="sClosed">0</div><div class="stat-sub" id="sClosedComp">$0 sourced</div></div>
 </div>
 
 <!-- SUMMARY BANNER -->
@@ -440,19 +455,18 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 <!-- TABS -->
 <div class="tabs">
   <div class="tab active" id="tabActive" onclick="switchTab('active')">Active <span class="tab-pill" id="tpActive">0</span></div>
-  <div class="tab" id="tabFollowup" onclick="switchTab('followup')">Follow-ups <span class="tab-pill tab-pill-red" id="tpFollowup">0</span></div>
-  <div class="tab" id="tabClosed" onclick="switchTab('closed')">Closed <span class="tab-pill" id="tpClosed" style="background:var(--gold-soft);color:var(--gold)">0</span></div>
-  <div class="tab" id="tabDone" onclick="switchTab('done')">Completed <span class="tab-pill" id="tpDone">0</span></div>
+  <div class="tab" id="tabHistory" onclick="switchTab('history')">History <span class="tab-pill tab-pill-teal" id="tpHistory">0</span></div>
+  <div class="tab" id="tabClosed" onclick="switchTab('closed')">Closed <span class="tab-pill tab-pill-gold" id="tpClosed">0</span></div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
-  <div class="sidebar">
+  <div class="sidebar" id="mainSidebar">
     <div class="sidebar-hd">
       <span class="sidebar-hd-label" id="sidebarLabel">Today's Contacts</span>
       <span class="sidebar-count" id="sidebarCount">0</span>
     </div>
-    <div id="clientList"><div class="sidebar-empty"><span class="sidebar-empty-icon">📂</span>Click "Load Data" to upload your Excel or CSV file</div></div>
+    <div id="clientList"><div class="sidebar-empty"><span class="sidebar-empty-icon">📂</span>Click "Load Data" to upload your file</div></div>
   </div>
   <div class="detail" id="detail">
     <div class="detail-empty">
@@ -465,350 +479,194 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 
 <script>
 // ── CONSTANTS ────────────────────────────────────────────────────────────
-const LS = 'outreach_v6_';
+const LS = 'outreach_v7_';
 const AVG_LOAN = 283000;
 
 // ── STATE ────────────────────────────────────────────────────────────────
 let apiKey='', r30=0.06875, r15=0.06125;
 let CLIENTS=[], scored=[], selected=null, generated={};
 let tab='active';
-let _generatingSet=new Set(); // tracks which gi indices are currently generating AI copy
+let _generatingSet=new Set();
 let groupCollapsed={};
-// Persistent
-let leadStatus={}, followupDate={}, followupNote={}, closedLog=[];
-// Daily (keyed by today's date string)
-let dailyDone=new Set(), dailyCarryover=new Set();
-let streak=0, lastStreakDate='', lastMustDoCount=0;
+
+// Persistent state
+let outreachLog=[];    // [{id, name, date, triggerType, templateUsed, grade:'none'|'positive'|'negative', note, recontactDate, recontactDays}]
+let closedLog=[];
+let streak=0, lastStreakDate='';
 
 const NOW = new Date();
 const TODAY = toDateStr(NOW);
 
 function toDateStr(d){ return d.toISOString().slice(0,10); }
+function daysBetween(d1,d2){ return Math.round((new Date(d2)-new Date(d1))/86400000); }
 
-
-// ── DATA SOURCE — FILE UPLOAD ONLY ────────────────────────────────────────
-let _pendingFileRows = null; // rows from file chosen but not yet confirmed
-
-function openDataSourceModal(){
-  _pendingFileRows = null;
-  document.getElementById('dsFileInput').value = '';
-  const saved = localStorage.getItem(LS+'source_csv_text') || '';
-  const fileName = localStorage.getItem(LS+'source_file_name') || '';
-  const fileDate = localStorage.getItem(LS+'source_file_date') || '';
-  if(saved && fileName){
-    document.getElementById('dsFileStatus').textContent = `Current: ${fileName}${fileDate ? ' · loaded '+fileDate : ''}`;
-  } else {
-    document.getElementById('dsFileStatus').textContent = 'No file loaded yet.';
-  }
-  const btn = document.getElementById('dsLoadBtn');
-  btn.disabled = true; btn.style.opacity = '0.5';
-  document.getElementById('dataSourceModal').style.display = 'flex';
+// ── OUTREACH LOG HELPERS ──────────────────────────────────────────────────
+function getLatestLog(name){ 
+  return outreachLog.filter(l=>l.name===name).sort((a,b)=>b.date.localeCompare(a.date))[0]||null; 
 }
 
-function closeDataSourceModal(){
-  document.getElementById('dataSourceModal').style.display = 'none';
+function isContactedRecently(name){
+  const log = getLatestLog(name);
+  if(!log) return false;
+  // Suppressed if contacted and no recontact date set, OR recontact date is in the future
+  if(!log.recontactDate) return true;
+  return log.recontactDate > TODAY;
 }
 
-function handleFileDrop(event){
-  event.preventDefault();
-  document.getElementById('dsDropZone').style.borderColor = 'var(--border2)';
-  const file = event.dataTransfer.files[0];
-  if(file) processUploadedFile(file);
+function hasDueFollowUp(name){
+  const log = getLatestLog(name);
+  if(!log || !log.recontactDate) return false;
+  return log.recontactDate <= TODAY;
 }
 
-function handleFileSelect(file){
-  if(file) processUploadedFile(file);
-}
-
-function processUploadedFile(file){
-  const name = file.name.toLowerCase();
-  const statusEl = document.getElementById('dsFileStatus');
-  const btn = document.getElementById('dsLoadBtn');
-  statusEl.textContent = `Reading ${file.name}…`;
-  btn.disabled = true; btn.style.opacity = '0.5';
-
-  const reader = new FileReader();
-  reader.onerror = () => { statusEl.textContent = 'Could not read the file. Try again.'; };
-
-  if(name.endsWith('.csv')){
-    reader.onload = () => {
-      try {
-        _pendingFileRows = parseCSV(String(reader.result || ''));
-        statusEl.textContent = `✓ ${file.name} — ${_pendingFileRows.length} rows ready`;
-        btn.disabled = false; btn.style.opacity = '1';
-        // Cache the raw text for reloads
-        _pendingFileRaw = String(reader.result || '');
-        _pendingFileName = file.name;
-        _pendingFileIsXlsx = false;
-      } catch(e){ statusEl.textContent = 'Could not parse CSV: ' + e.message; }
-    };
-    reader.readAsText(file);
-  } else {
-    // Excel via SheetJS — always reads the "Loan Log" sheet
-    reader.onload = () => {
-      try {
-        const wb = XLSX.read(new Uint8Array(reader.result), {type:'array', cellDates:true});
-        // Target "Loan Log" sheet; fall back to first sheet if not found
-        const sheetName = wb.SheetNames.includes('Loan Log') ? 'Loan Log' : wb.SheetNames[0];
-        const ws = wb.Sheets[sheetName];
-        // Row 1 is the section title ("LOAN LOG — ALL CLOSED LOANS"), row 2 is headers.
-        // sheet_to_json with header:1 gives raw arrays; we skip row 0 (title) and use row 1 as keys.
-        const allRows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
-        // Find the header row — it's the first row containing "Borrower"
-        const headerIdx = allRows.findIndex(r => r.some(cell => String(cell).trim() === 'Borrower'));
-        if(headerIdx === -1) throw new Error('Could not find a header row with a "Borrower" column in the Loan Log sheet.');
-        const headers = allRows[headerIdx].map(h => String(h).trim());
-        const dataRows = allRows.slice(headerIdx + 1).filter(r => r.some(cell => cell !== ''));
-        // Convert to objects and stringify dates for the existing parseCSV-compatible path
-        const objects = dataRows.map(r => {
-          const obj = {};
-          headers.forEach((h, i) => {
-            let val = r[i];
-            if(val instanceof Date){
-              // Format as YYYY-MM-DD so rowToClient can truncate to YYYY-MM
-              const mm = String(val.getMonth()+1).padStart(2,'0');
-              const dd = String(val.getDate()).padStart(2,'0');
-              val = `${val.getFullYear()}-${mm}-${dd}`;
-            }
-            obj[h] = (val === undefined || val === null) ? '' : String(val);
-          });
-          return obj;
-        });
-        _pendingFileRows = objects;
-        // Rebuild CSV string for localStorage cache
-        const csvLines = [headers.join(','), ...objects.map(o => headers.map(h => `"${(o[h]||'').replace(/"/g,'""')}"`).join(','))];
-        _pendingFileRaw = csvLines.join('\n');
-        _pendingFileName = `${file.name} › ${sheetName}`;
-        _pendingFileIsXlsx = true;
-        statusEl.textContent = `✓ ${sheetName} — ${objects.length} loans ready`;
-        btn.disabled = false; btn.style.opacity = '1';
-      } catch(e){ statusEl.textContent = 'Could not parse Excel file: ' + e.message; }
-    };
-    reader.readAsArrayBuffer(file);
-  }
-}
-
-let _pendingFileRaw = '', _pendingFileName = '', _pendingFileIsXlsx = false;
-
-function confirmLoadFile(){
-  if(!_pendingFileRows || _pendingFileRows.length === 0){
-    alert('No file loaded yet — please upload a file first.');
-    return;
-  }
-  // Snapshot rows before closing modal
-  const rowsToLoad = _pendingFileRows.slice();
-  const nameToLoad = _pendingFileName;
-  // Try to cache — don't block on failure
-  try {
-    localStorage.setItem(LS+'source_csv_text', _pendingFileRaw);
-    localStorage.setItem(LS+'source_file_name', _pendingFileName);
-    localStorage.setItem(LS+'source_file_date', new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}));
-  } catch(e){
-    console.warn('localStorage cache failed (quota?), proceeding with in-memory rows:', e.message);
-  }
-  closeDataSourceModal();
-  load(rowsToLoad, nameToLoad);
-}
-
-async function resolveSourceRows(){
-  // Try localStorage cache first
-  const cached = localStorage.getItem(LS+'source_csv_text') || '';
-  if(cached){
-    const rows = parseCSV(cached);
-    const fileName = localStorage.getItem(LS+'source_file_name') || 'saved file';
-    return {rows, source: fileName};
-  }
-  throw new Error('No data loaded yet. Click "📂 Load Data" in the header to upload your Excel or CSV file.');
-}
-
+function isClosedOut(name){ return closedLog.some(l=>l.name===name); }
+function totalClosedComp(){ return closedLog.reduce((s,l)=>s+l.comp,0); }
 
 // ── LOCALSTORAGE ─────────────────────────────────────────────────────────
 function lsSave(){
   try {
-    localStorage.setItem(LS+'leadStatus', JSON.stringify(leadStatus));
-    localStorage.setItem(LS+'followupDate', JSON.stringify(followupDate));
-    localStorage.setItem(LS+'followupNote', JSON.stringify(followupNote));
+    localStorage.setItem(LS+'outreachLog', JSON.stringify(outreachLog));
     localStorage.setItem(LS+'closedLog', JSON.stringify(closedLog));
     localStorage.setItem(LS+'streak', streak);
     localStorage.setItem(LS+'lastStreakDate', lastStreakDate);
-    localStorage.setItem(LS+'lastMustDoCount', lastMustDoCount);
     localStorage.setItem(LS+'r30', r30);
     localStorage.setItem(LS+'r15', r15);
     localStorage.setItem(LS+'apiKey', apiKey);
-    // Daily done keyed by date
-    const dd = JSON.parse(localStorage.getItem(LS+'dailyDone')||'{}');
-    dd[TODAY] = [...dailyDone];
-    localStorage.setItem(LS+'dailyDone', JSON.stringify(dd));
-    // Carryover
-    localStorage.setItem(LS+'carryover', JSON.stringify([...dailyCarryover]));
   } catch(e){}
 }
 
 function lsLoad(){
   try {
-    const ls = localStorage.getItem(LS+'leadStatus'); if(ls) leadStatus=JSON.parse(ls);
-    const fd = localStorage.getItem(LS+'followupDate'); if(fd) followupDate=JSON.parse(fd);
-    const fn = localStorage.getItem(LS+'followupNote'); if(fn) followupNote=JSON.parse(fn);
+    const ol = localStorage.getItem(LS+'outreachLog'); if(ol) outreachLog=JSON.parse(ol);
     const cl = localStorage.getItem(LS+'closedLog'); if(cl) closedLog=JSON.parse(cl);
     streak = parseInt(localStorage.getItem(LS+'streak')||'0');
     lastStreakDate = localStorage.getItem(LS+'lastStreakDate')||'';
-    lastMustDoCount = parseInt(localStorage.getItem(LS+'lastMustDoCount')||'0');
-    const s30 = localStorage.getItem(LS+'r30'); if(s30){ r30=parseFloat(s30); document.getElementById('r30').value=(r30*100).toFixed(3)+'%'; const d30=document.getElementById('r30display'); if(d30) d30.textContent=(r30*100).toFixed(3)+'%'; }
-    const s15 = localStorage.getItem(LS+'r15'); if(s15){ r15=parseFloat(s15); document.getElementById('r15').value=(r15*100).toFixed(3)+'%'; const d15=document.getElementById('r15display'); if(d15) d15.textContent=(r15*100).toFixed(3)+'%'; }
+    const s30 = localStorage.getItem(LS+'r30'); if(s30){ r30=parseFloat(s30); document.getElementById('r30').value=(r30*100).toFixed(3)+'%'; const d=document.getElementById('r30display'); if(d) d.textContent=(r30*100).toFixed(3)+'%'; }
+    const s15 = localStorage.getItem(LS+'r15'); if(s15){ r15=parseFloat(s15); document.getElementById('r15').value=(r15*100).toFixed(3)+'%'; const d=document.getElementById('r15display'); if(d) d.textContent=(r15*100).toFixed(3)+'%'; }
     const ak = localStorage.getItem(LS+'apiKey'); if(ak && ak.startsWith('sk-ant-')){ apiKey=ak; }
-
-    // Load today's done set
-    const dd = JSON.parse(localStorage.getItem(LS+'dailyDone')||'{}');
-    dailyDone = new Set(dd[TODAY]||[]);
-
-    // Carryover: names that were NOT done yesterday
-    const yesterday = toDateStr(new Date(NOW.getTime()-86400000));
-    const yesterdayDone = new Set(dd[yesterday]||[]);
-    const storedCarryover = JSON.parse(localStorage.getItem(LS+'carryover')||'[]');
-    // Will be refined after scoring
-    dailyCarryover = new Set(storedCarryover);
-
-    // Check if yesterday's must-do was cleared (streak logic)
-    // This runs after load() sets scored, so we defer to updateStreak()
   } catch(e){}
 }
 
-// ── COMP CALCULATION ─────────────────────────────────────────────────────
+// ── COMP ──────────────────────────────────────────────────────────────────
 function estimateComp(c, triggerTitle){
-  const isHELOC = c.loanType==='HELOC'||c.loanType==='HELOAN';
-  if(isHELOC) return c.loanAmount*0.003;
-
+  if(c.loanType==='HELOC'||c.loanType==='HELOAN') return c.loanAmount*0.003;
   if(triggerTitle==='HELOC Opportunity') return c.loanAmount*0.003;
-  // All loan types: FHA or VA = 45bps, Conventional/DSCR/etc = 55bps
-  const prog = (c.program||'').toUpperCase();
+  const prog=(c.program||'').toUpperCase();
   if(prog==='FHA'||prog==='VA') return c.loanAmount*0.0045;
   return c.loanAmount*0.0055;
 }
-
 function fmtComp(n){ return '$'+(Math.round(n/100)*100).toLocaleString(); }
 function fmtMoney(n){ return '$'+Math.abs(Math.round(n)).toLocaleString(); }
 function fmtYrs(months){ const y=Math.floor(months/12),m=months%12; return y>0?(m>0?`${y}yr ${m}mo`:`${y} years`):`${m} months`; }
-
-// ── SCORING ──────────────────────────────────────────────────────────────
-function scoreIt(c){
-  const t = triggers(c);
-  if(!t.length) return null;
-  const bigLoan = c.loanAmount >= AVG_LOAN;
-  const ls = leadStatus[c.name]||'none';
-  const hasOverdue = (() => {
-    const d=followupDate[c.name]; if(!d) return false;
-    return new Date(d+'T00:00:00') <= new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate());
-  })();
-
-  let base = 0;
-  const hasRateDrop    = t.some(x=>x.title==='Rate Drop Opportunity');
-  const has3yr         = t.some(x=>x.title==='3-Year Check-In');
-  const hasAnniversary = t.some(x=>x.title==='1-Year Anniversary');
-  const has6mo         = t.some(x=>x.title==='6-Month Check-In');
-  const has1mo         = t.some(x=>x.title==='1-Month Check-In');
-
-  if(hasOverdue)                     base = 95;
-  else if(hasRateDrop && bigLoan)    base = 90;
-  else if(hasRateDrop)               base = 80;
-  else if(has3yr && bigLoan)         base = 75;
-  else if(has3yr)                    base = 65;
-  else if(hasAnniversary && bigLoan) base = 70;
-  else if(hasAnniversary)            base = 60;
-  else if(has6mo && bigLoan)         base = 65;
-  else if(has6mo)                    base = 55;
-  else if(has1mo)                    base = 40;
-
-  if(ls==='warm')   base = Math.min(base+15, 99);
-  if(ls==='future') base = Math.min(base+8,  99);
-  if(t.length > 1)  base = Math.min(base+5,  99);
-
-  // For display grouping: if rate drop is the only trigger, use it as primary
-  // Otherwise keep the anniversary trigger first and rate drop as secondary
-  const sortedTriggers = hasRateDrop && t.length===1
-    ? t
-    : [...t.filter(x=>x.title!=='Rate Drop Opportunity'), ...t.filter(x=>x.title==='Rate Drop Opportunity')];
-
-  const comp = estimateComp(c, sortedTriggers[0].title);
-  return {...c, score:base, triggers:sortedTriggers, estimatedComp:comp};
+function floorTo10(n){ return Math.floor(n/10)*10; }
+function normalizeStreet(s){
+  if(!s) return 'your property';
+  const clean=s.replace(/,.*$/,'').trim();
+  const alpha=clean.replace(/[^a-zA-Z]/g,'');
+  if(alpha.length>0&&alpha===alpha.toUpperCase()) return clean.replace(/\w+/g,w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase());
+  return clean;
 }
 
-function isMustDo(c){ return c.score >= 55; }
+// ── SCORING ───────────────────────────────────────────────────────────────
+function scoreIt(c){
+  // Check for due follow-up first — that's its own trigger
+  const followUpDue = hasDueFollowUp(c.name);
+  const suppressed = isContactedRecently(c.name) && !followUpDue;
+  if(suppressed && !isClosedOut(c.name)) return null; // Suppressed
 
-// ── TRIGGERS ─────────────────────────────────────────────────────────────
-// mosDiff kept for amortisation calculations only
+  const naturalTriggers = triggers(c);
+  
+  // Build trigger list: follow-up first if due, then natural triggers
+  let allTriggers = [];
+  if(followUpDue){
+    const log = getLatestLog(c.name);
+    const daysAgo = daysBetween(log.date, TODAY);
+    const daysLabel = daysAgo===7?'~7 days':daysAgo===14?'~14 days':daysAgo===30?'~30 days':daysAgo===60?'~60 days':`${daysAgo} days`;
+    const originalTrigger = log.triggerType || 'your loan';
+    allTriggers.push({
+      icon:'🔄', title:'Follow Up Request', tagCls:'tag-teal', tagLabel:'FOLLOW UP',
+      isFollowUp: true,
+      daysAgo, daysLabel,
+      originalTrigger,
+      reason:`Scheduled follow-up from outreach ${daysLabel} ago (${new Date(log.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}). Original trigger: ${originalTrigger}.`
+    });
+  }
+  allTriggers = allTriggers.concat(naturalTriggers);
+  if(!allTriggers.length) return null;
+
+  const comp = estimateComp(c, allTriggers[0].title);
+  let score = followUpDue ? 95 : 0;
+
+  if(!followUpDue){
+    const bigLoan = c.loanAmount >= AVG_LOAN;
+    const hasRateDrop    = allTriggers.some(x=>x.title==='Rate Drop Opportunity');
+    const has3yr         = allTriggers.some(x=>x.title==='3-Year Check-In');
+    const hasAnniversary = allTriggers.some(x=>x.title==='1-Year Anniversary');
+    const has6mo         = allTriggers.some(x=>x.title==='6-Month Check-In');
+    const has1mo         = allTriggers.some(x=>x.title==='1-Month Check-In');
+    if(hasRateDrop && bigLoan)    score=90;
+    else if(hasRateDrop)          score=80;
+    else if(has3yr && bigLoan)    score=75;
+    else if(has3yr)               score=65;
+    else if(hasAnniversary && bigLoan) score=70;
+    else if(hasAnniversary)       score=60;
+    else if(has6mo && bigLoan)    score=65;
+    else if(has6mo)               score=55;
+    else if(has1mo)               score=40;
+    if(allTriggers.length>1) score=Math.min(score+5,99);
+  }
+
+  return {...c, score, triggers:allTriggers, estimatedComp:comp, isFollowUp: followUpDue};
+}
+
+// ── TRIGGERS ──────────────────────────────────────────────────────────────
 function mosDiff(cm){
   const [y,m]=cm.split('-').map(Number);
   return (NOW.getFullYear()-y)*12+(NOW.getMonth()+1-m);
 }
-
-// Returns true if today is within 7 days of the target anniversary
 function exactAnniversary(fundingDate, years, months){
-  const [fy,fm,fd] = fundingDate.split('-').map(Number);
-  const totalMonths = years*12 + months;
-  let ty = fy + Math.floor((fm - 1 + totalMonths) / 12);
-  let tm = ((fm - 1 + totalMonths) % 12) + 1;
-  const daysInMonth = new Date(ty, tm, 0).getDate();
-  const td = Math.min(fd, daysInMonth);
-  const target = new Date(ty, tm-1, td);
-  const diff = Math.round((target - NOW) / 86400000);
-  return diff >= -7 && diff <= 7;
+  const [fy,fm,fd]=fundingDate.split('-').map(Number);
+  const totalMonths=years*12+months;
+  let ty=fy+Math.floor((fm-1+totalMonths)/12);
+  let tm=((fm-1+totalMonths)%12)+1;
+  const daysInMonth=new Date(ty,tm,0).getDate();
+  const td=Math.min(fd,daysInMonth);
+  const target=new Date(ty,tm-1,td);
+  const diff=Math.round((target-NOW)/86400000);
+  return diff>=-7&&diff<=7;
 }
 
 function triggers(c){
-  const fd = c.fundingDate;
-  if(!fd) return [];
-  const [fy,fm,fd2] = fd.split('-').map(Number);
-  const mos = (NOW.getFullYear()-fy)*12 + (NOW.getMonth()+1-fm);
-  const list = [];
+  const fd=c.fundingDate; if(!fd) return [];
+  const [fy,fm]=fd.split('-').map(Number);
+  const mos=(NOW.getFullYear()-fy)*12+(NOW.getMonth()+1-fm);
+  const list=[];
 
-  if(exactAnniversary(fd, 0, 1))
-    list.push({icon:'🏠',title:'1-Month Check-In',tagCls:'tag-green',tagLabel:'1 MONTH',
-      reason:`Funded exactly one month ago — confirm the first payment went smoothly and build early loyalty.`});
-
-  if(exactAnniversary(fd, 0, 6)){
-    list.push({icon:'📅',title:'6-Month Check-In',tagCls:'tag-blue',tagLabel:'6 MONTHS',
-      reason:`Exactly six months since funding — a natural touchpoint to check in, ask for referrals, and see if anything has changed.`});
-    if(c.creditScore>0 && c.creditScore<=700)
-      list.push({icon:'📊',title:'Credit Improvement Check',tagCls:'tag-purple',tagLabel:'CREDIT',
-        reason:`Closed 6 months ago with a ${c.creditScore} FICO. On-time payments may have improved their score enough to unlock better options.`});
+  if(exactAnniversary(fd,0,1))
+    list.push({icon:'🏠',title:'1-Month Check-In',tagCls:'tag-green',tagLabel:'1 MONTH',reason:`Funded exactly one month ago — confirm the first payment went smoothly.`});
+  if(exactAnniversary(fd,0,6)){
+    list.push({icon:'📅',title:'6-Month Check-In',tagCls:'tag-blue',tagLabel:'6 MONTHS',reason:`Exactly six months since funding — a natural touchpoint to check in, ask for referrals, and see if anything has changed.`});
+    if(c.creditScore>0&&c.creditScore<=700)
+      list.push({icon:'📊',title:'Credit Improvement Check',tagCls:'tag-purple',tagLabel:'CREDIT',reason:`Closed 6 months ago with a ${c.creditScore} FICO. On-time payments may have improved their score enough to unlock better options.`});
   }
-
-  if(exactAnniversary(fd, 1, 0))
-    list.push({icon:'🎉',title:'1-Year Anniversary',tagCls:'tag-ochre',tagLabel:'1 YEAR',
-      reason:`Exactly one year since funding — a natural, non-salesy reason to reconnect, check in on life changes, and stay top of mind.`});
-
-  if(exactAnniversary(fd, 3, 0)){
-    const eq = c.appraised>0&&c.ltv>0?` Est. equity: $${Math.round(c.appraised*(1-c.ltv/100)/1000)}k.`:'';
-    list.push({icon:'📈',title:'3-Year Check-In',tagCls:'tag-green',tagLabel:'3 YEARS',
-      reason:`Exactly three years since funding — prime window for a move-up, HELOC, or investment property conversation.${eq}`});
+  if(exactAnniversary(fd,1,0))
+    list.push({icon:'🎉',title:'1-Year Anniversary',tagCls:'tag-ochre',tagLabel:'1 YEAR',reason:`Exactly one year since funding — a natural, non-salesy reason to reconnect.`});
+  if(exactAnniversary(fd,3,0)){
+    const eq=c.appraised>0&&c.ltv>0?` Est. equity: $${Math.round(c.appraised*(1-c.ltv/100)/1000)}k.`:'';
+    list.push({icon:'📈',title:'3-Year Check-In',tagCls:'tag-green',tagLabel:'3 YEARS',reason:`Exactly three years since funding — prime window for a move-up, HELOC, or investment property conversation.${eq}`});
   }
-
-  // Rate drop: 6+ months seasoned, client rate beats today's rate by threshold
-  // 30yr: needs at least 0.5pt drop | 15yr: needs at least 1pt drop
-  // We don't know which product they'd refi into, so check both — fire if either qualifies
-  const drop30 = c.rate - r30;
-  const drop15 = c.rate - r15;
-  const qualifies30 = drop30 >= 0.005;
-  const qualifies15 = drop15 >= 0.010;
-  if(mos>=6 && c.rate>0.01 && (qualifies30 || qualifies15)){
-    // Calculate monthly savings using the best qualifying product
-    const newRate = qualifies30 ? r30 : r15;
-    const loanTermMonths = qualifies30 ? 360 : 180;
-    const mr = newRate/12;
-    const newPmt = mr===0 ? c.loanAmount/loanTermMonths : c.loanAmount*mr*Math.pow(1+mr,loanTermMonths)/(Math.pow(1+mr,loanTermMonths)-1);
-    const mr0 = c.rate/12;
-    const origTerm = 360;
-    const origPmt = mr0===0 ? c.loanAmount/origTerm : c.loanAmount*mr0*Math.pow(1+mr0,origTerm)/(Math.pow(1+mr0,origTerm)-1);
-    const monthlySavings = Math.round(origPmt - newPmt);
-    const dropPt = (qualifies30 ? drop30 : drop15)*100;
-    const product = qualifies30 ? '30yr' : '15yr';
-    list.push({
-      icon:'📉', title:'Rate Drop Opportunity', tagCls:'tag-red', tagLabel:'REFI ELIGIBLE',
-      monthlySavings,
-      reason:`Their ${(c.rate*100).toFixed(3)}% → today's ${(newRate*100).toFixed(3)}% ${product} — ${dropPt.toFixed(2)}pt drop, est. $${monthlySavings}/mo savings. ${mos} months seasoned.`
-    });
+  const drop30=c.rate-r30, drop15=c.rate-r15;
+  const q30=drop30>=0.005, q15=drop15>=0.010;
+  if(mos>=6&&c.rate>0.01&&(q30||q15)){
+    const newRate=q30?r30:r15, loanTermMonths=q30?360:180;
+    const mr=newRate/12;
+    const newPmt=mr===0?c.loanAmount/loanTermMonths:c.loanAmount*mr*Math.pow(1+mr,loanTermMonths)/(Math.pow(1+mr,loanTermMonths)-1);
+    const mr0=c.rate/12, origPmt=mr0===0?c.loanAmount/360:c.loanAmount*mr0*Math.pow(1+mr0,360)/(Math.pow(1+mr0,360)-1);
+    const monthlySavings=Math.round(origPmt-newPmt);
+    const dropPt=(q30?drop30:drop15)*100;
+    const product=q30?'30yr':'15yr';
+    list.push({icon:'📉',title:'Rate Drop Opportunity',tagCls:'tag-red',tagLabel:'REFI ELIGIBLE',monthlySavings,reason:`Their ${(c.rate*100).toFixed(3)}% → today's ${(newRate*100).toFixed(3)}% ${product} — ${dropPt.toFixed(2)}pt drop, est. $${monthlySavings}/mo savings.`});
   }
-
   return list;
 }
 
@@ -828,553 +686,405 @@ function calcRefi(c){
   const yrsSaved=Math.max(0,360-fastMos)/12;
   const origIntRem=oldPmt*origRem-origBal;
   const newIntFast=oldPmt*fastMos-newAmt;
-  return {
-    origBalance:Math.round(origBal), origPmt:Math.round(oldPmt), origRemMonths:origRem,
-    newLoanAmt:Math.round(newAmt), newPmt:Math.round(newPmt),
-    monthlySavings:Math.round(savings), fastPayoffMonths:fastMos,
-    yearsSaved:yrsSaved.toFixed(1), interestSaved:Math.round(origIntRem-newIntFast),
-    annualSavings:Math.round(savings*12),
-  };
+  return {origBalance:Math.round(origBal),origPmt:Math.round(oldPmt),origRemMonths:origRem,newLoanAmt:Math.round(newAmt),newPmt:Math.round(newPmt),monthlySavings:Math.round(savings),fastPayoffMonths:fastMos,yearsSaved:yrsSaved.toFixed(1),interestSaved:Math.round(origIntRem-newIntFast),annualSavings:Math.round(savings*12)};
 }
 
-// ── CSV PARSING ───────────────────────────────────────────────────────────
-function parseCSV(text){
-  const lines=text.trim().split('\n'); if(lines.length<2) return [];
-  const headers=parseRow(lines[0]).map(h=>h.trim());
-  return lines.slice(1).filter(l=>l.trim()).map(l=>{
-    const vals=parseRow(l); const o={};
-    headers.forEach((h,i)=>{ o[h]=(vals[i]||'').trim(); });
-    return o;
-  });
+// ── CSV / FILE PARSING ────────────────────────────────────────────────────
+let _pendingFileRows=null, _pendingFileRaw='', _pendingFileName='', _pendingFileIsXlsx=false;
+
+function openDataSourceModal(){
+  _pendingFileRows=null;
+  document.getElementById('dsFileInput').value='';
+  const saved=localStorage.getItem(LS+'source_csv_text')||'';
+  const fileName=localStorage.getItem(LS+'source_file_name')||'';
+  const fileDate=localStorage.getItem(LS+'source_file_date')||'';
+  document.getElementById('dsFileStatus').textContent=saved&&fileName?`Current: ${fileName}${fileDate?' · loaded '+fileDate:''}`:'No file loaded yet.';
+  const btn=document.getElementById('dsLoadBtn'); btn.disabled=true; btn.style.opacity='0.5';
+  document.getElementById('dataSourceModal').style.display='flex';
 }
-function parseRow(line){
-  const res=[]; let cur='',q=false;
-  for(let i=0;i<line.length;i++){
-    const ch=line[i];
-    if(ch==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q; }
-    else if(ch===','&&!q){res.push(cur);cur='';}
-    else cur+=ch;
+function closeDataSourceModal(){ document.getElementById('dataSourceModal').style.display='none'; }
+function handleFileDrop(event){ event.preventDefault(); document.getElementById('dsDropZone').style.borderColor='var(--border2)'; const file=event.dataTransfer.files[0]; if(file) processUploadedFile(file); }
+function handleFileSelect(file){ if(file) processUploadedFile(file); }
+
+function processUploadedFile(file){
+  const name=file.name.toLowerCase();
+  const statusEl=document.getElementById('dsFileStatus');
+  const btn=document.getElementById('dsLoadBtn');
+  statusEl.textContent=`Reading ${file.name}…`;
+  btn.disabled=true; btn.style.opacity='0.5';
+  const reader=new FileReader();
+  reader.onerror=()=>{ statusEl.textContent='Could not read the file. Try again.'; };
+  if(name.endsWith('.csv')){
+    reader.onload=()=>{
+      try { _pendingFileRows=parseCSV(String(reader.result||'')); _pendingFileRaw=String(reader.result||''); _pendingFileName=file.name; statusEl.textContent=`✓ ${file.name} — ${_pendingFileRows.length} rows ready`; btn.disabled=false; btn.style.opacity='1'; } catch(e){ statusEl.textContent='Could not parse CSV: '+e.message; }
+    }; reader.readAsText(file);
+  } else {
+    reader.onload=()=>{
+      try {
+        const wb=XLSX.read(new Uint8Array(reader.result),{type:'array',cellDates:true});
+        const sheetName=wb.SheetNames.includes('Loan Log')?'Loan Log':wb.SheetNames[0];
+        const ws=wb.Sheets[sheetName];
+        const allRows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+        const headerIdx=allRows.findIndex(r=>r.some(cell=>String(cell).trim()==='Borrower'));
+        if(headerIdx===-1) throw new Error('Could not find a "Borrower" column.');
+        const headers=allRows[headerIdx].map(h=>String(h).trim());
+        const dataRows=allRows.slice(headerIdx+1).filter(r=>r.some(cell=>cell!==''));
+        const objects=dataRows.map(r=>{
+          const obj={};
+          headers.forEach((h,i)=>{ let val=r[i]; if(val instanceof Date){ const mm=String(val.getMonth()+1).padStart(2,'0'); const dd=String(val.getDate()).padStart(2,'0'); val=`${val.getFullYear()}-${mm}-${dd}`; } obj[h]=(val===undefined||val===null)?'':String(val); });
+          return obj;
+        });
+        _pendingFileRows=objects;
+        const csvLines=[headers.join(','),...objects.map(o=>headers.map(h=>`"${(o[h]||'').replace(/"/g,'""')}"`).join(','))];
+        _pendingFileRaw=csvLines.join('\n'); _pendingFileName=`${file.name} › ${sheetName}`;
+        statusEl.textContent=`✓ ${sheetName} — ${objects.length} loans ready`; btn.disabled=false; btn.style.opacity='1';
+      } catch(e){ statusEl.textContent='Could not parse Excel: '+e.message; }
+    }; reader.readAsArrayBuffer(file);
   }
-  res.push(cur); return res;
 }
+
+function confirmLoadFile(){
+  if(!_pendingFileRows||_pendingFileRows.length===0){ alert('No file loaded yet.'); return; }
+  const rowsToLoad=_pendingFileRows.slice(), nameToLoad=_pendingFileName;
+  try { localStorage.setItem(LS+'source_csv_text',_pendingFileRaw); localStorage.setItem(LS+'source_file_name',_pendingFileName); localStorage.setItem(LS+'source_file_date',new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})); } catch(e){}
+  closeDataSourceModal(); load(rowsToLoad,nameToLoad);
+}
+async function resolveSourceRows(){
+  const cached=localStorage.getItem(LS+'source_csv_text')||'';
+  if(cached){ return {rows:parseCSV(cached),source:localStorage.getItem(LS+'source_file_name')||'saved file'}; }
+  throw new Error('No data loaded yet. Click "📂 Load Data" to upload your file.');
+}
+
+function parseCSV(text){ const lines=text.trim().split('\n'); if(lines.length<2) return []; const headers=parseRow(lines[0]).map(h=>h.trim()); return lines.slice(1).filter(l=>l.trim()).map(l=>{ const vals=parseRow(l); const o={}; headers.forEach((h,i)=>{ o[h]=(vals[i]||'').trim(); }); return o; }); }
+function parseRow(line){ const res=[]; let cur='',q=false; for(let i=0;i<line.length;i++){ const ch=line[i]; if(ch==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q; } else if(ch===','&&!q){res.push(cur);cur='';} else cur+=ch; } res.push(cur); return res; }
 function rowToClient(r){
   const loanAmt=parseFloat((r['Loan Amount']||'').replace(/[$,]/g,''))||0;
-  const rateRaw = parseFloat((r['Rate']||'').replace(/%/g,''))||0;
-  // Excel stores rates as decimals (0.03025), not percentages (3.025)
-  // If value is already < 1, use as-is; if > 1, divide by 100
-  const rate = rateRaw > 1 ? rateRaw/100 : rateRaw;
+  const rateRaw=parseFloat((r['Rate']||'').replace(/%/g,''))||0;
+  const rate=rateRaw>1?rateRaw/100:rateRaw;
   const ltv=parseFloat((r['LTV']||'').replace(/%/g,''))||0;
   const appraised=parseFloat((r['Appraised Value']||'').replace(/[$,]/g,''))||0;
   const fico=parseInt((r['Loan FICO']||'').replace(/[^0-9]/g,''))||0;
   let raw=(r['Funding Date']||r['Close Month']||'').trim();
-  // Normalise to YYYY-MM-DD
   if(/^\d{1,2}\/\d{4}$/.test(raw)){const[m,y]=raw.split('/');raw=`${y}-${m.padStart(2,'0')}-01`;}
   if(/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(raw)){const p=raw.split('/');raw=`${p[2]}-${p[0].padStart(2,'0')}-${p[1].padStart(2,'0')}`;}
   if(/^\d{4}-\d{2}$/.test(raw)){raw=raw+'-01';}
-  // Must be YYYY-MM-DD at this point
   if(!/^\d{4}-\d{2}-\d{2}/.test(raw)) return null;
-  const fundingDate = raw.slice(0,10);       // full date for exact-day triggers
-  const closeMonth  = raw.slice(0,7);        // YYYY-MM kept for amortisation calcs
+  const fundingDate=raw.slice(0,10), closeMonth=raw.slice(0,7);
   const name=(r['Borrower']||'').trim();
   if(!name||!fundingDate||loanAmt===0) return null;
-  return {
-    name, phone:r['Borrower Mobile']||'', email:r['Borrower Email']||'',
-    loanAmount:loanAmt, rate, fundingDate, closeMonth,
-    loanType:r['Loan Type']||'Purchase', program:r['Program']||'Conventional',
-    state:r['State']||'', am:r['AM']||'', creditScore:fico,
-    appraised, ltv, street:r['Property Street']||'',
-    zip:r['Property Zip']||'', source:r['Lead Source']||'', lender:r['Lender']||'',
-  };
+  return {name,phone:r['Borrower Mobile']||'',email:r['Borrower Email']||'',loanAmount:loanAmt,rate,fundingDate,closeMonth,loanType:r['Loan Type']||'Purchase',program:r['Program']||'Conventional',state:r['State']||'',am:r['AM']||'',creditScore:fico,appraised,ltv,street:r['Property Street']||'',zip:r['Property Zip']||'',source:r['Lead Source']||'',lender:r['Lender']||''};
 }
 
-// ── STREAK ───────────────────────────────────────────────────────────────
+// ── STREAK ────────────────────────────────────────────────────────────────
 function updateStreak(){
-  // Called after load when we know mustDo count
-  const mustDo = scored.filter(c=>isMustDo(c)&&!isClosedOut(c.name));
-  const mustDoNames = new Set(mustDo.map(c=>c.name));
-  const mustDoDone = [...mustDoNames].filter(n=>dailyDone.has(n));
-  const allMustDoDone = mustDoNames.size>0 && mustDoDone.length===mustDoNames.size;
-
-  // Check yesterday streak
+  // Count contacts that were completed today
+  const todayContacted = outreachLog.filter(l=>l.date===TODAY).length;
   const yesterday = toDateStr(new Date(NOW.getTime()-86400000));
-  if(lastStreakDate===yesterday && lastMustDoCount>0){
-    // streak already counted for yesterday — keep it
-  } else if(lastStreakDate && lastStreakDate!==TODAY && lastStreakDate!==yesterday){
-    // missed a day — reset
-    streak=0;
-  }
-
-  // If today's must-do is fully cleared, increment streak if not already done for today
-  if(allMustDoDone && lastStreakDate!==TODAY && mustDoNames.size>0){
-    streak++;
-    lastStreakDate=TODAY;
-    lastMustDoCount=mustDoNames.size;
-    lsSave();
-  }
-
-  document.getElementById('sStreak').textContent=streak;
+  if(lastStreakDate && lastStreakDate!==TODAY && lastStreakDate!==yesterday) streak=0;
+  document.getElementById('sStreak'||'sFollowup'); // no streak stat now, handled in banner
   const sb=document.getElementById('streakBadge');
   document.getElementById('streakBadgeNum').textContent=streak;
-  if(streak>0){ sb.style.display='flex'; }
-  else { sb.style.display='none'; }
+  if(streak>0){ sb.style.display='flex'; } else { sb.style.display='none'; }
 }
 
-// ── CARRYOVER ─────────────────────────────────────────────────────────────
-function buildCarryover(){
-  const yesterday=toDateStr(new Date(NOW.getTime()-86400000));
-  const dd=JSON.parse(localStorage.getItem(LS+'dailyDone')||'{}');
-  const yesterdayDone=new Set(dd[yesterday]||[]);
-  const stored=JSON.parse(localStorage.getItem(LS+'carryover')||'[]');
-  const storedSet=new Set(stored);
-  dailyCarryover=new Set();
-  // Flag Must Do contacts that were in yesterday's list but not completed
-  scored.filter(c=>isMustDo(c)&&!isClosedOut(c.name)).forEach(c=>{
-    if(!dailyDone.has(c.name) && !yesterdayDone.has(c.name) && storedSet.has(c.name)){
-      dailyCarryover.add(c.name);
-    }
-  });
-  // Update stored carryover to current Must Do not yet done
-  const newCarryover=scored.filter(c=>isMustDo(c)&&!isClosedOut(c.name)&&!dailyDone.has(c.name)).map(c=>c.name);
-  localStorage.setItem(LS+'carryover',JSON.stringify(newCarryover));
-}
-
-// ── CLOSED HELPERS ────────────────────────────────────────────────────────
-function isClosedOut(name){ return closedLog.some(l=>l.name===name); }
-function totalClosedComp(){ return closedLog.reduce((s,l)=>s+l.comp,0); }
-
-// ── FOLLOW-UP HELPERS ─────────────────────────────────────────────────────
-function followupStatus(name){
-  const d=followupDate[name]; if(!d) return null;
-  const due=new Date(d+'T00:00:00');
-  const today=new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate());
-  const diff=Math.floor((due-today)/86400000);
-  if(diff<0) return{label:`Overdue ${Math.abs(diff)}d`,cls:'overdue-pill'};
-  if(diff===0) return{label:'Due Today',cls:'overdue-pill'};
-  if(diff<=7) return{label:`Due in ${diff}d`,cls:'upcoming-pill'};
-  return{label:due.toLocaleDateString('en-US',{month:'short',day:'numeric'}),cls:'upcoming-pill'};
-}
-function countFollowupsDue(){
-  return Object.entries(followupDate).filter(([n,d])=>{
-    if(!d) return false;
-    return new Date(d+'T00:00:00')<=new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate());
-  }).length;
-}
-
-// ── ICS ──────────────────────────────────────────────────────────────────
-function downloadICS(name,dateStr,note,trigs){
-  if(!dateStr){alert('Please set a follow-up date first.');return;}
-  const d=new Date(dateStr+'T09:00:00');
-  const pad=n=>String(n).padStart(2,'0');
-  const fmt=dt=>`${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
-  const end=new Date(d.getTime()+30*60000);
-  const trigStr=trigs.map(t=>t.title).join(', ');
-  const desc=(note?note+'\\n\\n':'')+'Triggers: '+trigStr;
-  const ics=[
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Outreach Command//Harry//EN',
-    'BEGIN:VEVENT',`UID:outreach-${name.replace(/\s/g,'-')}-${dateStr}@loanpronto`,
-    `DTSTAMP:${fmt(new Date())}`,`DTSTART:${fmt(d)}`,`DTEND:${fmt(end)}`,
-    `SUMMARY:Follow-up: ${name}`,`DESCRIPTION:${desc}`,
-    'BEGIN:VALARM','TRIGGER:-PT15M','ACTION:DISPLAY',`DESCRIPTION:Reminder: ${name}`,'END:VALARM',
-    'END:VEVENT','END:VCALENDAR'
-  ].join('\r\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
-  a.download=`followup-${name.replace(/[^a-z0-9]/gi,'-')}.ics`;
-  a.click();
-}
-
-// ── LOAD ─────────────────────────────────────────────────────────────────
+// ── LOAD ──────────────────────────────────────────────────────────────────
 async function load(preloadedRows, preloadedName){
   generated={}; selected=null;
   document.getElementById('loadingOverlay').style.display='flex';
   try {
     let result;
-    if(preloadedRows && preloadedRows.length > 0){
-      result = {rows: preloadedRows, source: preloadedName || _pendingFileName || 'uploaded file'};
-    } else {
-      result = await resolveSourceRows();
-    }
-    console.log('Rows received:', result.rows.length, 'from', result.source);
-    CLIENTS = result.rows.map(rowToClient).filter(Boolean);
-    console.log('Valid clients parsed:', CLIENTS.length);
-    if(CLIENTS.length > 0){
-      console.log('Sample fundingDates:', CLIENTS.slice(0,3).map(c=>c.name+': fd='+c.fundingDate+' rate='+c.rate));
-      const rateCandidates = CLIENTS.filter(c=>c.rate>0.01 && c.rate>r30);
-      console.log('Clients with rate > r30 ('+r30*100+'%):', rateCandidates.length, rateCandidates.map(c=>c.name+' '+c.rate*100+'%'));
-      const seasoned = rateCandidates.filter(c=>{
-        if(!c.fundingDate) return false;
-        const [fy,fm]=c.fundingDate.split('-').map(Number);
-        const mos=(NOW.getFullYear()-fy)*12+(NOW.getMonth()+1-fm);
-        return mos>=6;
-      });
-      console.log('Of those, 6+ months seasoned:', seasoned.length);
-    }
-    document.querySelector('.loading-sub').textContent = `Loaded ${CLIENTS.length} clients from ${result.source}`;
+    if(preloadedRows&&preloadedRows.length>0){ result={rows:preloadedRows,source:preloadedName||'uploaded file'}; }
+    else { result=await resolveSourceRows(); }
+    CLIENTS=result.rows.map(rowToClient).filter(Boolean);
+    document.querySelector('.loading-sub').textContent=`Loaded ${CLIENTS.length} clients from ${result.source}`;
   } catch(e){
-    console.error('load() error:', e);
     document.getElementById('loadingOverlay').style.display='none';
     document.getElementById('detail').innerHTML=`<div class="detail-empty"><div class="detail-empty-glyph">⚠</div><div class="detail-empty-text">No data loaded yet</div><div class="detail-empty-sub">${e.message}</div><div style="margin-top:12px"><button class="settings-btn" onclick="openDataSourceModal()" style="height:38px">📂 Load Data</button></div></div>`;
     document.getElementById('clientList').innerHTML=`<div class="sidebar-empty"><span class="sidebar-empty-icon">📂</span>Click "Load Data" to upload your file</div>`;
     return;
   }
   scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score);
-  console.log('Scored contacts:', scored.length);
-  const rateDropScored = scored.filter(c=>c.triggers.some(t=>t.title==='Rate Drop Opportunity'));
-  console.log('Rate drop in scored:', rateDropScored.length, rateDropScored.map(c=>c.name));
   document.getElementById('loadingOverlay').style.display='none';
-  buildCarryover();
   updateStats();
-  updateStreak();
   renderSummaryBanner();
   renderList();
-  // Show smart empty state pointing to top contact
-  const topContact = scored.find(c=>!dailyDone.has(c.name)&&!isClosedOut(c.name));
-  if(topContact){
-    const topGi = scored.indexOf(topContact);
-    const topFn = topContact.name.split(',')[1]?.trim()||topContact.name.split(' ')[0];
-    document.getElementById('detail').innerHTML=`<div class="detail-empty animate-in">
-      <div class="detail-empty-glyph">◎</div>
-      <div class="detail-empty-text">Start with your top contact</div>
-      <div class="detail-empty-sub">${topFn} &nbsp;·&nbsp; ${topContact.triggers[0]?.title||''} &nbsp;·&nbsp; ${fmtComp(topContact.estimatedComp)} potential comp</div>
-      <button class="detail-empty-action" onclick="select(${topGi})">Open ${topFn} →</button>
-    </div>`;
-  } else {
-    document.getElementById('detail').innerHTML=`<div class="detail-empty animate-in"><div class="detail-empty-glyph">◎</div><div class="detail-empty-text">Select a contact to get started</div><div class="detail-empty-sub">AI-generated outreach will appear here</div></div>`;
+  const top=scored.find(c=>!isContactedRecently(c.name)||hasDueFollowUp(c.name));
+  if(top){
+    const gi=scored.indexOf(top);
+    const fn=top.name.split(',')[1]?.trim()||top.name.split(' ')[0];
+    document.getElementById('detail').innerHTML=`<div class="detail-empty animate-in"><div class="detail-empty-glyph">◎</div><div class="detail-empty-text">Start with your top contact</div><div class="detail-empty-sub">${fn} · ${top.triggers[0]?.title||''} · ${fmtComp(top.estimatedComp)} potential comp</div><button class="detail-empty-action" onclick="select(${gi})">Open ${fn} →</button></div>`;
   }
 }
 
 function updateStats(){
-  const mustDo=scored.filter(c=>isMustDo(c)&&!dailyDone.has(c.name)&&!isClosedOut(c.name));
-  const mustDoComp=mustDo.reduce((s,c)=>s+c.estimatedComp,0);
-  const warmCount=Object.values(leadStatus).filter(v=>v==='warm').length;
-  const followupDue=countFollowupsDue();
-  const closedCount=closedLog.length;
-  const closedComp=totalClosedComp();
-  const followupList=scored.filter(c=>{
-    const d=followupDate[c.name]; if(!d) return false;
-    return new Date(d+'T00:00:00')<=new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate()+7);
-  });
-  const doneCount=scored.filter(c=>dailyDone.has(c.name)).length;
+  const active=scored.filter(c=>!isClosedOut(c.name));
+  const followupsDue=scored.filter(c=>hasDueFollowUp(c.name)&&!isClosedOut(c.name));
+  const totalComp=active.reduce((s,c)=>s+c.estimatedComp,0);
+  const graded=outreachLog.filter(l=>l.grade&&l.grade!=='none');
+  const positive=graded.filter(l=>l.grade==='positive');
+  const responseRate=graded.length>0?Math.round(positive.length/graded.length*100)+'%':'—';
 
-  document.getElementById('sMustDo').textContent=mustDo.length;
-  document.getElementById('sComp').textContent=fmtComp(mustDoComp);
-  document.getElementById('sWarm').textContent=warmCount;
-  document.getElementById('sFollowup').textContent=followupDue;
-  document.getElementById('sClosed').textContent=closedCount;
-  document.getElementById('sClosedComp').textContent=fmtComp(closedComp)+' sourced';
-  document.getElementById('tpActive').textContent=scored.filter(c=>!dailyDone.has(c.name)&&!isClosedOut(c.name)).length;
-  document.getElementById('tpFollowup').textContent=followupList.length;
-  document.getElementById('tpClosed').textContent=closedCount;
-  document.getElementById('tpDone').textContent=doneCount;
+  document.getElementById('sMustDo').textContent=active.length;
+  document.getElementById('sComp').textContent=fmtComp(totalComp);
+  document.getElementById('sFollowup').textContent=followupsDue.length;
+  document.getElementById('sTotalContacted').textContent=outreachLog.length;
+  document.getElementById('sResponseRate').textContent=responseRate;
+  document.getElementById('sClosed').textContent=closedLog.length;
+  document.getElementById('sClosedComp').textContent=fmtComp(totalClosedComp())+' sourced';
+  document.getElementById('tpActive').textContent=active.length;
+  document.getElementById('tpHistory').textContent=outreachLog.length;
+  document.getElementById('tpClosed').textContent=closedLog.length;
 }
 
 function renderSummaryBanner(){
-  const mustDo=scored.filter(c=>isMustDo(c)&&!dailyDone.has(c.name)&&!isClosedOut(c.name));
-  const ifTime=scored.filter(c=>!isMustDo(c)&&!dailyDone.has(c.name)&&!isClosedOut(c.name));
-  const overdue=scored.filter(c=>{ const d=followupDate[c.name]; if(!d) return false; return new Date(d+'T00:00:00')<=new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate()); });
-  const comp=mustDo.reduce((s,c)=>s+c.estimatedComp,0);
+  const active=scored.filter(c=>!isClosedOut(c.name));
+  const followupsDue=scored.filter(c=>hasDueFollowUp(c.name)&&!isClosedOut(c.name));
   let txt='';
-  if(mustDo.length>0) txt+=`${mustDo.length} must-do contact${mustDo.length!==1?'s':''} · ${fmtComp(comp)} in potential comp`;
-  if(ifTime.length>0) txt+=` · ${ifTime.length} if-time`;
-  if(overdue.length>0) txt+=` · ⚠ ${overdue.length} overdue follow-up${overdue.length!==1?'s':''}`;
+  if(active.length>0) txt+=`${active.length} contact${active.length!==1?'s':''} need outreach`;
+  if(followupsDue.length>0) txt+=` · 🔄 ${followupsDue.length} follow-up${followupsDue.length!==1?'s':''} due today`;
+  const todayCount=outreachLog.filter(l=>l.date===TODAY).length;
+  if(todayCount>0) txt+=` · ✓ ${todayCount} completed today`;
   if(!txt) txt='All caught up for today 🎉';
   document.getElementById('summaryText').textContent=txt;
   document.getElementById('summaryBanner').style.display='flex';
-  document.getElementById('sStreak').textContent=streak;
 }
 
 // ── RENDER LIST ───────────────────────────────────────────────────────────
 function renderList(){
+  if(tab==='history'){ renderHistoryTab(); return; }
+  if(tab==='closed'){ renderClosedTab(); return; }
+
   const listEl=document.getElementById('clientList');
-
-  if(tab==='closed'){
-    document.getElementById('sidebarLabel').textContent='Closed Deals';
-    document.getElementById('sidebarCount').textContent=closedLog.length;
-    if(!closedLog.length){
-      listEl.innerHTML=`<div class="sidebar-empty"><span class="sidebar-empty-icon">🏆</span>No closes logged yet</div>`;
-      return;
-    }
-    listEl.innerHTML=closedLog.slice().reverse().map((l,i)=>`
-      <div class="client-row" onclick="showClosedDetail(${closedLog.length-1-i})">
-        <div class="row-body">
-          <div class="row-top"><div class="row-name">${l.name}</div><div class="row-comp">${fmtComp(l.comp)}</div></div>
-          <div class="row-trigger">${l.triggerType}</div>
-          <div class="row-tags"><span class="trigger-chip tag-green">${l.triggerType}</span></div>
-        </div>
-      </div>`).join('');
-    return;
-  }
-
-  if(tab==='followup'){
-    document.getElementById('sidebarLabel').textContent='Follow-ups';
-    const list=scored.filter(c=>{
-      const d=followupDate[c.name]; if(!d) return false;
-      return new Date(d+'T00:00:00')<=new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate()+7);
-    }).sort((a,b)=>(followupDate[a.name]||'9999')<(followupDate[b.name]||'9999')?-1:1);
-    document.getElementById('sidebarCount').textContent=list.length;
-    if(!list.length){listEl.innerHTML=`<div class="sidebar-empty"><span class="sidebar-empty-icon">📅</span>No upcoming follow-ups</div>`;return;}
-    listEl.innerHTML=list.map(c=>{
-      const gi=scored.indexOf(c);
-      const fus=followupStatus(c.name);
-      return `<div class="client-row${selected===gi?' active':''}" id="row-${gi}" onclick="select(${gi})">
-        <div class="row-body">
-          <div class="row-top"><div class="row-name">${c.name}</div>${fus?`<span class="${fus.cls}">${fus.label}</span>`:''}</div>
-          <div class="row-trigger">${c.triggers[0]?.title||''}</div>
-          <div class="row-tags">${followupNote[c.name]?`<span style="font-size:10px;color:var(--text-3)">${followupNote[c.name]}</span>`:''}</div>
-        </div>
-      </div>`;
-    }).join('');
-    return;
-  }
-
-  if(tab==='done'){
-    document.getElementById('sidebarLabel').textContent='Completed Today';
-    const list=scored.filter(c=>dailyDone.has(c.name));
-    document.getElementById('sidebarCount').textContent=list.length;
-    if(!list.length){listEl.innerHTML=`<div class="sidebar-empty"><span class="sidebar-empty-icon">✓</span>No contacts completed yet today</div>`;return;}
-    listEl.innerHTML=list.map(c=>{
-      const gi=scored.indexOf(c);
-      return `<div class="client-row done-row" id="row-${gi}" onclick="select(${gi})">
-        <div class="row-check checked" onclick="toggleDone(event,${gi})">✓</div>
-        <div class="row-body">
-          <div class="row-top"><div class="row-name">${c.name}</div><div class="row-comp">${fmtComp(c.estimatedComp)}</div></div>
-          <div class="row-trigger">${c.triggers[0]?.title||''}</div>
-        </div>
-      </div>`;
-    }).join('');
-    return;
-  }
-
-  // Active tab — grouped by trigger type, collapsible
   document.getElementById('sidebarLabel').textContent="Today's Contacts";
-  const active=scored.filter(c=>!dailyDone.has(c.name)&&!isClosedOut(c.name));
-  document.getElementById('sidebarCount').textContent=active.length;
 
-  if(!active.length){
-    listEl.innerHTML=`<div class="sidebar-empty"><span class="sidebar-empty-icon">✦</span>All contacts handled for today 🎉</div>`;
+  const followups=scored.filter(c=>c.isFollowUp&&!isClosedOut(c.name));
+  const regular=scored.filter(c=>!c.isFollowUp&&!isClosedOut(c.name));
+
+  document.getElementById('sidebarCount').textContent=scored.filter(c=>!isClosedOut(c.name)).length;
+
+  if(!followups.length&&!regular.length){
+    listEl.innerHTML=`<div class="sidebar-empty"><span class="sidebar-empty-icon">✦</span>All caught up for today 🎉</div>`;
     return;
   }
 
-  // Group by first trigger title
-  const groups = {};
-  const groupOrder = ['Rate Drop Opportunity','1-Year Anniversary','6-Month Check-In','3-Year Check-In','1-Month Check-In'];
-  active.forEach(c => {
-    const key = c.triggers[0]?.title || 'Other';
-    if(!groups[key]) groups[key] = [];
+  let html='';
+
+  // Follow-up section first
+  if(followups.length){
+    const groupId='grp-followups';
+    const isCollapsed=!!groupCollapsed[groupId];
+    const fuComp=followups.reduce((s,c)=>s+c.estimatedComp,0);
+    html+=`<div class="section-divider followup-trigger" onclick="toggleGroup('${groupId}')"><span class="section-divider-label">🔄 Follow Up Requests (${followups.length})</span><span style="display:flex;align-items:center;gap:8px"><span class="section-divider-comp">${fmtComp(fuComp)}</span><span id="${groupId}-chevron" style="font-size:10px;color:var(--text-3)">${isCollapsed?'▼':'▲'}</span></span></div><div id="${groupId}" style="display:${isCollapsed?'none':''}">`;
+    followups.forEach(c=>{ html+=clientRowHtml(c); });
+    html+='</div>';
+  }
+
+  // Regular contacts grouped by trigger
+  const groups={};
+  const groupOrder=['Rate Drop Opportunity','1-Year Anniversary','6-Month Check-In','3-Year Check-In','1-Month Check-In'];
+  regular.forEach(c=>{
+    const key=c.triggers[0]?.title||'Other';
+    if(!groups[key]) groups[key]=[];
     groups[key].push(c);
   });
-
-  // Sort every group by estimated comp descending
-  Object.keys(groups).forEach(key => {
-    groups[key].sort((a,b) => b.estimatedComp - a.estimatedComp);
-  });
-
-  // Sort groups by defined order, then alphabetically for any extras
-  const sortedKeys = [...groupOrder.filter(k=>groups[k]), ...Object.keys(groups).filter(k=>!groupOrder.includes(k))];
-
-  let html = '';
-  sortedKeys.forEach(key => {
-    const clients = groups[key];
-    const groupComp = clients.reduce((s,c)=>s+c.estimatedComp,0);
-    const icon = clients[0]?.triggers[0]?.icon || '📋';
-    const groupId = `grp-${key.replace(/\s+/g,'-')}`;
-    const isCollapsed = !!groupCollapsed[groupId];
-    html += `
-      <div class="section-divider" style="cursor:pointer;user-select:none" onclick="toggleGroup('${groupId}')">
-        <span class="section-divider-label">${icon} ${key} <span style="font-weight:500;opacity:0.7">(${clients.length})</span></span>
-        <span style="display:flex;align-items:center;gap:8px">
-          <span class="section-divider-comp">${fmtComp(groupComp)}</span>
-          <span id="${groupId}-chevron" style="font-size:10px;color:var(--text-3)">${isCollapsed ? '▼' : '▲'}</span>
-        </span>
-      </div>
-      <div id="${groupId}" style="display:${isCollapsed ? 'none' : ''}">
-        ${clients.map(c=>clientRowHtml(c)).join('')}
-      </div>`;
+  Object.keys(groups).forEach(k=>{ groups[k].sort((a,b)=>b.estimatedComp-a.estimatedComp); });
+  const sortedKeys=[...groupOrder.filter(k=>groups[k]),...Object.keys(groups).filter(k=>!groupOrder.includes(k))];
+  sortedKeys.forEach(key=>{
+    const clients=groups[key];
+    const groupComp=clients.reduce((s,c)=>s+c.estimatedComp,0);
+    const icon=clients[0]?.triggers[0]?.icon||'📋';
+    const groupId=`grp-${key.replace(/\s+/g,'-')}`;
+    const isCollapsed=!!groupCollapsed[groupId];
+    html+=`<div class="section-divider" onclick="toggleGroup('${groupId}')"><span class="section-divider-label">${icon} ${key} (${clients.length})</span><span style="display:flex;align-items:center;gap:8px"><span class="section-divider-comp">${fmtComp(groupComp)}</span><span id="${groupId}-chevron" style="font-size:10px;color:var(--text-3)">${isCollapsed?'▼':'▲'}</span></span></div><div id="${groupId}" style="display:${isCollapsed?'none':''}">`;
+    clients.forEach(c=>{ html+=clientRowHtml(c); });
+    html+='</div>';
   });
   listEl.innerHTML=html;
 }
 
 function clientRowHtml(c){
   const gi=scored.indexOf(c);
-  const isDone=dailyDone.has(c.name);
-  const isCarry=dailyCarryover.has(c.name);
-  const ls=leadStatus[c.name]||'none';
-  const tagsHtml=c.triggers.map(t=>`<span class="tag ${t.tagCls}">${t.tagLabel}</span>`).join('');
-  const lsBadge=ls!=='none'?`<span class="row-lead-badge lead-${ls}">${ls==='future'?'Future Deal':'Warm Lead'}</span>`:'';
-  const carryTag=isCarry?`<span class="carryover-tag">Carried Over</span>`:'';
-  const fus=followupStatus(c.name);
-  const fuBadge=fus?`<span class="${fus.cls}">${fus.label}</span>`:'';
+  const isLogged=outreachLog.some(l=>l.name===c.name&&l.date===TODAY)&&!hasDueFollowUp(c.name);
   const rateDrop=c.triggers.find(t=>t.title==='Rate Drop Opportunity');
-  const savingsBadge=rateDrop?.monthlySavings?`<span style="font-size:10px;font-weight:700;color:var(--accent)">$${rateDrop.monthlySavings}/mo savings</span>`:'';
+  const savingsBadge=rateDrop?.monthlySavings?`<span style="font-size:10px;font-weight:700;color:var(--accent)">$${rateDrop.monthlySavings}/mo</span>`:'';
   const isGenerating=_generatingSet.has(gi);
   const genBadge=isGenerating?`<span class="ai-gen-badge"><span class="mini-spin"></span>AI writing…</span>`:'';
-  return `
-    <div class="client-row${isDone?' done-row':''}${isCarry&&!isDone?' carryover':''}" id="row-${gi}" onclick="select(${gi})" tabindex="0" role="button" aria-label="${c.name}, ${fmtComp(c.estimatedComp)}" onkeydown="if(event.key==='Enter'||event.key===' '){select(${gi});event.preventDefault();}if(event.key==='d'){toggleDone(event,${gi});}">
-      <div class="row-check${isDone?' checked':''}" role="checkbox" aria-checked="${isDone}" aria-label="Mark complete" onclick="toggleDone(event,${gi})">${isDone?'✓':''}</div>
-      <div class="row-body">
-        <div class="row-top"><div class="row-name">${c.name}</div><div class="row-comp">${fmtComp(c.estimatedComp)}</div></div>
-        <div class="row-trigger">${c.triggers[0]?.title||''}</div>
-        <div class="row-tags">${tagsHtml} ${lsBadge} ${carryTag} ${fuBadge} ${savingsBadge} ${genBadge}</div>
-      </div>
-    </div>`;
+  const fuClass=c.isFollowUp?' followup-row-item':'';
+  return `<div class="client-row${isLogged?' done-row':''}${fuClass}" id="row-${gi}" onclick="select(${gi})" tabindex="0" onkeydown="if(event.key==='Enter'){select(${gi});event.preventDefault();}">
+    <div class="row-check${isLogged?' checked':''}" onclick="if(event) event.stopPropagation();">${isLogged?'✓':''}</div>
+    <div class="row-body">
+      <div class="row-top"><div class="row-name">${c.name}</div><div class="row-comp">${fmtComp(c.estimatedComp)}</div></div>
+      <div class="row-trigger">${c.triggers[0]?.title||''}</div>
+      <div class="row-tags">${c.triggers.map(t=>`<span class="tag ${t.tagCls}">${t.tagLabel}</span>`).join('')} ${savingsBadge} ${genBadge}</div>
+    </div>
+  </div>`;
 }
 
+function renderClosedTab(){
+  const listEl=document.getElementById('clientList');
+  document.getElementById('sidebarLabel').textContent='Closed Deals';
+  document.getElementById('sidebarCount').textContent=closedLog.length;
+  if(!closedLog.length){ listEl.innerHTML=`<div class="sidebar-empty"><span class="sidebar-empty-icon">🏆</span>No closes logged yet</div>`; return; }
+  listEl.innerHTML=closedLog.slice().reverse().map((l,i)=>`<div class="client-row" onclick="showClosedDetail(${closedLog.length-1-i})"><div class="row-body"><div class="row-top"><div class="row-name">${l.name}</div><div class="row-comp">${fmtComp(l.comp)}</div></div><div class="row-trigger">${l.triggerType}</div></div></div>`).join('');
+}
+
+// ── HISTORY TAB ────────────────────────────────────────────────────────────
+let historyFilter='all', selectedHistoryId=null;
+
+function renderHistoryTab(){
+  const mainSidebar=document.getElementById('mainSidebar');
+  const detail=document.getElementById('detail');
+  
+  // Swap layout to history layout
+  mainSidebar.style.display='none';
+  detail.style.display='none';
+  
+  // Check if history layout exists
+  let histLayout=document.getElementById('historyLayout');
+  if(!histLayout){
+    histLayout=document.createElement('div');
+    histLayout.id='historyLayout';
+    histLayout.className='history-layout';
+    histLayout.style.cssText='grid-column:1/-1;height:100%;';
+    document.querySelector('.main').appendChild(histLayout);
+  }
+  histLayout.style.display='grid';
+  histLayout.innerHTML=buildHistoryHTML();
+}
+
+function buildHistoryHTML(){
+  const filtered=outreachLog.filter(l=>{
+    if(historyFilter==='all') return true;
+    return l.grade===historyFilter;
+  }).slice().reverse();
+
+  const total=outreachLog.length;
+  const positive=outreachLog.filter(l=>l.grade==='positive').length;
+  const negative=outreachLog.filter(l=>l.grade==='negative').length;
+  const noResponse=outreachLog.filter(l=>l.grade==='none'||!l.grade).length;
+  const rateStr=total>0?Math.round(positive/total*100)+'%':'—';
+
+  const gradeIcon=g=>g==='positive'?'✓':g==='negative'?'✗':'—';
+  const gradeCls=g=>g==='positive'?'grade-positive':g==='negative'?'grade-negative':'grade-none';
+
+  const listHtml=filtered.length?filtered.map(l=>`
+    <div class="history-item${selectedHistoryId===l.id?' selected-history':''}" onclick="selectHistory('${l.id}')">
+      <div class="history-grade ${gradeCls(l.grade||'none')}">${gradeIcon(l.grade||'none')}</div>
+      <div class="history-body">
+        <div class="history-name">${l.name}</div>
+        <div class="history-meta">${l.triggerType}${l.templateUsed?' · via '+l.templateUsed:''}</div>
+        ${l.note?`<div class="history-note">${l.note}</div>`:''}
+      </div>
+      <div class="history-right">
+        <div class="history-date">${new Date(l.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
+        ${l.recontactDate?`<div class="history-trigger">Re-contact ${new Date(l.recontactDate+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>`:''}
+      </div>
+    </div>`).join(''):`<div class="sidebar-empty"><span class="sidebar-empty-icon">📋</span>No outreach logged yet</div>`;
+
+  const detailHtml=selectedHistoryId?buildHistoryDetailHTML(selectedHistoryId):`<div class="detail-empty"><div class="detail-empty-glyph">◎</div><div class="detail-empty-text">Select a log entry to grade or add notes</div></div>`;
+
+  return `
+    <div class="history-sidebar">
+      <div style="background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-3)">Outreach History</span>
+        <span style="font-size:11px;font-weight:700;background:var(--accent);color:#fff;padding:2px 9px;border-radius:20px;">${outreachLog.length}</span>
+      </div>
+      <div class="history-stats">
+        <div class="hstat"><div class="hstat-label">Total</div><div class="hstat-val">${total}</div></div>
+        <div class="hstat"><div class="hstat-label">Positive</div><div class="hstat-val green">${positive}</div></div>
+        <div class="hstat"><div class="hstat-label">Negative</div><div class="hstat-val red">${negative}</div></div>
+        <div class="hstat"><div class="hstat-label">Rate</div><div class="hstat-val green">${rateStr}</div></div>
+      </div>
+      <div class="history-filters">
+        <button class="filter-btn${historyFilter==='all'?' active-filter':''}" onclick="setHistoryFilter('all')">All</button>
+        <button class="filter-btn positive${historyFilter==='positive'?' active-filter':''}" onclick="setHistoryFilter('positive')">✓ Positive</button>
+        <button class="filter-btn negative${historyFilter==='negative'?' active-filter':''}" onclick="setHistoryFilter('negative')">✗ Negative</button>
+        <button class="filter-btn no-response${historyFilter==='none'?' active-filter':''}" onclick="setHistoryFilter('none')">— No Response</button>
+      </div>
+      <div class="history-list">${listHtml}</div>
+    </div>
+    <div class="history-detail">${detailHtml}</div>`;
+}
+
+function buildHistoryDetailHTML(id){
+  const log=outreachLog.find(l=>l.id===id); if(!log) return '';
+  const grade=log.grade||'none';
+  const c=scored.find(s=>s.name===log.name);
+  return `<div class="animate-in">
+    <div style="margin-bottom:20px">
+      <div style="font-size:24px;font-weight:500;color:var(--text);letter-spacing:-0.02em;margin-bottom:6px">${log.name}</div>
+      <div style="font-size:12px;color:var(--text-3);line-height:1.8">
+        Contacted ${new Date(log.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}<br>
+        Trigger: ${log.triggerType}${log.templateUsed?' · Template: '+log.templateUsed:''}
+        ${log.recontactDate?`<br>Re-contact scheduled: ${new Date(log.recontactDate+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})} (${log.recontactDays} days)`:''}
+      </div>
+    </div>
+    <div class="grade-panel">
+      <div class="grade-panel-title">Response Grade</div>
+      <div class="grade-btns">
+        <button class="grade-btn${grade==='positive'?' grade-active-positive':''}" onclick="setGrade('${id}','positive')"><span class="grade-icon">✓</span>Positive</button>
+        <button class="grade-btn${grade==='none'?' grade-active-none':''}" onclick="setGrade('${id}','none')"><span class="grade-icon">—</span>No Response</button>
+        <button class="grade-btn${grade==='negative'?' grade-active-negative':''}" onclick="setGrade('${id}','negative')"><span class="grade-icon">✗</span>Negative</button>
+      </div>
+      <textarea class="grade-note-input" id="gradeNote-${id}" placeholder="Add a note — what did they say? What worked or didn't?">${log.note||''}</textarea>
+      <button class="grade-save-btn" onclick="saveGradeNote('${id}')">Save Note</button>
+    </div>
+    ${c?`<div style="margin-top:16px"><div class="section-hd">Client Info</div><div class="fact-grid">
+      <div class="fact-card"><div class="fact-label">Loan Amount</div><div class="fact-val pos">${fmtMoney(c.loanAmount)}</div></div>
+      <div class="fact-card"><div class="fact-label">Program</div><div class="fact-val">${c.loanType} · ${c.program}</div></div>
+      <div class="fact-card"><div class="fact-label">Est. Comp</div><div class="fact-val pos">${fmtComp(c.estimatedComp)}</div></div>
+    </div></div>`:''}
+  </div>`;
+}
+
+function selectHistory(id){
+  selectedHistoryId=id;
+  const hl=document.getElementById('historyLayout'); if(!hl) return;
+  hl.innerHTML=buildHistoryHTML();
+}
+function setHistoryFilter(f){ historyFilter=f; selectedHistoryId=null; const hl=document.getElementById('historyLayout'); if(hl) hl.innerHTML=buildHistoryHTML(); }
+function setGrade(id,grade){
+  const log=outreachLog.find(l=>l.id===id); if(!log) return;
+  log.grade=grade; lsSave(); updateStats();
+  const hl=document.getElementById('historyLayout'); if(hl) hl.innerHTML=buildHistoryHTML();
+}
+function saveGradeNote(id){
+  const log=outreachLog.find(l=>l.id===id); if(!log) return;
+  const noteEl=document.getElementById(`gradeNote-${id}`); if(!noteEl) return;
+  log.note=noteEl.value; lsSave();
+  showToast('Note saved','','✓');
+}
+
+// ── SWITCH TAB ────────────────────────────────────────────────────────────
 function switchTab(t){
   tab=t;
-  ['Active','Followup','Closed','Done'].forEach(x=>document.getElementById('tab'+x)?.classList.remove('active'));
+  ['Active','History','Closed'].forEach(x=>document.getElementById('tab'+x)?.classList.remove('active'));
   document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1))?.classList.add('active');
   selected=null;
-  renderList();
-  document.getElementById('detail').innerHTML=`<div class="detail-empty animate-in"><div class="detail-empty-glyph">◎</div><div class="detail-empty-text">Select a contact</div></div>`;
+  
+  const histLayout=document.getElementById('historyLayout');
+  const mainSidebar=document.getElementById('mainSidebar');
+  const detail=document.getElementById('detail');
+
+  if(t==='history'){
+    if(mainSidebar) mainSidebar.style.display='none';
+    if(detail) detail.style.display='none';
+    renderHistoryTab();
+  } else {
+    if(histLayout) histLayout.style.display='none';
+    if(mainSidebar) mainSidebar.style.display='';
+    if(detail){ detail.style.display=''; detail.innerHTML=`<div class="detail-empty animate-in"><div class="detail-empty-glyph">◎</div><div class="detail-empty-text">Select a contact</div></div>`; }
+    renderList();
+  }
 }
 
 function toggleGroup(groupId){
-  const el = document.getElementById(groupId);
-  const chevron = document.getElementById(groupId+'-chevron');
-  if(!el) return;
-  const willExpand = el.style.display==='none';
-  el.style.display = willExpand ? '' : 'none';
-  groupCollapsed[groupId] = !willExpand;
-  if(chevron) chevron.textContent = willExpand ? '▲' : '▼';
-}
-
-function rerenderListPreserveSidebar(){
-  const sidebar = document.querySelector('.sidebar');
-  const prevScrollTop = sidebar ? sidebar.scrollTop : 0;
-  renderList();
-  if(!sidebar) return;
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      sidebar.scrollTop = Math.max(0, Math.min(prevScrollTop, sidebar.scrollHeight - sidebar.clientHeight));
-    });
-  });
-}
-
-// ── TOAST SYSTEM ─────────────────────────────────────────────────────────
-function showToast(msg, undoFn, iconHtml){
-  const container = document.getElementById('toast-container');
-  const t = document.createElement('div');
-  t.className = 'toast';
-  const undoHtml = undoFn ? `<button class="toast-undo">Undo</button>` : '';
-  t.innerHTML = `<span class="toast-icon">${iconHtml||'✓'}</span><span>${msg}</span>${undoHtml}`;
-  if(undoFn){
-    t.querySelector('.toast-undo').addEventListener('click', ()=>{undoFn(); dismissToast(t);});
-  }
-  container.appendChild(t);
-  t._tid = setTimeout(()=>dismissToast(t), 4000);
-}
-function dismissToast(t){
-  clearTimeout(t._tid);
-  t.classList.add('toast-out');
-  setTimeout(()=>t.remove(), 250);
-}
-
-// ── DONE TOGGLE ───────────────────────────────────────────────────────────
-function toggleDone(e,gi){
-  e.stopPropagation();
-  const c=scored[gi];
-  const wasAdded=!dailyDone.has(c.name);
-  wasAdded?dailyDone.add(c.name):dailyDone.delete(c.name);
-  lsSave();
-  updateStats();
-  updateStreak();
-  renderSummaryBanner();
-  rerenderListPreserveSidebar();
-  if(selected===gi){
-    const btn=document.getElementById(`doneBtn-${gi}`);
-    if(btn){const d=dailyDone.has(c.name);btn.textContent=d?'✓ Completed':'Mark Complete';btn.classList.toggle('is-done',d);}
-  }
-  if(wasAdded){
-    const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
-    showToast(`${fn} marked complete`, ()=>{
-      dailyDone.delete(c.name);
-      lsSave(); updateStats(); updateStreak(); renderSummaryBanner(); rerenderListPreserveSidebar();
-      if(selected===gi){const btn=document.getElementById(`doneBtn-${gi}`);if(btn){btn.textContent='Mark Complete';btn.classList.remove('is-done');}}
-    }, '✓');
-  }
-}
-
-// ── LEAD STATUS ───────────────────────────────────────────────────────────
-function setLeadStatus(name,status,gi){
-  leadStatus[name]=status;
-  lsSave();
-  scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score);
-  updateStats();
-  rerenderListPreserveSidebar();
-  ['none','future','warm'].forEach(s=>{
-    const btn=document.getElementById(`lead-${s}-${gi}`);
-    if(btn) btn.className=`lead-status-btn${s===status?' active-'+s:''}`;
-  });
-  const fRow=document.getElementById(`followup-row-${gi}`);
-  if(fRow) fRow.style.display=status==='none'?'none':'flex';
-}
-
-function updateFollowupDate(name,gi,val){
-  followupDate[name]=val; lsSave(); updateStats(); rerenderListPreserveSidebar();
-  const btn=document.getElementById(`ics-btn-${gi}`); if(btn) btn.disabled=!val;
-  const pill=document.getElementById(`due-pill-${gi}`);
-  if(pill){const fus=followupStatus(name);if(fus){pill.textContent=fus.label;pill.className=fus.cls;pill.style.display='';}else pill.style.display='none';}
-}
-
-function updateFollowupNote(name,gi,val){ followupNote[name]=val; lsSave(); }
-
-// ── MARK CLOSED ───────────────────────────────────────────────────────────
-function markClosed(gi){
-  const c=scored[gi];
-  if(isClosedOut(c.name)){
-    closedLog=closedLog.filter(l=>l.name!==c.name);
-    lsSave(); updateStats(); renderSummaryBanner(); rerenderListPreserveSidebar();
-    const btn=document.getElementById(`closedBtn-${gi}`);
-    if(btn){btn.textContent='Mark Closed';btn.classList.remove('is-closed');}
-    showToast(`${c.name.split(',')[1]?.trim()||c.name.split(' ')[0]} removed from closed`, null, '↩');
-    return;
-  }
-  // Show confirmation modal before committing
-  const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
-  document.getElementById('closeConfirmComp').textContent=fmtComp(c.estimatedComp);
-  document.getElementById('closeConfirmBody').textContent=`Log ${fn} as a closed deal? This adds them to your Closed tab and counts toward your comp total.`;
-  document.getElementById('closeConfirmModal').style.display='flex';
-  document.getElementById('closeConfirmYes').onclick=()=>{
-    document.getElementById('closeConfirmModal').style.display='none';
-    _doMarkClosed(gi);
-  };
-}
-
-function _doMarkClosed(gi){
-  const c=scored[gi];
-  closedLog.push({name:c.name,closeDate:TODAY,triggerType:c.triggers[0]?.title||'Unknown',loanAmount:c.loanAmount,comp:c.estimatedComp,program:c.program,loanType:c.loanType});
-  dailyDone.add(c.name);
-  lsSave(); updateStats(); renderSummaryBanner(); renderList();
-  const btn=document.getElementById(`closedBtn-${gi}`);
-  if(btn){btn.textContent='★ Closed';btn.classList.add('is-closed');}
-  const dBtn=document.getElementById(`doneBtn-${gi}`);
-  if(dBtn){dBtn.textContent='✓ Completed';dBtn.classList.add('is-done');}
-  showToast(`${c.name.split(',')[1]?.trim()||c.name.split(' ')[0]} logged as closed · ${fmtComp(c.estimatedComp)}`, null, '★');
-}
-
-// ── CLOSED DETAIL ─────────────────────────────────────────────────────────
-function showClosedDetail(idx){
-  const l=closedLog[idx];
-  document.getElementById('detail').innerHTML=`
-    <div class="animate-in">
-      <div class="detail-hd">
-        <div>
-          <div class="detail-name">${l.name}</div>
-          <div class="detail-meta">Closed via outreach on ${new Date(l.closeDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}<br>Trigger: ${l.triggerType} · ${l.loanType} · ${l.program}</div>
-        </div>
-        <div class="detail-hd-right">
-          <div class="comp-display">
-            <div class="comp-number" style="color:var(--gold)">${fmtComp(l.comp)}</div>
-            <div class="comp-label">Est. Comp Earned</div>
-          </div>
-        </div>
-      </div>
-      <div class="fact-grid">
-        <div class="fact-card"><div class="fact-label">Loan Amount</div><div class="fact-val">${fmtMoney(l.loanAmount)}</div></div>
-        <div class="fact-card"><div class="fact-label">Product</div><div class="fact-val">${l.loanType} · ${l.program}</div></div>
-        <div class="fact-card"><div class="fact-label">Trigger Type</div><div class="fact-val">${l.triggerType}</div></div>
-      </div>
-    </div>`;
+  const el=document.getElementById(groupId); if(!el) return;
+  const chevron=document.getElementById(groupId+'-chevron');
+  const willExpand=el.style.display==='none';
+  el.style.display=willExpand?'':'none';
+  groupCollapsed[groupId]=!willExpand;
+  if(chevron) chevron.textContent=willExpand?'▲':'▼';
 }
 
 // ── SELECT ────────────────────────────────────────────────────────────────
@@ -1393,13 +1103,11 @@ function renderRefiBlock(c){
   const mos=mosDiff(c.closeMonth);
   if(!(mos>=6&&c.rate>0.01&&(c.rate-r30)>=0.005)) return '';
   const rf=calcRefi(c);
-  return `
-    <div class="section-hd">Refinance Analysis</div>
+  return `<div class="section-hd">Refinance Analysis</div>
     <div class="refi-card">
       <div class="refi-header"><div class="refi-title">📉 Rate Reduction Breakdown</div><div class="refi-badge">${((c.rate-r30)*100).toFixed(2)}pt drop</div></div>
       <div class="refi-grid">
-        <div class="refi-col">
-          <div class="refi-col-label">Current Loan</div>
+        <div class="refi-col"><div class="refi-col-label">Current Loan</div>
           <div class="refi-row"><span class="refi-row-label">Original Amount</span><span class="refi-row-val">${fmtMoney(c.loanAmount)}</span></div>
           <div class="refi-row"><span class="refi-row-label">Months Paid</span><span class="refi-row-val">${mos} of 360</span></div>
           <div class="refi-row"><span class="refi-row-label">Est. Balance</span><span class="refi-row-val">${fmtMoney(rf.origBalance)}</span></div>
@@ -1407,16 +1115,14 @@ function renderRefiBlock(c){
           <div class="refi-row"><span class="refi-row-label">Current Payment</span><span class="refi-row-val">${fmtMoney(rf.origPmt)}/mo</span></div>
           <div class="refi-row"><span class="refi-row-label">Remaining Term</span><span class="refi-row-val">${fmtYrs(rf.origRemMonths)}</span></div>
         </div>
-        <div class="refi-col">
-          <div class="refi-col-label">New Loan (30yr @ Today)</div>
+        <div class="refi-col"><div class="refi-col-label">New Loan (30yr @ Today)</div>
           <div class="refi-row"><span class="refi-row-label">New Loan Amt</span><span class="refi-row-val">${fmtMoney(rf.newLoanAmt)}</span></div>
           <div class="refi-row"><span class="refi-row-label">Closing Costs</span><span class="refi-row-val" style="color:var(--text-3)">~5% rolled in</span></div>
           <div class="refi-row"><span class="refi-row-label">New Rate</span><span class="refi-row-val" style="color:var(--accent)">${(r30*100).toFixed(3)}%</span></div>
           <div class="refi-row"><span class="refi-row-label">New Payment</span><span class="refi-row-val" style="color:var(--accent)">${fmtMoney(rf.newPmt)}/mo</span></div>
           <div class="refi-row"><span class="refi-row-label">Standard Term</span><span class="refi-row-val">30 years</span></div>
         </div>
-        <div class="refi-col">
-          <div class="refi-col-label">Keep Paying Same Amount</div>
+        <div class="refi-col"><div class="refi-col-label">Keep Paying Same Amount</div>
           <div class="refi-row"><span class="refi-row-label">Monthly payment</span><span class="refi-row-val">${fmtMoney(rf.origPmt)}/mo</span></div>
           <div class="refi-row"><span class="refi-row-label">Payoff in</span><span class="refi-row-val" style="color:var(--accent)">${fmtYrs(rf.fastPayoffMonths)}</span></div>
           <div class="refi-row"><span class="refi-row-label">Years saved</span><span class="refi-row-val" style="color:var(--accent)">${rf.yearsSaved} yrs</span></div>
@@ -1437,305 +1143,291 @@ function renderDetail(c,gi){
   const mos=mosDiff(c.closeMonth);
   const rd=((c.rate-r30)*100).toFixed(2);
   const rCls=c.rate>r30?'neg':'pos';
-  const fundedDisplay = c.fundingDate
-    ? new Date(c.fundingDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'})
-    : cmn;
-  const mosDisplay = `${mos} month${mos!==1?'s':''} ago`;
+  const fundedDisplay=c.fundingDate?new Date(c.fundingDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'}):cmn;
   const eq=c.appraised>0&&c.ltv>0?`$${Math.round(c.appraised*(1-c.ltv/100)/1000)}k est.`:c.ltv>0?`${c.ltv.toFixed(1)}% LTV`:'—';
-  const isDone=dailyDone.has(c.name);
   const isClosed=isClosedOut(c.name);
-  const ls=leadStatus[c.name]||'none';
-  const fd=followupDate[c.name]||'';
-  const fn2=followupNote[c.name]||'';
-  const fus=followupStatus(c.name);
-  const hasFollowup=ls!=='none';
-
-  const trigsHtml=c.triggers.map(t=>`
-    <div class="trigger-card">
-      <div class="trigger-icon-wrap">${t.icon}</div>
-      <div class="trigger-body"><div class="trigger-title">${t.title}</div><div class="trigger-reason">${t.reason}</div></div>
-    </div>`).join('');
-
-  const creditHtml=(c.creditScore>0&&c.creditScore<=680&&mos>=6)?`
-    <div class="section-hd">Credit Improvement Window</div>
-    <div class="trigger-list">
-      <div class="credit-card">
-        <div class="credit-card-hd"><span style="font-size:16px">📊</span><span class="credit-card-title">Score at Closing: ${c.creditScore} — 6 Months Later</span></div>
-        <div class="credit-card-body">Six months of on-time payments may have moved their score meaningfully. A client who closed at ${c.creditScore} could now qualify for better terms, a lower rate, or a conventional conversion. Worth a call to find out.</div>
-      </div>
-    </div>`:'' ;
-
+  const alreadyLoggedToday=outreachLog.some(l=>l.name===c.name&&l.date===TODAY)&&!hasDueFollowUp(c.name);
   const esc=s=>s.replace(/'/g,"\\'");
 
-  document.getElementById('detail').innerHTML=`
-    <div class="animate-in">
-      <div class="detail-hd">
-        <div>
-          <div class="detail-name">${c.name}</div>
-          <div class="detail-meta">
-            ${c.email}<br>
-            ${c.phone||'No phone on file'} &nbsp;·&nbsp; ${c.state} &nbsp;·&nbsp; ${c.am} (AM)<br>
-            Funded ${fundedDisplay} &nbsp;·&nbsp; ${mosDisplay}${c.lender?` &nbsp;·&nbsp; ${c.lender}`:''}
-          </div>
-        </div>
-        <div class="detail-hd-right">
-          <div class="comp-display">
-            <div class="comp-number">${fmtComp(c.estimatedComp)}</div>
-            <div class="comp-label">Est. Comp</div>
-            <div class="comp-sub">${((c.program||'').toUpperCase()==='FHA'||(c.program||'').toUpperCase()==='VA')?'0.45%':'0.55%'} bps · ${fmtMoney(c.loanAmount)}</div>
-          </div>
-          <div class="btn-row">
-            <button class="done-btn${isDone?' is-done':''}" id="doneBtn-${gi}" onclick="toggleDone(event,${gi})">${isDone?'✓ Completed':'Mark Complete'}</button>
-            <button class="closed-btn${isClosed?' is-closed':''}" id="closedBtn-${gi}" onclick="markClosed(${gi})">${isClosed?'★ Closed':'Mark Closed'}</button>
-          </div>
+  const trigsHtml=c.triggers.map(t=>`
+    <div class="trigger-card${t.isFollowUp?' followup-trigger-card':''}">
+      <div class="trigger-icon-wrap${t.isFollowUp?' teal':''}">${t.icon}</div>
+      <div><div class="trigger-title">${t.title}</div><div class="trigger-reason">${t.reason}</div></div>
+    </div>`).join('');
+
+  document.getElementById('detail').innerHTML=`<div class="animate-in">
+    <div class="detail-hd">
+      <div>
+        <div class="detail-name">${c.name}</div>
+        <div class="detail-meta">
+          ${c.email}<br>
+          ${c.phone||'No phone on file'} · ${c.state} · ${c.am} (AM)<br>
+          Funded ${fundedDisplay} · ${mos} month${mos!==1?'s':''} ago${c.lender?' · '+c.lender:''}
         </div>
       </div>
-
-      <div class="fact-grid">
-        <div class="fact-card"><div class="fact-label">Loan Type</div><div class="fact-val">${c.loanType} · ${c.program}</div></div>
-        <div class="fact-card"><div class="fact-label">Loan Amount</div><div class="fact-val pos">${fmtMoney(c.loanAmount)}</div></div>
-        <div class="fact-card"><div class="fact-label">Their Rate</div><div class="fact-val ${rCls}">${(c.rate*100).toFixed(3)}%</div></div>
-        <div class="fact-card"><div class="fact-label">30YR Today</div><div class="fact-val">${(r30*100).toFixed(3)}%</div></div>
-        <div class="fact-card"><div class="fact-label">15YR Today</div><div class="fact-val">${(r15*100).toFixed(3)}%</div></div>
-        <div class="fact-card"><div class="fact-label">Rate Differential</div><div class="fact-val ${rCls}">${rd>0?'+':''}${rd}%</div></div>
-        <div class="fact-card"><div class="fact-label">Equity Position</div><div class="fact-val pos">${eq}</div></div>
-        <div class="fact-card"><div class="fact-label">Credit at Close</div><div class="fact-val ${c.creditScore>0&&c.creditScore<=680?'neg':''}">${c.creditScore>0?c.creditScore:'—'}</div></div>
-        <div class="fact-card"><div class="fact-label">Lead Source</div><div class="fact-val">${c.source||'—'}</div></div>
-      </div>
-
-      <div class="lead-status-wrap">
-        <div class="section-hd">Response / Lead Status</div>
-        <div class="lead-status-row">
-          <button class="lead-status-btn${ls==='none'?' active-none':''}" id="lead-none-${gi}" onclick="setLeadStatus('${esc(c.name)}','none',${gi})">○ No Response</button>
-          <button class="lead-status-btn${ls==='future'?' active-future':''}" id="lead-future-${gi}" onclick="setLeadStatus('${esc(c.name)}','future',${gi})">◷ Future Deal</button>
-          <button class="lead-status-btn${ls==='warm'?' active-warm':''}" id="lead-warm-${gi}" onclick="setLeadStatus('${esc(c.name)}','warm',${gi})">🔥 Warm Lead</button>
+      <div class="detail-hd-right">
+        <div class="comp-display">
+          <div class="comp-number">${fmtComp(c.estimatedComp)}</div>
+          <div class="comp-label">Est. Comp</div>
+          <div class="comp-sub">${((c.program||'').toUpperCase()==='FHA'||(c.program||'').toUpperCase()==='VA')?'0.45%':'0.55%'} · ${fmtMoney(c.loanAmount)}</div>
         </div>
-        <div class="followup-row" id="followup-row-${gi}" style="display:${hasFollowup?'flex':'none'}">
-          <span class="followup-label">📅 Follow-up by</span>
-          <input type="date" class="followup-input" id="followup-date-${gi}" value="${fd}" onchange="updateFollowupDate('${esc(c.name)}',${gi},this.value)"/>
-          <input type="text" class="followup-input note-input" id="followup-note-${gi}" value="${fn2}" placeholder="Note (optional)" oninput="updateFollowupNote('${esc(c.name)}',${gi},this.value)"/>
-          ${fus?`<span class="${fus.cls}" id="due-pill-${gi}">${fus.label}</span>`:`<span id="due-pill-${gi}" style="display:none"></span>`}
-          <button class="ics-btn" id="ics-btn-${gi}" ${fd?'':'disabled'} onclick="downloadICS('${esc(c.name)}','${fd}','${esc(fn2)}',${JSON.stringify(c.triggers)})">📆 Add to Outlook</button>
+        <div class="btn-row">
+          <button class="closed-btn${isClosed?' is-closed':''}" id="closedBtn-${gi}" onclick="markClosed(${gi})">${isClosed?'★ Closed':'Mark Closed'}</button>
         </div>
       </div>
+    </div>
 
-      <div class="section-hd">Why Reach Out Now</div>
-      <div class="trigger-list">${trigsHtml}</div>
+    <div class="fact-grid">
+      <div class="fact-card"><div class="fact-label">Loan Type</div><div class="fact-val">${c.loanType} · ${c.program}</div></div>
+      <div class="fact-card"><div class="fact-label">Loan Amount</div><div class="fact-val pos">${fmtMoney(c.loanAmount)}</div></div>
+      <div class="fact-card"><div class="fact-label">Their Rate</div><div class="fact-val ${rCls}">${(c.rate*100).toFixed(3)}%</div></div>
+      <div class="fact-card"><div class="fact-label">30YR Today</div><div class="fact-val">${(r30*100).toFixed(3)}%</div></div>
+      <div class="fact-card"><div class="fact-label">Rate Differential</div><div class="fact-val ${rCls}">${rd>0?'+':''}${rd}%</div></div>
+      <div class="fact-card"><div class="fact-label">Equity Position</div><div class="fact-val pos">${eq}</div></div>
+    </div>
 
-      ${creditHtml}
-      ${renderRefiBlock(c)}
+    <div class="section-hd">Why Reach Out Now</div>
+    <div class="trigger-list">${trigsHtml}</div>
 
-      <div class="section-hd">AI Analysis</div>
-      <div class="ai-card" id="aiCard-${gi}">
-        <div class="loading-row"><div class="spinner"></div><span class="loading-text">Analyzing client profile…</span></div>
+    ${renderRefiBlock(c)}
+
+    <div class="section-hd">AI Analysis</div>
+    <div class="ai-card" id="aiCard-${gi}"><div class="loading-row"><div class="spinner"></div><span class="loading-text">Analyzing client profile…</span></div></div>
+
+    <div class="section-hd">Outreach Templates</div>
+    <div class="msg-grid">
+      <div class="msg-card">
+        <div class="msg-hd"><div class="msg-type">📱 SMS</div><button class="copy-btn" id="cpSms-${gi}" onclick="copyMsg('sms',${gi})">Copy</button></div>
+        <div class="msg-body" id="smsBody-${gi}"><div class="loading-row"><div class="spinner"></div><span class="loading-text">Writing SMS…</span></div></div>
       </div>
-
-      <div class="section-hd">Outreach Templates</div>
-      <div class="msg-grid">
-        <div class="msg-card">
-          <div class="msg-hd"><div class="msg-type">📱 SMS</div><button class="copy-btn" id="cpSms-${gi}" onclick="copyMsg('sms',${gi})">Copy</button></div>
-          <div class="msg-body" id="smsBody-${gi}"><div class="loading-row"><div class="spinner"></div><span class="loading-text">Writing SMS…</span></div></div>
-        </div>
-        <div class="msg-card">
-          <div class="msg-hd"><div class="msg-type">✉️ Email</div><button class="copy-btn" id="cpEmail-${gi}" onclick="emailNow(${gi})" style="background:var(--accent-soft);border-color:var(--accent);color:var(--accent);">Email Now ↗</button></div>
-          <div class="msg-body" id="emailBody-${gi}"><div class="loading-row"><div class="spinner"></div><span class="loading-text">Writing email…</span></div></div>
-        </div>
+      <div class="msg-card">
+        <div class="msg-hd"><div class="msg-type">✉️ Email</div><button class="email-btn" id="cpEmail-${gi}" onclick="emailNow(${gi})">Email Now ↗</button></div>
+        <div class="msg-body" id="emailBody-${gi}"><div class="loading-row"><div class="spinner"></div><span class="loading-text">Writing email…</span></div></div>
       </div>
-    </div>`;
+    </div>
+
+    <div class="section-hd">Log This Outreach</div>
+    <div class="complete-panel" id="completePanel-${gi}">
+      ${alreadyLoggedToday?`<div style="font-size:13px;color:var(--accent);font-weight:600;text-align:center;padding:8px 0">✓ Logged today — set a re-contact date below or grade this in History</div>
+        <div class="recontact-presets" id="presets-${gi}" style="justify-content:center">
+          <span style="font-size:11px;color:var(--text-3);font-weight:600;align-self:center">Re-contact in:</span>
+          ${[7,14,30,60].map(d=>`<button class="preset-btn" onclick="updateRecontact(${gi},${d})">${d}d</button>`).join('')}
+        </div>`
+      :`<div class="complete-panel-title">Mark as contacted — schedule re-contact</div>
+        <div class="recontact-presets" id="presets-${gi}">
+          <span style="font-size:11px;color:var(--text-3);font-weight:600;align-self:center">Re-contact in:</span>
+          ${[7,14,30,60].map(d=>`<button class="preset-btn" onclick="selectPreset(${gi},${d})" id="preset-${gi}-${d}">${d}d</button>`).join('')}
+          <button class="preset-btn skip-preset" onclick="selectPreset(${gi},0)" id="preset-${gi}-0">Skip</button>
+        </div>
+        <button class="complete-confirm-btn" id="confirmBtn-${gi}" onclick="logOutreach(${gi})">✓ Mark Contacted</button>`}
+    </div>
+  </div>`;
 }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────
-// Round down to nearest $10 for conversational quoting
-function floorTo10(n){ return Math.floor(n/10)*10; }
+// ── COMPLETE / LOG OUTREACH ────────────────────────────────────────────────
+let _selectedPreset = {};
 
-// Convert ALL CAPS address to title case, leave mixed-case untouched
-function normalizeStreet(s){
-  if(!s) return 'your property';
-  const clean = s.replace(/,.*$/,'').trim();
-  // If every alpha char is uppercase, convert to title case
-  const alpha = clean.replace(/[^a-zA-Z]/g,'');
-  if(alpha.length > 0 && alpha === alpha.toUpperCase()){
-    return clean.replace(/\w+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+function selectPreset(gi, days){
+  _selectedPreset[gi] = days;
+  [7,14,30,60,0].forEach(d=>{
+    const btn=document.getElementById(`preset-${gi}-${d}`);
+    if(btn){ btn.classList.toggle('active-preset', d===days&&days!==0); btn.classList.toggle('skip-preset', d===0); }
+  });
+}
+
+function logOutreach(gi){
+  const c=scored[gi];
+  const days=_selectedPreset[gi]??null; // null = not set yet (not the same as skip)
+  const recontactDate = days && days>0 ? toDateStr(new Date(NOW.getTime()+days*86400000)) : null;
+  const triggerType=c.triggers[0]?.title||'Unknown';
+  const templateUsed = generated[gi] ? 'SMS/Email' : 'SMS/Email';
+
+  const logEntry={
+    id: Date.now().toString()+Math.random().toString(36).slice(2),
+    name:c.name, date:TODAY, triggerType, templateUsed,
+    grade:'none', note:'',
+    recontactDate, recontactDays: days||null
+  };
+  outreachLog.push(logEntry);
+  lsSave();
+
+  // Re-score (this contact is now suppressed or has a future re-contact)
+  scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score);
+  updateStats();
+  renderSummaryBanner();
+  
+  const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
+  const recontactMsg=recontactDate?` · Re-contact ${new Date(recontactDate+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}`:' · No re-contact set';
+  showToast(`${fn} logged${recontactMsg}`, null, '✓');
+
+  // Re-render list & clear selection
+  renderList();
+  selected=null;
+  document.getElementById('detail').innerHTML=`<div class="detail-empty animate-in"><div class="detail-empty-glyph">◎</div><div class="detail-empty-text">Contact logged</div><div class="detail-empty-sub">Select next contact to continue</div></div>`;
+}
+
+function updateRecontact(gi, days){
+  // Update the most recent log entry for this contact
+  const c=scored[gi];
+  const log=getLatestLog(c.name); if(!log) return;
+  log.recontactDate=toDateStr(new Date(NOW.getTime()+days*86400000));
+  log.recontactDays=days;
+  lsSave();
+  scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score);
+  updateStats(); renderSummaryBanner(); renderList();
+  const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
+  showToast(`${fn} re-contact updated · ${days} days`, null, '📅');
+}
+
+// ── MARK CLOSED ────────────────────────────────────────────────────────────
+function markClosed(gi){
+  const c=scored[gi];
+  if(isClosedOut(c.name)){
+    closedLog=closedLog.filter(l=>l.name!==c.name);
+    lsSave(); updateStats(); renderSummaryBanner();
+    const btn=document.getElementById(`closedBtn-${gi}`);
+    if(btn){btn.textContent='Mark Closed';btn.classList.remove('is-closed');}
+    showToast(`${c.name.split(',')[1]?.trim()||c.name.split(' ')[0]} removed from closed`,null,'↩');
+    return;
   }
-  return clean;
+  const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
+  document.getElementById('closeConfirmComp').textContent=fmtComp(c.estimatedComp);
+  document.getElementById('closeConfirmBody').textContent=`Log ${fn} as a closed deal?`;
+  document.getElementById('closeConfirmModal').style.display='flex';
+  document.getElementById('closeConfirmYes').onclick=()=>{
+    document.getElementById('closeConfirmModal').style.display='none';
+    closedLog.push({name:c.name,closeDate:TODAY,triggerType:c.triggers[0]?.title||'Unknown',loanAmount:c.loanAmount,comp:c.estimatedComp,program:c.program,loanType:c.loanType});
+    lsSave(); updateStats(); renderSummaryBanner(); renderList();
+    const btn=document.getElementById(`closedBtn-${gi}`);
+    if(btn){btn.textContent='★ Closed';btn.classList.add('is-closed');}
+    showToast(`${fn} logged as closed · ${fmtComp(c.estimatedComp)}`,null,'★');
+  };
 }
 
-// ── TEMPLATE ENGINE ───────────────────────────────────────────────────────
+function showClosedDetail(idx){
+  const l=closedLog[idx];
+  document.getElementById('detail').innerHTML=`<div class="animate-in">
+    <div class="detail-hd">
+      <div><div class="detail-name">${l.name}</div><div class="detail-meta">Closed ${new Date(l.closeDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}<br>Trigger: ${l.triggerType} · ${l.loanType} · ${l.program}</div></div>
+      <div class="detail-hd-right"><div class="comp-display"><div class="comp-number" style="color:var(--gold)">${fmtComp(l.comp)}</div><div class="comp-label">Est. Comp Earned</div></div></div>
+    </div>
+    <div class="fact-grid">
+      <div class="fact-card"><div class="fact-label">Loan Amount</div><div class="fact-val">${fmtMoney(l.loanAmount)}</div></div>
+      <div class="fact-card"><div class="fact-label">Product</div><div class="fact-val">${l.loanType} · ${l.program}</div></div>
+      <div class="fact-card"><div class="fact-label">Trigger Type</div><div class="fact-val">${l.triggerType}</div></div>
+    </div>
+  </div>`;
+}
+
+// ── TEMPLATES ─────────────────────────────────────────────────────────────
 function buildTemplates(c){
-  const fn       = c.name.split(',')[1]?.trim() || c.name.split(' ')[0];
-  const cmn      = new Date(c.closeMonth+'-01').toLocaleString('default',{month:'long',year:'numeric'});
-  const street   = normalizeStreet(c.street);
-  const loanLbl  = c.loanType==='Purchase'?'purchase loan':c.loanType==='Refinance'?'refinance':c.loanType.toLowerCase();
-  const primary  = c.triggers[0]?.title || '';
+  const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
+  const cmn=new Date(c.closeMonth+'-01').toLocaleString('default',{month:'long',year:'numeric'});
+  const street=normalizeStreet(c.street);
+  const loanLbl=c.loanType==='Purchase'?'purchase loan':c.loanType==='Refinance'?'refinance':c.loanType.toLowerCase();
+  const primary=c.triggers[0]?.title||'';
 
-  // ── Rate Drop ──────────────────────────────────────────────────────────
-  if(primary === 'Rate Drop Opportunity'){
-    const rf           = calcRefi(c);
-    const monthlySav   = floorTo10(rf.monthlySavings);
-    const yearsSaved   = Math.floor(parseFloat(rf.yearsSaved));
-    const subject = `RE: ${street} - rate drop`;
-    const sms =
-`Hey ${fn}, this is Harry from Loan Pronto. We worked together on your ${street} ${loanLbl} back in ${cmn}. Rates just dropped, so I updated your numbers - there's a way to save about $${monthlySav}/month on your house payment or pay it off ${yearsSaved} years sooner, without increasing what you're paying now. Want me to send it over?`;
-    const email =
-`Hey ${fn},
+  // Follow Up Request
+  if(primary==='Follow Up Request'){
+    const t=c.triggers[0];
+    const daysLabel=t.daysLabel||'a few weeks';
+    const origTrigger=t.originalTrigger||'your loan';
+    const isRateDrop=origTrigger.includes('Rate Drop');
+    const is3yr=origTrigger.includes('3-Year');
+    const is1yr=origTrigger.includes('1-Year');
 
-I was taking a look at your loan on ${street} and noticed rates have come down a bit.
+    let smsContext='', emailContext='';
+    if(isRateDrop){
+      smsContext=`rates have moved since then. Is the refinance still on your radar?`;
+      emailContext=`Rates have moved a bit since we last spoke. I wanted to check back in and see if refinancing is still something you're looking at.`;
+    } else if(is3yr){
+      smsContext=`I wanted to check back in. Any plans to move up, pull equity, or add an investment property?`;
+      emailContext=`I wanted to check back in. Any plans to move up, pull equity, or look at an investment property down the road?`;
+    } else if(is1yr){
+      smsContext=`I wanted to check back in. How has everything been going with the house?`;
+      emailContext=`I wanted to check back in and see how everything has been going with the house.`;
+    } else {
+      smsContext=`I wanted to follow up. Did you have any questions?`;
+      emailContext=`I wanted to follow up from our last conversation and see if you had any questions.`;
+    }
 
-There may be a way to either lower your monthly payment by about $${monthlySav} or keep your payment about the same and pay the home off ${yearsSaved} years sooner.
-
-Want me to send over a quick breakdown so you can see what it looks like?`;
+    const subject=`RE: ${street} - following up`;
+    const sms=`Hey ${fn}, this is Harry from Loan Pronto. We spoke about ${daysLabel} ago about your loan on ${street} — ${smsContext}`;
+    const email=`Hey ${fn},\n\nWe spoke about ${daysLabel} ago about your loan on ${street}.\n\n${emailContext}\n\nFeel free to call or text me anytime at 704-307-4482.`;
     return {sms, email, subject};
   }
 
-  // ── Credit Improvement ─────────────────────────────────────────────────
-  if(primary === 'Credit Improvement Check'){
-    const subject = `RE: ${street} loan`;
-    const sms =
-`Hey ${fn}, this is Harry from Loan Pronto. We worked together on your ${street} ${loanLbl} back in ${cmn}. Quick question - do you happen to know where your credit score is sitting these days? If it's improved since we last worked together, there might be better options available.`;
-    const email =
-`Hey ${fn},
-
-I was looking back at your mortgage for ${street} and had a quick thought.
-
-If your credit score has improved since we last worked together, there's a chance you could qualify for better terms now.
-
-Where is your credit score sitting these days?`;
+  if(primary==='Rate Drop Opportunity'){
+    const rf=calcRefi(c);
+    const monthlySav=floorTo10(rf.monthlySavings);
+    const yearsSaved=Math.floor(parseFloat(rf.yearsSaved));
+    const subject=`RE: ${street} - rate drop`;
+    const sms=`Hey ${fn}, this is Harry from Loan Pronto. We worked together on your ${street} ${loanLbl} back in ${cmn}. Rates just dropped, so I updated your numbers - there's a way to save about $${monthlySav}/month on your house payment or pay it off ${yearsSaved} years sooner, without increasing what you're paying now. Want me to send it over?`;
+    const email=`Hey ${fn},\n\nI was taking a look at your loan on ${street} and noticed rates have come down a bit.\n\nThere may be a way to either lower your monthly payment by about $${monthlySav} or keep your payment about the same and pay the home off ${yearsSaved} years sooner.\n\nWant me to send over a quick breakdown so you can see what it looks like?`;
     return {sms, email, subject};
   }
 
-  // ── 1-Year Anniversary ─────────────────────────────────────────────────
-  if(primary === '1-Year Anniversary'){
-    const subject = `RE: ${street} loan`;
-    const sms =
-`Hey ${fn}, this is Harry from Loan Pronto. We worked together on your ${street} ${loanLbl} back in ${cmn}. Hard to believe it's already been a year! How has everything been working out with the loan so far?`;
-    const email =
-`Hey ${fn},
-
-I was looking back at your loan on ${street} and realized it's already been a year.
-
-How has everything been working out so far?
-
-If you've had any changes (plans to move, projects, paying off debt) I'm happy to run numbers and show you what options look like today.`;
+  if(primary==='1-Year Anniversary'){
+    const subject=`RE: ${street} loan`;
+    const sms=`Hey ${fn}, this is Harry from Loan Pronto. We worked together on your ${street} ${loanLbl} back in ${cmn}. Hard to believe it's already been a year! How has everything been working out with the loan so far?`;
+    const email=`Hey ${fn},\n\nI was looking back at your loan on ${street} and realized it's already been a year.\n\nHow has everything been working out so far?\n\nIf you've had any changes (plans to move, projects, paying off debt) I'm happy to run numbers and show you what options look like today.`;
     return {sms, email, subject};
   }
 
-  // ── 3-Year Check-In ────────────────────────────────────────────────────
-  if(primary === '3-Year Check-In'){
-    const subject = `RE: ${street} loan`;
-    const sms =
-`Hey ${fn}, this is Harry from Loan Pronto. We worked together on your ${street} ${loanLbl} back in ${cmn}. Hard to believe it's already been 3 years! How has everything been working out with the loan so far?`;
-    const email =
-`Hey ${fn},
-
-I was looking back at your loan on ${street} and realized it's already been three years.
-
-How has everything been working out so far?
-
-If you've had any changes (plans to move, projects, paying off debt) I'm happy to run numbers and show you what options look like today.`;
+  if(primary==='3-Year Check-In'){
+    const subject=`RE: ${street} loan`;
+    const sms=`Hey ${fn}, this is Harry from Loan Pronto. We worked together on your ${street} ${loanLbl} back in ${cmn}. Hard to believe it's already been 3 years! How has everything been working out with the loan so far?`;
+    const email=`Hey ${fn},\n\nI was looking back at your loan on ${street} and realized it's already been three years.\n\nHow has everything been working out so far?\n\nIf you've had any changes (plans to move, projects, paying off debt) I'm happy to run numbers and show you what options look like today.`;
     return {sms, email, subject};
   }
 
-  // ── 1-Month / First Payment ────────────────────────────────────────────
-  if(primary === '1-Month Check-In'){
-    const subject = `RE: ${street} - first payment`;
-    const sms =
-`Hey ${fn}, this is Harry from Loan Pronto. Just wanted to check in and make sure everything's been smooth since closing. Need help setting up your first payment?`;
-    const email =
-`Hey ${fn},
-
-Just wanted to check in and make sure everything's been smooth since closing.
-
-Were you able to get your first payment set up okay?
-
-If anything was confusing or you want me to walk through it with you, I'm happy to help.`;
+  if(primary==='1-Month Check-In'){
+    const subject=`RE: ${street} - first payment`;
+    const sms=`Hey ${fn}, this is Harry from Loan Pronto. Just wanted to check in and make sure everything's been smooth since closing. Need help setting up your first payment?`;
+    const email=`Hey ${fn},\n\nJust wanted to check in and make sure everything's been smooth since closing.\n\nWere you able to get your first payment set up okay?\n\nIf anything was confusing or you want me to walk through it with you, I'm happy to help.`;
     return {sms, email, subject};
   }
 
-   // ── 6-Month Check-In (fallback) ────────────────────────────────────────
-  const subject = `RE: ${street} loan - checking in`;
-  const sms =
-`Hey ${fn}, this is Harry from Loan Pronto. Just sent you a quick email about your loan on ${street}. There's a big advantage you have as a past client I wanted to make sure you know about.`;
-  const email =
-`Hey ${fn},
-
-I was looking back at your loan on ${street} and just wanted to make sure you’ve got this in your back pocket.
-
-Since we’ve already worked together, you’ve got access to my past client pricing. If you ever look at refinancing, pulling cash out, or buying again, I can usually get you better terms than starting fresh somewhere else.
-
-I’ll keep an eye on the market and reach out if I see a good opportunity for you.
-
-P.S. I don’t really advertise this, but if someone close to you is buying or refinancing, I can usually extend similar pricing to them. Most people don’t see these options unless someone points them in the right direction. 
-
-You can call or text me anytime at 704-307-4482.`;
+  // 6-Month / fallback
+  const subject=`RE: ${street} loan - checking in`;
+  const sms=`Hey ${fn}, this is Harry from Loan Pronto. Just sent you a quick email about your loan on ${street}. There's a big advantage you have as a past client I wanted to make sure you know about.`;
+  const email=`Hey ${fn},\n\nI was looking back at your loan on ${street} and just wanted to make sure you've got this in your back pocket.\n\nSince we've already worked together, you've got access to my past client pricing. If you ever look at refinancing, pulling cash out, or buying again, I can usually get you better terms than starting fresh somewhere else.\n\nI'll keep an eye on the market and reach out if I see a good opportunity for you.\n\nP.S. If someone close to you is buying or refinancing, I can usually extend similar pricing to them.\n\nYou can call or text me anytime at 704-307-4482.`;
   return {sms, email, subject};
 }
 
-// ── GENERATE ─────────────────────────────────────────────────────────────
+// ── GENERATE ──────────────────────────────────────────────────────────────
 async function generate(c,gi){
   _generatingSet.add(gi);
-  const rowEl=document.getElementById(`row-${gi}`);
-  if(rowEl){
-    const tags=rowEl.querySelector('.row-tags');
-    if(tags&&!rowEl.querySelector('.ai-gen-badge')){
-      const badge=document.createElement('span');
-      badge.className='ai-gen-badge';
-      badge.innerHTML='<span class="mini-spin"></span>Writing…';
-      tags.appendChild(badge);
-    }
-  }
-
-  // Build outreach from Harry's exact templates (no AI needed for messages)
   const {sms, email, subject} = buildTemplates(c);
-
-  // Use AI only for the whyNow analysis blurb
-  let whyNow = c.triggers[0]?.reason || '';
-  if(apiKey && apiKey !== 'demo'){
+  let whyNow=c.triggers[0]?.reason||'';
+  if(apiKey&&apiKey!=='demo'){
     try {
-      const fn     = c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
-      const cmn    = new Date(c.closeMonth+'-01').toLocaleString('default',{month:'long',year:'numeric'});
-      const mos    = mosDiff(c.closeMonth);
-      const eq     = c.ltv>0&&c.ltv<80?`LTV ${c.ltv.toFixed(1)}%${c.appraised>0?`, appraised $${c.appraised.toLocaleString()}`:''}. `:'';
-      const creditNote = c.creditScore>0?`Credit score at closing: ${c.creditScore}.`:'';
+      const fn=c.name.split(',')[1]?.trim()||c.name.split(' ')[0];
+      const cmn=new Date(c.closeMonth+'-01').toLocaleString('default',{month:'long',year:'numeric'});
+      const mos=mosDiff(c.closeMonth);
+      const eq=c.ltv>0&&c.ltv<80?`LTV ${c.ltv.toFixed(1)}%${c.appraised>0?`, appraised $${c.appraised.toLocaleString()}`:''}. `:'';
+      const creditNote=c.creditScore>0?`Credit score at closing: ${c.creditScore}.`:'';
       let refiNote='';
-      if(mos>=6&&c.rate>0.01&&(c.rate-r30)>=0.005){
-        const rf=calcRefi(c);
-        refiNote=`Refi saves about $${floorTo10(rf.monthlySavings)}/mo ($${floorTo10(rf.annualSavings)}/yr). New loan ~$${Math.round(rf.newLoanAmt/1000)}k at ${(r30*100).toFixed(3)}%. Keeping same payment: payoff in ${fmtYrs(rf.fastPayoffMonths)}, saves ${rf.yearsSaved} years.`;
-      }
+      if(mos>=6&&c.rate>0.01&&(c.rate-r30)>=0.005){ const rf=calcRefi(c); refiNote=`Refi saves about $${floorTo10(rf.monthlySavings)}/mo. New loan ~$${Math.round(rf.newLoanAmt/1000)}k at ${(r30*100).toFixed(3)}%.`; }
       const tSummary=c.triggers.map(t=>`- ${t.title}: ${t.reason}`).join('\n');
-      const prompt=`You are Harry, a mortgage loan officer at Loan Pronto. Write a short internal analysis for why this client should be contacted today.
+      const prompt=`You are Harry, a mortgage loan officer at Loan Pronto. Write a short internal analysis (1-2 sentences) for why this client should be contacted today. Use real numbers. No fluff. No sign-off. Reply ONLY with valid JSON: {"whyNow":"your analysis here"}
 
 CLIENT: ${c.name} (first name: ${fn})
 Loan: ${c.loanType} · ${c.program} · $${c.loanAmount.toLocaleString()}
-Their rate: ${(c.rate*100).toFixed(3)}% | 30YR today: ${(r30*100).toFixed(3)}% | 15YR: ${(r15*100).toFixed(3)}%
-Closed: ${cmn} (${mos} months ago) | State: ${c.state} | ${eq}${creditNote}
+Rate: ${(c.rate*100).toFixed(3)}% | 30YR today: ${(r30*100).toFixed(3)}%
+Closed: ${cmn} (${mos} months ago) | ${eq}${creditNote}
 ${refiNote}
-
-TRIGGERS:
-${tSummary}
-
-Rules:
-- 1-2 punchy sentences on the single best reason to call right now
-- Use real numbers from the data
-- When quoting dollar savings, always say "about $X" and round down to nearest $10
-- Always state rates confidently (e.g. "at ${(r30*100).toFixed(3)}%"), never hedge them
-- No fluff, no sign-off
-
-Reply ONLY with valid JSON, no markdown fences:
-{"whyNow":"your analysis here"}`;
-      const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-        headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,messages:[{role:'user',content:prompt}]})});
+TRIGGERS:\n${tSummary}`;
+      const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,messages:[{role:'user',content:prompt}]})});
       const data=await res.json();
       const parsed=JSON.parse((data.content?.[0]?.text||'{}').trim());
       if(parsed.whyNow) whyNow=parsed.whyNow;
-    } catch(e){ /* fall through to trigger reason */ }
+    } catch(e){}
   }
-
-  const result={whyNow, sms, email, subject, clientEmail:c.email||''};
+  const result={whyNow,sms,email,subject,clientEmail:c.email||''};
   generated[gi]=result;
   _generatingSet.delete(gi);
   fillMessages(gi,result);
-  if(rowEl){const b=rowEl.querySelector('.ai-gen-badge');if(b)b.remove();}
 }
 
 function fillMessages(gi,content){
@@ -1757,71 +1449,44 @@ function copyMsg(type,gi){
 
 function emailNow(gi){
   const c=generated[gi]; if(!c) return;
-  const subject = c.subject || 'Checking in';
-  const body = c.email || '';
-  const to = encodeURIComponent(c.clientEmail||'');
-  const subEnc = encodeURIComponent(subject);
-  const bodyEnc = encodeURIComponent(body);
-  window.location.href=`mailto:${to}?subject=${subEnc}&body=${bodyEnc}`;
+  window.location.href=`mailto:${encodeURIComponent(c.clientEmail||'')}?subject=${encodeURIComponent(c.subject||'Checking in')}&body=${encodeURIComponent(c.email||'')}`;
 }
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg,undoFn,iconHtml){
+  const container=document.getElementById('toast-container');
+  const t=document.createElement('div'); t.className='toast';
+  const undoHtml=undoFn?`<button class="toast-undo">Undo</button>`:'';
+  t.innerHTML=`<span class="toast-icon">${iconHtml||'✓'}</span><span>${msg}</span>${undoHtml}`;
+  if(undoFn) t.querySelector('.toast-undo').addEventListener('click',()=>{undoFn();dismissToast(t);});
+  container.appendChild(t);
+  t._tid=setTimeout(()=>dismissToast(t),4000);
+}
+function dismissToast(t){ clearTimeout(t._tid); t.classList.add('toast-out'); setTimeout(()=>t.remove(),250); }
+
+// ── RATES ─────────────────────────────────────────────────────────────────
+function ratesChanged(){
+  function parseRate(val){ const n=parseFloat(val); if(isNaN(n)||n<=0) return null; return n<1?n:n/100; }
+  const new30=parseRate(document.getElementById('r30').value);
+  const new15=parseRate(document.getElementById('r15').value);
+  if(new30) r30=new30; if(new15) r15=new15;
+  document.getElementById('r30').value=(r30*100).toFixed(3)+'%';
+  document.getElementById('r15').value=(r15*100).toFixed(3)+'%';
+  document.getElementById('r30display').textContent=(r30*100).toFixed(3)+'%';
+  document.getElementById('r15display').textContent=(r15*100).toFixed(3)+'%';
+  lsSave();
+  if(CLIENTS.length){ scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score); updateStats(); renderSummaryBanner(); renderList(); if(selected!==null&&scored[selected]) renderDetail(scored[selected],selected); }
+}
+function toggleRatesPopover(){ const p=document.getElementById('ratesPopover'); p.style.display=p.style.display==='none'?'':'none'; }
+document.addEventListener('click',function(e){ const wrap=document.getElementById('ratesPopoverWrap'); if(wrap&&!wrap.contains(e.target)) document.getElementById('ratesPopover').style.display='none'; });
 
 // ── AUTH ──────────────────────────────────────────────────────────────────
-function demoMode(){
-  apiKey='demo';
-  document.getElementById('modalBg').style.display='none';
-  document.getElementById('refreshBtn').disabled=false;
-  load();
-}
-function saveKey(){
-  const k=document.getElementById('apiKeyInput').value.trim();
-  if(!k.startsWith('sk-ant-')){alert('Please enter a valid Anthropic API key (starts with sk-ant-)');return;}
-  apiKey=k;
-  document.getElementById('modalBg').style.display='none';
-  document.getElementById('refreshBtn').disabled=false;
-  lsSave();
-  const hasCached = !!(localStorage.getItem(LS+'source_csv_text') || '');
-  if(hasCached){ load(); } else { openDataSourceModal(); }
-}
-function ratesChanged(){
-  function parseRate(val){
-    const n = parseFloat(val);
-    if(isNaN(n) || n <= 0) return null;
-    // If user typed something like 0.069 (already a decimal), use as-is
-    // If user typed 6.875 or 6.875%, divide by 100
-    return n < 1 ? n : n / 100;
-  }
-  const new30 = parseRate(document.getElementById('r30').value);
-  const new15 = parseRate(document.getElementById('r15').value);
-  if(new30) r30 = new30;
-  if(new15) r15 = new15;
-  // Reformat the inputs cleanly
-  document.getElementById('r30').value = (r30*100).toFixed(3)+'%';
-  document.getElementById('r15').value = (r15*100).toFixed(3)+'%';
-  // Update header display pills
-  document.getElementById('r30display').textContent = (r30*100).toFixed(3)+'%';
-  document.getElementById('r15display').textContent = (r15*100).toFixed(3)+'%';
-  lsSave();
-  if(CLIENTS.length){
-    scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score);
-    updateStats();
-    renderSummaryBanner();
-    renderList();
-    if(selected!==null) renderDetail(scored[selected], selected);
-  }
-}
+function demoMode(){ apiKey='demo'; document.getElementById('modalBg').style.display='none'; document.getElementById('refreshBtn').disabled=false; load(); }
+function saveKey(){ const k=document.getElementById('apiKeyInput').value.trim(); if(!k.startsWith('sk-ant-')){alert('Please enter a valid Anthropic API key (starts with sk-ant-)');return;} apiKey=k; document.getElementById('modalBg').style.display='none'; document.getElementById('refreshBtn').disabled=false; lsSave(); const hasCached=!!(localStorage.getItem(LS+'source_csv_text')||''); if(hasCached){load();}else{openDataSourceModal();} }
 
-// ── SETTINGS POPOVER ─────────────────────────────────────────────────────
-function toggleRatesPopover(){
-  const p=document.getElementById('ratesPopover');
-  p.style.display=p.style.display==='none'?'':'none';
-}
-// Close popover when clicking outside
-document.addEventListener('click',function(e){
-  const wrap=document.getElementById('ratesPopoverWrap');
-  if(wrap&&!wrap.contains(e.target)){
-    document.getElementById('ratesPopover').style.display='none';
-  }
-});
+// ── THEME ─────────────────────────────────────────────────────────────────
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='light'?'🌙':'☀️';localStorage.setItem('theme',t);}
+function toggleTheme(){setTheme(document.documentElement.getAttribute('data-theme')==='light'?'dark':'light');}
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 document.getElementById('datePill').textContent=NOW.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
@@ -1829,20 +1494,15 @@ const savedTheme=localStorage.getItem('theme')||'light';
 setTheme(savedTheme);
 lsLoad();
 
-function setTheme(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='light'?'🌙':'☀️';localStorage.setItem('theme',t);}
-function toggleTheme(){setTheme(document.documentElement.getAttribute('data-theme')==='light'?'dark':'light');}
-
-// ── INIT FLOW ─────────────────────────────────────────────────────────────
-const hasCachedData = !!(localStorage.getItem(LS+'source_csv_text') || '');
-if(apiKey && apiKey.startsWith('sk-ant-')){
+const hasCachedData=!!(localStorage.getItem(LS+'source_csv_text')||'');
+if(apiKey&&apiKey.startsWith('sk-ant-')){
   document.getElementById('modalBg').style.display='none';
   document.getElementById('refreshBtn').disabled=false;
-  if(hasCachedData){ load(); }
+  if(hasCachedData){load();}
 } else {
   document.getElementById('modalBg').style.display='flex';
   document.getElementById('refreshBtn').disabled=true;
 }
-
 </script>
 </body>
 </html>
