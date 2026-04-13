@@ -1033,7 +1033,10 @@ function buildHistoryDetailHTML(id){
       <div class="fact-card"><div class="fact-label">Loan Amount</div><div class="fact-val pos">${fmtMoney(c.loanAmount)}</div></div>
       <div class="fact-card"><div class="fact-label">Program</div><div class="fact-val">${c.loanType} · ${c.program}</div></div>
       <div class="fact-card"><div class="fact-label">Est. Comp</div><div class="fact-val pos">${fmtComp(c.estimatedComp)}</div></div>
-    </div></div>`:''}
+   </div></div>`:``}
+    <div style="margin-top:16px">
+      <button onclick="undoHistoryEntry('${id}')" style="width:100%;height:38px;background:transparent;border:1.5px solid var(--border2);border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-3);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text-3)'">↩ Undo — move back to Active</button>
+    </div>
   </div>`;
 }
 
@@ -1053,6 +1056,15 @@ function saveGradeNote(id){
   const noteEl=document.getElementById(`gradeNote-${id}`); if(!noteEl) return;
   log.note=noteEl.value; lsSave();
   showToast('Note saved','','✓');
+}
+  function undoHistoryEntry(id){
+  outreachLog=outreachLog.filter(l=>l.id!==id);
+  lsSave();
+  scored=CLIENTS.map(scoreIt).filter(Boolean).sort((a,b)=>b.score-a.score);
+  updateStats(); renderSummaryBanner();
+  selectedHistoryId=null;
+  const hl=document.getElementById('historyLayout'); if(hl) hl.innerHTML=buildHistoryHTML();
+  showToast('Contact moved back to Active','','↩');
 }
 
 // ── SWITCH TAB ────────────────────────────────────────────────────────────
