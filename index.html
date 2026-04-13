@@ -973,14 +973,7 @@ function loadOutreachPanel() {
 // ── Auth ───────────────────────────────────────────────────────────────────────
 const SUPA_URL='https://ddimalkvoezwziyghuph.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkaW1hbGt2b2V6d3ppeWdodXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MjAyNzQsImV4cCI6MjA5MDE5NjI3NH0.be30CaTC2XM699HVDL-mf4LSpRC5UPDPOX5mMSsqmyo';
-const sb = supabase.createClient(SUPA_URL, SUPA_KEY, {
-  auth: {
-    storageKey: 'atlas-main-auth',
-    autoRefreshToken: true,
-    persistSession: true,
-    lock: (_name, _acquireTimeout, fn) => fn()
-  }
-});
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 let currentUser = null, userProfile = null;
 let authMode = 'signin';
 
@@ -1131,11 +1124,23 @@ function clearDealForm() {
   });
 }
 
+async function sbWithRetry(fn) {
+  try { return await fn(); }
+  catch(e) {
+    if (e && e.message && e.message.includes('Lock')) {
+      await new Promise(r => setTimeout(r, 600));
+      return await fn();
+    }
+    throw e;
+  }
+}
+
 async function saveDeal() {
-  // Re-fetch session in case currentUser wasn't set yet
   if (!currentUser) {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session?.user) currentUser = session.user;
+    try {
+      const { data: { session } } = await sbWithRetry(() => sb.auth.getSession());
+      if (session?.user) currentUser = session.user;
+    } catch(e) {}
   }
   if (!currentUser) { alert('Not signed in — please refresh and sign in again.'); return; }
 
@@ -1159,12 +1164,18 @@ async function saveDeal() {
     created_at:    new Date().toISOString()
   };
 
-  const { data, error } = await sb.from('pipeline_deals').insert([deal]).select().single();
-  if (error) { alert('Save failed: ' + error.message); console.error(error); return; }
-
-  pipelineDeals.unshift(data);
-  renderPipeline();
-  toggleDealForm();
+  try {
+    const { data, error } = await sbWithRetry(() =>
+      sb.from('pipeline_deals').insert([deal]).select().single()
+    );
+    if (error) { alert('Save failed: ' + error.message); console.error(error); return; }
+    pipelineDeals.unshift(data);
+    renderPipeline();
+    toggleDealForm();
+  } catch(e) {
+    alert('Save failed: ' + e.message);
+    console.error(e);
+  }
 }
 
 async function removeDeal(id) {
