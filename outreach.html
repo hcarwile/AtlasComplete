@@ -1418,8 +1418,8 @@ function buildTemplates(c){
 
   // 6-Month / fallback
   const subject=`RE: ${street} loan - checking in`;
-  const sms=`Hey ${fn}, this is Harry from Loan Pronto. Just sent you a quick email about your loan on ${street}. There's a big advantage you have as a past client I wanted to make sure you know about.`;
-  const email=`Hey ${fn},\n\nI was looking back at your loan on ${street} and wanted to check in.\n\nSince we’ve already worked together, if you ever want to pull cash out, buy a new home or refinance again, I can usually get you better terms than if you were starting from scratch somewhere else.\n\nI keep an eye on things for past clients, and if I ever see a real opportunity for you, I’ll reach out.\n\nIs the loan still working the way you expected?`;
+  const sms=`Hey ${fn}, this is Harry from Loan Pronto. Just sent you a quick email about your loan on ${street}. Wanted to check if everything’s still working the way you expected?`;
+  const email=`Hey ${fn},\n\nI was looking back at your loan on ${street} and wanted to check in.\n\nSince we’ve already worked together, if you ever want to pull cash out, buy a new home or refinance again, I can usually get you better terms than if you were starting from scratch somewhere else.\n\nI keep an eye on today's rates for past clients, and if I ever see a good opportunity for you, I’ll reach out.\n\nIs the ${loanLbl} still working the way you expected?`;
   return {sms, email, subject};
 }
 
