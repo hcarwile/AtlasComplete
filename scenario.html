@@ -884,8 +884,8 @@ const multi=chk.filter(k=>{const p=pi(k,c);return p&&p.tot>0;}).length>1;
 let e=[];
 e.push('Hey '+nm+',');
 e.push('');
-if(multi)e.push('Good talking with you. Here’s what I mapped out based on what you told me.');
-else e.push('Good talking with you. Here’s what I mapped out based on what you told me.');
+if(multi)e.push('Good talking with you. Based on what you shared, I mapped out the cleanest way to accomplish what you’re trying to do.');
+else e.push('Good talking with you. Based on what you shared, I mapped out the cleanest way to accomplish what you’re trying to do.');
 if(bene){e.push('');e.push(bene);}
 if(multi){
 const has2=chk.some(k=>{const p=pi(k,c);return p&&p.is2nd;});
@@ -923,20 +923,20 @@ e.push('Skip 1 or 2 mortgage payments after closing');
 }
 e.push('$0 due at closing - closing costs are rolled into the new loan');
 if(p.is2nd||p.isHeloc){}// no skip for 2nd
-e.push('Takes about 2 weeks to complete');
+e.push('Timeline is about 2 weeks');
 e.push('');
 });
 
-e.push("These numbers are very close estimates. I’ll confirm exact figures once I review your full file.");
+e.push("These figures are very close estimates. I’ll confirm exact numbers once I review the full file.");
 e.push('');
-e.push('The only possible out-of-pocket cost would be the appraisal (usually around $600). We’ll confirm that upfront.');
+e.push('The only potential out-of-pocket item would be an appraisal (typically $600), and we’ll confirm that before moving forward.');
 e.push('');
-e.push('If this looks in line with what we discussed, next step is to fill out the quick 5-minute form below so I can lock everything in:');
+e.push('If this looks in line with what we discussed, go ahead and complete this quick 10-minute application and I’ll take it from there:');
 e.push('https://harrycarwile.my1003app.com/register');
 e.push('');
 e.push('It is a soft check only and will not affect your credit score.');
 e.push('');
-e.push('Text or call me anytime at 704-307-4482 if you want to walk through it together.');
+e.push('If anything gives you pause before moving forward, call or text me at 704-307-4482 and we can walk through it together.');
 $('dE').value=e.join('\n');
 }
 
